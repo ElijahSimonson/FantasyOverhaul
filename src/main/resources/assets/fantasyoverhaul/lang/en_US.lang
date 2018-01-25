@@ -1,0 +1,38 @@
+<!-- Creative Tabs -->
+itemGroup.witcheryItems=Witchery Items
+itemGroup.witcheryBlocks=Witchery Blocks
+
+
+<!-- Vampire Armor -->
+item.hat_vampire.name=Vampire Top Hat
+item.hat_vampire.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+item.coat_vampire_male.name=Vampire Dress Coat
+item.coat_vampire_female.name=Vampire Dress Jacket (Ladies)
+item.coat_vampire_male.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+item.coat_vampire_female.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+item.leggings_vampire.name=Vampire Trousers
+item.leggings_vampire.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+item.boots_vampire.name=Vampire Oxford Boots
+item.boots_vampire.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+item.helmet_vampire.name=Vampire Helmet
+item.helmet_vampire.tip=Set bonuses:|2 pieces - Fire resistance
+item.chaincoat_vampire_male.name=Vampire Chain Coat
+item.chaincoat_vampire_male.tip=Set bonuses:|2 pieces - Fire resistance
+item.chaincoat_vampire_female.name=Vampire Chain Coat (Ladies)
+item.chaincoat_vampire_female.tip=Set bonuses:|2 pieces - Fire resistance
+item.chain_leggings_vampire.name=Vampire Skirted Trousers
+item.chain_leggings_vampire.tip=Set bonuses:|2 pieces - Faster drinking|3 pieces - Fire resistance|3 pieces - Mesmerize boost|4 pieces - Extended fire resistance
+
+<!-- Potions -->
+potion.unknown=<unknown>
+
+
+<!-- Commands -->
+fantasyoverhaul.vampire.setlevel=Vampire level set to %s.
+
+
+<!-- Death Messages -->
+fantasyoverhaul:death.attack.sun=%1$s burnt to a crisp in the sun
+fantasyoverhaul:death.attack.sun.player=%1$s burnt to a crisp in sunlight whilst fighting %2$s
+death.attack.sun=%1$s burnt to a crisp in the sun
+death.attack.sun.player=%1$s burnt to a crisp in sunlight whilst fighting %2$s

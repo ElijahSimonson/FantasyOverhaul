@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+
+
+version = "1.0-A"
+group= "nz.castorgaming.fantasyoverhaul" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "fantasyoverhaul"
+
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = "${mc_version}-${forge_version}"
+    runDir = "run"
+    
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20161111"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
+
+repositories {
+  maven {
+    // location of the maven that hosts JEI files
+    name = "Progwml6 maven"
+    url = "http://dvs1.progwml6.com/files/maven"
+  }
+  maven {
+    // location of a maven mirror for JEI files, as a fallback
+    name = "ModMaven"
+    url = "modmaven.k-4u.nl"
+  }
+  maven {url "http://tehnut.info/maven/"}
+  maven { url = "http://mobiusstrip.eu/maven" }
+  maven { url = "http://chickenbones.net/maven/" }
+  maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+  maven { url = "http://maven.tterrag.com" }
+  maven { url = "http://maven.ic2.player.to" }
+  maven { url = "http://maven.cil.li/" }
+}
+
+dependencies {
+
+  // compile against the JEI API but do not include it at runtime
+  deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
+  // at runtime, use the full JEI jar
+  runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+  
+  //BloocMagic
+  deobfProvided "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${way_of_time_version}:api"
+  runtime "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${way_of_time_version}"
+  
+  //AE2
+  compile "appeng:appliedenergistics2:${ae2_version}:dev"
+ 
+ //Ender Core
+  compile "com.enderio.core:EnderCore:${endercore_version}:dev"
+
+  //Waila
+  deobfCompile "mcp.mobius.waila:Waila:${waila_version}:dev"
+
+  //Forestry
+  deobfCompile "net.sengir.forestry:${forestry_version}:api"
+  
+  //OpenComputers
+  deobfCompile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+  
+  //Guide-API
+  deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.3-46"
+  
+  runtime fileTree(dir: 'lib' , includes: ['*jar'])
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
