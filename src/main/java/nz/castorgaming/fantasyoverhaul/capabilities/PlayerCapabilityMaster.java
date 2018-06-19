@@ -41,6 +41,18 @@ public class PlayerCapabilityMaster {
 	}
 
 	public enum QuestState {
-		NOT_STATED, STARTED, COMPLETE;
+		NOT_STARTED, STARTED, COMPLETE;
+		
+		public int toInt() {
+			return toInt(this);
+		}
+
+		public static int toInt(Enum<QuestState> e) {
+			return e.ordinal();
+		}
+
+		public static QuestState fromInt(int ordinal) {
+			return QuestState.values()[ordinal];
+		}
 	}
 }

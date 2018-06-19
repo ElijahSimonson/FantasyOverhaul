@@ -17,8 +17,32 @@ import nz.castorgaming.fantasyoverhaul.util.Reference;
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = Reference.DEPEND_STRING)
 public class FantasyOverhaul {
 
-	public static final CreativeTabs foItems = new witcheryTab("foItems", new ItemStack(ItemInit.CHAIN_VAMPIRE_MALE_CHESTPLATE));
-	public static final CreativeTabs foBlocks = new witcheryTab("foBlocks", new ItemStack(ItemInit.CLOTH_VAMPIRE_FEMALE_CHESTPLATE));
+	public enum LoadedMod {
+
+		THAUMCRAFT("thaumcraft"), MINEFACTORY("minefactoryreloaded"), ARS("arsmagica2"), FORESTRY("forestry"), JEI(
+				"jei"), BACKPACK("wearablebackpacks");
+
+		private boolean loaded;
+		public String id;
+
+		LoadedMod(String id) {
+			loaded = false;
+			this.id = id;
+		}
+
+		public void setLoaded() {
+			loaded = true;
+		}
+
+		public boolean getLoaded() {
+			return loaded;
+		}
+	}
+
+	public static final CreativeTabs foItems = new witcheryTab("foItems",
+			new ItemStack(ItemInit.CHAIN_VAMPIRE_MALE_CHESTPLATE));
+	public static final CreativeTabs foBlocks = new witcheryTab("foBlocks",
+			new ItemStack(ItemInit.CLOTH_VAMPIRE_FEMALE_CHESTPLATE));
 
 	@Instance
 	public static FantasyOverhaul instance;

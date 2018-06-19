@@ -24,6 +24,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
@@ -78,7 +79,6 @@ public class ShapeShift {
 
 	public void initCurrentShift(EntityPlayer player) {
 		if (!player.worldObj.isRemote) {
-			ExtendedPlayer playerEx = IExtendPlayer.get(player);
 			EntitySizeInfo sizeInfo = new EntitySizeInfo(player);
 			Resizing.setEntitySize(player, sizeInfo.defaultWidth, sizeInfo.defaultHeight);
 			player.stepHeight = sizeInfo.stepSize;
@@ -124,7 +124,6 @@ public class ShapeShift {
 	}
 
 	public float updateFallState(EntityPlayer player, float distance) {
-		ExtendedPlayer playerEx = IExtendPlayer.get(player);
 		StatBoost boost = getStatBoost(player);
 
 		if (boost == null) {
@@ -178,7 +177,6 @@ public class ShapeShift {
 			}
 		}
 		if (playerVamp.getVampireLevel() >= 3 && playerEx.getCreatureType() == TransformCreatures.NONE && player.isSneaking()) {
-			double ACCELERATION = 3.0;
 			Vec3d look = player.getLookVec();
 			double motionX = look.xCoord * 0.6 * 3.0;
 			double motionY = 0.8999999999999999;
@@ -200,7 +198,7 @@ public class ShapeShift {
 		if (item == null) {
 			return false;
 		}
-		Multimap modifiers = item.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+		Multimap<String, AttributeModifier> modifiers = item.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 		if (modifiers == null) {
 			return false;
 		}
@@ -238,7 +236,7 @@ public class ShapeShift {
 	public void processCreatureKilled(LivingDeathEvent event, EntityPlayer attacker) {
 		PlayerWerewolf playerWere = IPlayerWerewolf.get(attacker);
 		if (isWolfAnimalForm(IExtendPlayer.get(attacker)) && playerWere.getWerewolfLevel() >= 4 && !CreatureUtilities.isUndead(event.getEntityLiving())) {
-			ParticleEffect.REDDUST.send((attacker.worldObj.rand.nextInt(3) == 0) ? SoundEffect.fantasyoverhaul_MOB_WOLFMAN_EAT : SoundEffect.NONE, event.getEntityLiving(), 1.0, 2.0, 16);
+			ParticleEffect.REDDUST.send((attacker.worldObj.rand.nextInt(3) == 0) ? SoundEffect.MOB_WOLFMAN_EAT : SoundEffect.NONE, event.getEntityLiving(), 1.0, 2.0, 16);
 			attacker.getFoodStats().addStats(8, 0.8f);
 		}
 	}
@@ -248,7 +246,7 @@ public class ShapeShift {
 		PlayerWerewolf playerWere = IPlayerWerewolf.get(player);
 		if (playerEx.getCreatureType() == TransformCreatures.WOLF && playerWere.getWerewolfLevel() >= 3 && event.getDrops().size() == 1 && event.getDrops().get(0) != null) {
 			long lastFind = playerWere.getLastBoneFind();
-			long serverTime = player.worldObj.getMinecraftServer().getCurrentTimeMillis();
+			long serverTime = MinecraftServer.getCurrentTimeMillis();
 			if (lastFind + TimeUtilities.secsToMillisecs(60) < serverTime && player.worldObj.rand.nextInt(20) == 0) {
 				playerWere.setLastBoneFind(serverTime);
 				event.getDrops().add(new ItemStack(Items.BONE, (player.worldObj.rand.nextInt(5) == 0) ? 2 : 1));
@@ -262,7 +260,7 @@ public class ShapeShift {
 		if (playerWere.getWerewolfLevel() == 6 && isWolfAnimalForm(playerEx) && playerWere.getWolfmanQuestState() == QuestState.STARTED && !player.worldObj.isDaytime()) {
 			int x = MathHelper.floor_double(player.posX) >> 4;
 			int z = MathHelper.floor_double(player.posZ) >> 4;
-			SoundEffect.fantasyoverhaul_MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
+			SoundEffect.MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
 			if (playerWere.storeWolfmanQuestChunk(x, z)) {
 				playerWere.increaseWolfmanQuestCounter();
 			}
@@ -272,9 +270,9 @@ public class ShapeShift {
 		}
 		else if (playerEx.getCreatureType() == TransformCreatures.WOLF && playerWere.getWerewolfLevel() >= 8) {
 			long lastHowl = playerWere.getLastHowl();
-			long serverTime = player.worldObj.getMinecraftServer().getCurrentTimeMillis();
+			long serverTime = MinecraftServer.getCurrentTimeMillis();
 			if (player.capabilities.isCreativeMode || lastHowl + TimeUtilities.secsToMillisecs(60) < serverTime) {
-				SoundEffect.fantasyoverhaul_MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
+				SoundEffect.MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
 				playerWere.setLastHowl(serverTime);
 				for (int i = 0; i < 2 + player.worldObj.rand.nextInt(playerWere.getWerewolfLevel() - 7); ++i) {
 					EntityCreature creature = Infusion.spawnCreature(player.worldObj, EntityWolf.class, (int) player.posX, (int) player.posY, (int) player.posZ, player.getLastAttacker(), 1, 6,
@@ -305,9 +303,9 @@ public class ShapeShift {
 		}
 		else if (playerEx.getCreatureType() == TransformCreatures.WOLFMAN && playerWere.getWerewolfLevel() >= 7) {
 			long lastHowl = playerWere.getLastHowl();
-			long serverTime = player.worldObj.getMinecraftServer().getCurrentTimeMillis();
+			long serverTime = MinecraftServer.getCurrentTimeMillis();
 			if (player.capabilities.isCreativeMode || lastHowl + TimeUtilities.secsToMillisecs(60) < serverTime) {
-				SoundEffect.fantasyoverhaul_MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
+				SoundEffect.MOB_WOLFMAN_HOWL.playAtPlayer(player.worldObj, player, 1.0f);
 				playerWere.setLastHowl(serverTime);
 				double radius = 16.0;
 				List<EntityLivingBase> entities = player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, player.getEntityBoundingBox().expand(radius, radius, radius));

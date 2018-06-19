@@ -54,7 +54,6 @@ public class Config {
 	public boolean allowMineFactoryReloaded;
 	public boolean allowArsMagica2;
 	public boolean allowForestry;
-	public boolean allowTreecapitator;
 	public boolean allowJustEnoughItems;
 	public boolean respectOtherDeathChestMods;
 
@@ -196,7 +195,6 @@ public class Config {
 		allowThaumcraft = configuration.get(category, "AllowThaumcraft", true).getBoolean(true);
 		allowMineFactoryReloaded = configuration.get(category, "AllowMineFactoryReloaded", true).getBoolean(true);
 		allowForestry = configuration.get(category, "AllowForestry", true).getBoolean(true);
-		allowTreecapitator = configuration.get(category, "AllowTreeCapitator", true).getBoolean(true);
 		allowJustEnoughItems = configuration.get(category, "AllowJustEnoughItems", true).getBoolean(true);
 		allowArsMagica2 = configuration.get(category, "AllowArsMagica2", true).getBoolean(true);
 

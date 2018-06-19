@@ -62,6 +62,7 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 	private int attackTime;
 	float damageDone = 0.0f;
 
+	@SuppressWarnings("unchecked")
 	public EntityVampire(World world) {
 		super(world);
 		((PathNavigateGround) getNavigator()).setBreakDoors(true);
@@ -76,7 +77,7 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		addTask(this, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0f));
 		addTask(this, new EntityAILookIdle(this));
 		targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, false, true, (Predicate) this));
+		targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreature>(this, EntityCreature.class, 0, false, true, (Predicate<? super EntityCreature>) this));
 		experienceValue = 20;
 	}
 
@@ -122,7 +123,7 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 				int taken = villagerEx.getCapability(CapabilityInit.EXTENDED_VILLAGER, null).takeBlood(30, this);
 				if (taken > 0) {
 					heal(4.0f);
-					ParticleEffect.REDDUST.send(SoundEffect.fantasyoverhaul_RANDOM_DRINK, worldObj, entity.posX, entity.posY + entity.height * 0.8, entity.posZ, 0.5, 0.2, 16);
+					ParticleEffect.REDDUST.send(SoundEffect.RANDOM_DRINK, worldObj, entity.posX, entity.posY + entity.height * 0.8, entity.posZ, 0.5, 0.2, 16);
 				}
 			}
 			flag = true;
@@ -292,7 +293,7 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		for (int x = coffinBlockPos.getX() - 6; x <= coffinBlockPos.getX() + 6; x++) {
 			for (int y = coffinBlockPos.getY() - 6; y <= coffinBlockPos.getY() + 6; y++) {
 				for (int z = coffinBlockPos.getZ() - 6; z <= coffinBlockPos.getZ() + 6; z++) {
-					BlockBloodCrucible.TileEntityBloodCrucible crucible = BlockUtil.getTileEntity((IBlockAccess) worldObj, x, y, z, BlockBloodCrucible.TileEntityBloodCrucible.class);
+					TileEntityBloodCrucible crucible = BlockUtil.getTileEntity((IBlockAccess) worldObj, x, y, z, TileEntityBloodCrucible.class);
 					if (crucible != null) {
 						crucible.increaseBloodLevel();
 					}
@@ -316,9 +317,9 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 					villageObj = null;
 					damageDone = 0.0f;
 					if (coffinChunkPos.getDistanceSq(this) > 16.0) {
-						ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+						ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 						EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-						ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+						ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 						setHomePosAndDistance(coffinBlockPos, 4);
 					}
 				}
@@ -331,9 +332,9 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 					setAttackTarget(null);
 					setRevengeTarget(null);
 					villageObj = null;
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					setHomePosAndDistance(coffinBlockPos, 4);
 					tryFillBloodCrucible();
 				}
@@ -343,9 +344,9 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 				villageObj = worldObj.villageCollectionObj.getNearestVillage(new BlockPos(posX, posY, posX), 128);
 				if (villageObj != null) {
 					BlockPos townPos = villageObj.getCenter();
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					setHomePosAndDistance(townPos, villageObj.getVillageRadius());
 				}
 

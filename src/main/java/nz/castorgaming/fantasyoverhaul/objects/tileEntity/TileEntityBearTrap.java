@@ -49,7 +49,7 @@ public class TileEntityBearTrap extends TileEntityBase {
 		if (silvered && living instanceof EntityWolfman) {
 			EntityWolfman wolf = (EntityWolfman) living;
 			if (spawnedWolfID != null && wolf != null && wolf.getPersistanceID().equals(spawnedWolfID)) {
-				SoundEffect.fantasyoverhaul_MOB_WOLFMAN_LORD.playAt(this, 1.0f);
+				SoundEffect.MOB_WOLFMAN_HOWL.playAt(this, 1.0f);
 				wolf.setInfectious();
 				return true;
 			}
@@ -75,7 +75,7 @@ public class TileEntityBearTrap extends TileEntityBase {
 					long activateTime = startTime;
 					if (time > activateTime && CreatureUtilities.isFullMoon(worldObj)) {
 						EntityCreature creature = Infusion.spawnCreature(worldObj, EntityWolfman.class, pos.getX(), pos.getY(), pos.getZ(), null, 10, 32, ParticleEffect.SMOKE,
-								SoundEffect.fantasyoverhaul_MOB_WOLFMAN_TALK);
+								SoundEffect.MOB_WOLFMAN_TALK);
 						if (creature != null) {
 							creature.enablePersistence();
 							spawnedWolfID = creature.getPersistentID();

@@ -23,8 +23,6 @@ public class ImpEvaporation extends PlayerEffect {
 			final int midX = MathHelper.floor_double(player.posX);
 			final int midY = MathHelper.floor_double(player.posY);
 			final int midZ = MathHelper.floor_double(player.posZ);
-			final int R = 3;
-			final int RSq = 9;
 			boolean found = false;
 			for (int x = midX - 3; x <= midX + 3; ++x) {
 				for (int z = midZ - 3; z <= midZ + 3; ++z) {
@@ -52,5 +50,11 @@ public class ImpEvaporation extends PlayerEffect {
 
 	@Override
 	protected void doInteract(final EntityPlayer player, final PlayerInteractEvent event) {
+	}
+
+	@Override
+	protected void onDeath(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
 	}
 }

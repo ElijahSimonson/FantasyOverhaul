@@ -64,4 +64,10 @@ public class ImpFireTouch extends PlayerEffect {
 			}
 		}
 	}
+
+	@Override
+	protected void onDeath(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
 }

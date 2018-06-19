@@ -104,6 +104,7 @@ public class EntityUtil {
 		fieldTrackedEntities = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void correctProjectileTrackerSync(World world, Entity projectile) {
 		if (!world.isRemote && world instanceof WorldServer) {
 			try {
@@ -137,8 +138,9 @@ public class EntityUtil {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Entity> T findNearestEntityWithinAABB(World world, Class<T> clazz, AxisAlignedBB bounds, Entity entity) {
-		Entity foundEntity = world.findNearestEntityWithinAABB((Class) clazz, bounds, entity);
+		Entity foundEntity = world.findNearestEntityWithinAABB((Class<? extends Entity>) clazz, bounds, entity);
 		if (foundEntity != null) {
 			return (T) foundEntity;
 		}
@@ -149,14 +151,15 @@ public class EntityUtil {
 		return getEntityInRadius(clazz, tile.getWorld(), 0.5 + tile.getPos().getX(), 0.5 + tile.getPos().getY(), 0.5 + tile.getPos().getZ(), radius);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Entity> List<T> getEntityInRadius(Class<T> clazz, World world, double x, double y, double z, double radius) {
 		AxisAlignedBB bounds = new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
-		List<T> entities = world.getEntitiesWithinAABB((Class) clazz, bounds);
+		List<? extends Entity> entities = world.getEntitiesWithinAABB((Class<? extends Entity>) clazz, bounds);
 		ArrayList<T> nearbyEntities = new ArrayList<T>();
 		double radiusSq = radius * radius;
-		for (T entity : entities) {
+		for (Entity entity : entities) {
 			if (entity.getDistanceSq(x, entity.posY, z) <= radiusSq) {
-				nearbyEntities.add(entity);
+				nearbyEntities.add((T) entity);
 			}
 		}
 		return nearbyEntities;
@@ -379,7 +382,7 @@ public class EntityUtil {
 			attackerCreature.setRevengeTarget(victim);
 			if (attackerCreature instanceof EntityZombie || attackerCreature instanceof EntityCreeper) {
 				boolean found = false;
-				Class victimClass = victim.getClass();
+				Class<? extends EntityLivingBase> victimClass = victim.getClass();
 				for (Object obj : attackerCreature.targetTasks.taskEntries) {
 					EntityAITasks.EntityAITaskEntry task = (EntityAITasks.EntityAITaskEntry) obj;
 					if (task.action instanceof EntityAIAttackOnCollide2) {
@@ -487,7 +490,7 @@ public class EntityUtil {
 			final ParticleEffect particle, final SoundEffect sound) {
 		final boolean isVampire = CreatureUtilities.isVampire(entity);
 		if (isVampire) {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
 		}
 		else {
 			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
@@ -517,7 +520,7 @@ public class EntityUtil {
 			entity.setLocationAndAngles(posX, posY, posZ, entity.rotationYaw, entity.rotationPitch);
 		}
 		if (isVampire) {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
 		}
 		else {
 			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));

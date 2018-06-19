@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import nz.castorgaming.fantasyoverhaul.init.InitArrays;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityNightmare;
 import nz.castorgaming.fantasyoverhaul.powers.infusions.creature.CreaturePower;
 import nz.castorgaming.fantasyoverhaul.util.Log;
 import nz.castorgaming.fantasyoverhaul.util.Reference;
@@ -36,8 +37,8 @@ import nz.castorgaming.fantasyoverhaul.util.packets.PlayerSyncPacket;
 
 public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 
-	public static final RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion> REGISTRY = (RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion>) GameRegistry
-			.findRegistry(Infusion.class);
+	@SuppressWarnings("unchecked")
+	public static final RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion> REGISTRY = (RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion>) GameRegistry.findRegistry(Infusion.class);
 
 	private String infusionName;
 	protected static final int DEFAULT_CHARGE_COST = 1;

@@ -46,4 +46,8 @@ public class ImpMeltingTouch extends PlayerEffect {
 	@Override
 	protected void doInteract(final EntityPlayer player, final PlayerInteractEvent event) {
 	}
+
+	@Override
+	public void onDeath(EntityPlayer player) {
+	}
 }

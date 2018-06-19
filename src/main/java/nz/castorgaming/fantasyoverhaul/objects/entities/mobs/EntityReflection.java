@@ -103,7 +103,7 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0f));
 		tasks.addTask(5, new EntityAILookIdle(this));
 
-		targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true, true));
+		targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true, true));
 		targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 
 		experienceValue = 50;
@@ -224,8 +224,8 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 					for (int hot = 0; hot < 9; ++hot) {
 						ItemStack stack2 = owner.inventory.getStackInSlot(hot);
 						if (stack2 != null) {
-							Multimap modifierMap = stack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-							Iterator itr = modifierMap.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName()).iterator();
+							Multimap<String, AttributeModifier> modifierMap = stack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+							Iterator<AttributeModifier> itr = modifierMap.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName()).iterator();
 							double damage = 0.0;
 							while (itr.hasNext()) {
 								AttributeModifier modifier = (AttributeModifier) itr.next();
@@ -344,17 +344,17 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 
 	@Override
 	protected SoundEvent getHurtSound() {
-		return SoundEffect.fantasyoverhaul_MOB_REFLECTION_HURT.event();
+		return SoundEffect.MOB_REFLECTION_HURT.event();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEffect.fantasyoverhaul_MOB_REFLECTION_DEATH.event();
+		return SoundEffect.MOB_REFLECTION_DEATH.event();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEffect.fantasyoverhaul_MOB_REFLECTION_SPEECH.event();
+		return SoundEffect.MOB_REFLECTION_SPEECH.event();
 	}
 
 	@Override
@@ -483,7 +483,7 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 
 	@Override
 	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
-		entityDropItem(ItemInit.demon_heart.createStack(), 0.0f);
+		entityDropItem(ItemInit.DEMON_HEART.createStack(), 0.0f);
 	}
 
 	private enum Task {

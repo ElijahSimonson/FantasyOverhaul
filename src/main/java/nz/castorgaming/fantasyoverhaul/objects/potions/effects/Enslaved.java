@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import nz.castorgaming.fantasyoverhaul.init.Potions;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityDemon;
 import nz.castorgaming.fantasyoverhaul.objects.potions.PotionBase;
 import nz.castorgaming.fantasyoverhaul.objects.potions.tasks.EntityAIEnslaverHurtByTarget;
 import nz.castorgaming.fantasyoverhaul.util.classes.EntityUtil;

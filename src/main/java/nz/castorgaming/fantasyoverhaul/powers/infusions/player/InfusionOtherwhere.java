@@ -72,10 +72,10 @@ public class InfusionOtherwhere extends Infusion {
 			}
 			else if (!EnderInhibition.isActive(player, 2) && this.consumeCharges(world, player, 2, true)) {
 				final double HIKE_HEIGHT = 8.0;
-				final RayTraceResult hitMOP = raytraceUpBlocks(world, player, true, 8.0);
-				final double hikeModified = (hitMOP == null) ? 8.0 : Math.min(hitMOP.getBlockPos().getY() - otherLivingEntity.posY - 2.0, 8.0);
+				final RayTraceResult hitMOP = raytraceUpBlocks(world, player, true, HIKE_HEIGHT);
+				final double hikeModified = (hitMOP == null) ? 8.0 : Math.min(hitMOP.getBlockPos().getY() - otherLivingEntity.posY - 2.0, HIKE_HEIGHT);
 				final RayTraceResult hitMOP2 = raytraceUpBlocks(world, otherLivingEntity, true, 8.0);
-				final double hikeModified2 = (hitMOP2 == null) ? 8.0 : Math.min(hitMOP2.getBlockPos().getY() - otherLivingEntity.posY - 2.0, 8.0);
+				final double hikeModified2 = (hitMOP2 == null) ? 8.0 : Math.min(hitMOP2.getBlockPos().getY() - otherLivingEntity.posY - 2.0, HIKE_HEIGHT);
 				if (player instanceof EntityPlayerMP && !isConnectionClosed((EntityPlayerMP) player) && hikeModified > 0.0 && hikeModified2 > 0.0) {
 					EntityUtil.teleportToLocation(world, player.posX, player.posY + hikeModified, player.posZ, player.dimension, player, true);
 					if (!EnderInhibition.isActive(otherLivingEntity, 2)) {

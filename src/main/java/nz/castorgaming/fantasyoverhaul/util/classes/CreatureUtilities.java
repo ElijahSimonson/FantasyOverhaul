@@ -28,7 +28,9 @@ import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.PlayerWerewol
 import nz.castorgaming.fantasyoverhaul.init.InfusionInit;
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.armor.specialArmors.vampire.VampireClothes;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityDemon;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityHornedHuntsman;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityNightmare;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityReflection;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityVampire;
 import nz.castorgaming.fantasyoverhaul.powers.brews.effects.InfusionBrewEffect;

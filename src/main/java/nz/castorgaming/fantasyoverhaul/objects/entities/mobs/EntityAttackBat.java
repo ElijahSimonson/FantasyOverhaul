@@ -49,7 +49,7 @@ public class EntityAttackBat extends EntityBat {
 			}
 			if (target != ownerPlayer && !(target instanceof EntityBat) && !target.isDead) {
 				target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, ownerPlayer), 4.0f);
-				ParticleEffect.REDDUST.send(SoundEffect.fantasyoverhaul_RANDOM_DRINK, entity, entity.width, entity.height, 16);
+				ParticleEffect.REDDUST.send(SoundEffect.RANDOM_DRINK, entity, entity.width, entity.height, 16);
 				setDead();
 			}
 		}

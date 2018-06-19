@@ -25,10 +25,6 @@ public interface IExtendPlayer extends INBTSerializable<NBTTagCompound> {
 	public static void loadProxyData(EntityPlayer player) {
 	}
 
-	public static ExtendedPlayer get(EntityPlayer player) {
-		return (ExtendedPlayer) player.getCapability(CapabilityInit.EXTENDED_PLAYER, null);
-	}
-
 	public void addWorship(int level);
 
 	public void backupPlayerInventory();

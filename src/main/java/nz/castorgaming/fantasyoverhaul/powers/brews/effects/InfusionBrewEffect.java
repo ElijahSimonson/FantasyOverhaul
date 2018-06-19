@@ -15,13 +15,11 @@ import nz.castorgaming.fantasyoverhaul.util.classes.TimeUtilities;
 
 public abstract class InfusionBrewEffect extends IForgeRegistryEntry.Impl<InfusionBrewEffect> {
 
-	private int id;
 	private long durationTicks;
 	private String effectName;
 	private static IForgeRegistry<InfusionBrewEffect> REGISTRY = GameRegistry.findRegistry(InfusionBrewEffect.class);
 
 	protected InfusionBrewEffect(int id, long durationMS, String name) {
-		this.id = id;
 		this.durationTicks = durationMS;
 		effectName = name;
 		setRegistryName(effectName);

@@ -15,6 +15,7 @@ import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.ExtendedPlaye
 import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.IExtendPlayer;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.IPlayerVampire;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.PlayerVampire;
+import nz.castorgaming.fantasyoverhaul.objects.worlds.WorldProviderDreamWorld;
 import nz.castorgaming.fantasyoverhaul.powers.infusions.Infusion;
 import nz.castorgaming.fantasyoverhaul.util.Reference;
 
@@ -36,7 +37,7 @@ public class PacketPlayerStyle implements IMessage {
 		this.username = player.getCommandSenderEntity().getUniqueID().toString();
 		this.grotesqueTicks = (nbtPlayer.hasKey("witcheryGrotesque") ? nbtPlayer.getInteger("witcheryGrotesque") : 0);
 		this.nightmare = WorldProviderDreamWorld.getPlayerHasNightmare(nbtPlayer);
-		this.ghost = WorldProviderDreamWorld.getPlayerIsGhost(nbtPlayer);
+		this.ghost = WorldProviderDreamWorld.isPlayerGhost(nbtPlayer);
 		final ExtendedPlayer playerEx = IExtendPlayer.get(player);
 		this.creatureType = playerEx.getCreatureType().toInt();
 		this.blood = IPlayerVampire.get(player).getHumanBlood();
@@ -85,8 +86,8 @@ public class PacketPlayerStyle implements IMessage {
 				else if (nbtOtherPlayer.hasKey(Reference.INFUSION_GROTESQUE)) {
 					nbtOtherPlayer.removeTag(Reference.INFUSION_GROTESQUE);
 				}
-				WorldProviderDreamWorld.setPlayerHasNightmare(nbtOtherPlayer, message.nightmare > 0, message.nightmare > 1);
-				WorldProviderDreamWorld.setPlayerIsGhost(nbtOtherPlayer, message.ghost);
+				WorldProviderDreamWorld.setPlayerHasNightmare(otherPlayer, message.nightmare > 0, message.nightmare > 1);
+				WorldProviderDreamWorld.playerIsGhost(nbtOtherPlayer, message.ghost);
 				final ExtendedPlayer playerEx = IExtendPlayer.get(otherPlayer);
 				playerEx.setCreatureTypeOrdinal(message.creatureType);
 				PlayerVampire vamp = IPlayerVampire.get(otherPlayer);

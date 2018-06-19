@@ -26,7 +26,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import nz.castorgaming.fantasyoverhaul.capabilities.PlayerCapabilityMaster;
-import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.IExtendPlayer;
+import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.ExtendedPlayer;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.IPlayerWerewolf;
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityAttackBat;
@@ -66,7 +66,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			return toInt(this);
 		}
 
-		public static int toInt(Enum e) {
+		public static int toInt(Enum<VampirePower> e) {
 			return e.ordinal();
 		}
 
@@ -83,7 +83,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			return toInt(this);
 		}
 
-		public static int toInt(Enum e) {
+		public static int toInt(Enum<VampireUltimate> e) {
 			return e.ordinal();
 		}
 
@@ -130,7 +130,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 	@Override
 	public void checkSleep(boolean start) {
 		if (start) {
-			if (isVampire() && player.sleeping && player.worldObj.isDaytime()) {
+			if (isVampire() && player.isPlayerSleeping() && player.worldObj.isDaytime()) {
 				resetSleep = true;
 				cachedSky = player.worldObj.getSkylightSubtracted();
 				player.worldObj.setSkylightSubtracted(4);
@@ -248,7 +248,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 	@Override
 	public boolean hasVampireBook() {
 		for (ItemStack stack : player.inventory.mainInventory) {
-			if (stack != null && stack.getItem() == ItemInit.book_vampire) {
+			if (stack != null && stack.getItem() == ItemInit.BOOK_VAMPIRE) {
 				return stack.getItemDamage() < 9;
 			}
 		}
@@ -501,7 +501,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 						break;
 					}
 					case SPEED: {
-						if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
 							PotionEffect effect = player.getActivePotionEffect(MobEffects.SPEED);
 							int currentLevel = (int) ((effect == null) ? 0 : Math.ceil(Math.log(effect.getAmplifier() + 1) / Math.log(2.0)));
 							if (level >= 4 && currentLevel <= Math.ceil((level - 3) / 2.0f)) {
@@ -529,7 +529,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 							SoundEffect.NOTE_SNARE.playOnlyTo(player);
 							break;
 						}
-						if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
 							if (decreaseBloodPower(power.INITIAL_COST, true)) {
 								SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
 								ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.BAT);
@@ -539,7 +539,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 							break;
 						}
 						else {
-							if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.BAT) {
+							if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.BAT) {
 								SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
 								ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.NONE);
 								break;
@@ -549,7 +549,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 						}
 					}
 					case ULTIMATE: {
-						if (level >= 10 && ultimateCharges > 0 && IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						if (level >= 10 && ultimateCharges > 0 && ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
 							switch (getVampireUltimate()) {
 								case FARM:
 									boolean done = false;
@@ -576,7 +576,6 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 
 										}
 										if (coords != null) {
-											double HOME_DIST = 6.0, HOME_DIST_SQ = 36.0;
 											coords = Blocks.BED.getBedSpawnPosition(null, world, coords, null);
 											if (coords != null) {
 												if (dimension == player.dimension && player.getDistanceSq(coords.getX(), player.posY, coords.getZ()) <= 36.0) {
@@ -623,7 +622,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 								case SWARM: {
 									for (int i = 0; i < 15; i++) {
 										EntityLiving creature = spawnCreature(player.worldObj, EntityAttackBat.class, player.posX, player.posY + 3 + player.worldObj.rand.nextDouble(), player.posZ, 1,
-												4, ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF);
+												4, ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF);
 										if (creature != null) {
 											EntityAttackBat bat = (EntityAttackBat) creature;
 											bat.setOwner(player);
@@ -687,8 +686,8 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			Log.instance().debug("Creature: hy: " + hy + " (" + nx + "," + ny + "," + nz + ")");
 			if (hy >= 2) {
 				try {
-					final Constructor ctor = creatureType.getConstructor(World.class);
-					final EntityLiving creature = (EntityLiving) ctor.newInstance(world);
+					final Constructor<? extends EntityLiving> ctor = creatureType.getConstructor(World.class);
+					final EntityLiving creature = ctor.newInstance(world);
 					creature.setLocationAndAngles(0.5 + nx, 0.05 + ny + 1.0, 0.5 + nz, 0.0f, 0.0f);
 					world.spawnEntityInWorld(creature);
 					if (effect != null) {

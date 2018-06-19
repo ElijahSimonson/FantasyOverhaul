@@ -67,5 +67,5 @@ public abstract class PlayerEffect extends IForgeRegistryEntry.Impl<PlayerEffect
 
 	protected abstract void doUpdate(final EntityPlayer p0, final int p1);
 
-	protected abstract void onDeath(EntityPlayer player);
+	public abstract void onDeath(EntityPlayer player);
 }

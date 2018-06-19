@@ -46,6 +46,7 @@ public class Potions {
 	public static final Resizing RESIZING = new Resizing("resizing".hashCode());
 	public static final MortalCoil MORTAL_COIL = new MortalCoil("mortal_coil".hashCode());
 	public static final EnderInhibition ENDER_INHIBITION = new EnderInhibition("ender_inhibition".hashCode());
+	public static Potion WAKING_NIGHTMARE;
 
 	public static Potion register(PotionBase potion) {
 		if (potion instanceof PotionBase) {

@@ -53,6 +53,8 @@ import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.IPlayerVampire
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.armor.specialArmors.HuntersClothes;
 import nz.castorgaming.fantasyoverhaul.objects.entities.familiars.Familiar;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityNightmare;
+import nz.castorgaming.fantasyoverhaul.objects.worlds.WorldProviderDreamWorld;
 import nz.castorgaming.fantasyoverhaul.powers.brews.effects.InfusionBrewEffect;
 import nz.castorgaming.fantasyoverhaul.powers.infusions.Infusion;
 import nz.castorgaming.fantasyoverhaul.powers.playereffect.PlayerEffect;
@@ -263,8 +265,8 @@ public class InfusionEventHooks {
 					if (counter % 100L == 0L && !event.isCanceled()) {
 						PredictionManager.instance().checkIfFulfilled(player, event);
 						if (Config.instance().allowCovenWitchVisits && nbtPlayer.hasKey(Reference.COVEN) && player.worldObj.rand.nextInt(20) == 0) {
-							final ChunkCoordinates coords = player.getBedLocation(player.dimension);
-							if (coords != null && coords.getDistanceSquared((int) player.posX, (int) player.posY, (int) player.posZ) < 256.0f) {
+							final BlockPos coords = player.getBedLocation(player.dimension);
+							if (coords != null && coords.getDistance((int) player.posX, (int) player.posY, (int) player.posZ) < 256.0f) {
 								final NBTTagList nbtCovenList = nbtPlayer.getTagList("WITCCoven", 10);
 								if (nbtCovenList.tagCount() > 0) {
 									EntityCovenWitch.summonCovenMember(player.worldObj, player, 90);
@@ -573,7 +575,7 @@ public class InfusionEventHooks {
 						boolean doNothing = false;
 						for (final Object obj : entities) {
 							final EntityNightmare nightmare = (EntityNightmare) obj;
-							if (nightmare.getVictimName().equalsIgnoreCase(player2.getCommandSenderEntity().getUniqueID())) {
+							if (nightmare.getVictimUUID().equals(player2.getCommandSenderEntity().getUniqueID())) {
 								doNothing = true;
 								break;
 							}

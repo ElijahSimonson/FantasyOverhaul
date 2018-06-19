@@ -144,7 +144,7 @@ public class BlockBearTrap extends TileBlockBase {
 						living.addPotionEffect(new PotionEffect(Potions.PARALYSED, TimeUtilities.secsToTicks(30), 2, true, false));
 					}
 					living.attackEntityFrom(DamageSource.anvil, 4.0f);
-					ParticleEffect.REDDUST.send(SoundEffect.fantasyoverhaul_RANDOM_MANTRAP, worldIn, pos, 0.25, 0.5, 16);
+					ParticleEffect.REDDUST.send(SoundEffect.RANDOM_MANTRAP, worldIn, pos, 0.25, 0.5, 16);
 					tile.setSprung(true);
 					tile.notifyBlockUpdate(true);
 
@@ -158,7 +158,7 @@ public class BlockBearTrap extends TileBlockBase {
 		if (!worldIn.isRemote) {
 			TileEntityBearTrap tile = BlockUtil.getTileEntity(worldIn, pos, TileEntityBearTrap.class);
 			if (tile != null) {
-				SoundEffect.fantasyoverhaul_RANDOM_CLICK.playAtPlayer(worldIn, playerIn);
+				SoundEffect.RANDOM_CLICK.playAtPlayer(worldIn, playerIn);
 				tile.setSprung(!tile.isSprung());
 				if (!tile.isSprung()) {
 					tile.setSetTime(worldIn.getTotalWorldTime());

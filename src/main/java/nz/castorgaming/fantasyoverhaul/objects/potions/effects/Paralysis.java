@@ -17,10 +17,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import nz.castorgaming.fantasyoverhaul.ai.EntityAIMoveTowardsVampire;
 import nz.castorgaming.fantasyoverhaul.init.Potions;
 import nz.castorgaming.fantasyoverhaul.objects.potions.PotionBase;
 import nz.castorgaming.fantasyoverhaul.util.classes.TimeUtilities;
+import nz.castorgaming.fantasyoverhaul.util.classes.ai.EntityAIMoveTowardsVampire;
 import nz.castorgaming.fantasyoverhaul.util.interfaces.potions.IHandleLivingHurt;
 import nz.castorgaming.fantasyoverhaul.util.interfaces.potions.IHandleLivingUpdate;
 
@@ -100,7 +100,7 @@ public class Paralysis extends PotionBase implements IHandleLivingUpdate, IHandl
 		}
 		else if (isVillager(entity)) {
 			EntityCreature creature = (EntityCreature) entity;
-			Iterator itr = creature.tasks.taskEntries.iterator();
+			Iterator<EntityAITaskEntry> itr = creature.tasks.taskEntries.iterator();
 			EntityAIBase task = null;
 			while (itr.hasNext()) {
 				EntityAITasks.EntityAITaskEntry entityaitaskentry = (EntityAITaskEntry) itr.next();
