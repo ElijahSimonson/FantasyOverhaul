@@ -15,7 +15,8 @@ public class StatBoost {
 		this(0.0f, 0.0, 0.0, 0, damage, 0.0f, 0, 0.0f);
 	}
 
-	public StatBoost(final float speed, final double jump, final double leap, final int health, final float damage, final float resistance, final int fall, final float damageCap) {
+	public StatBoost(final float speed, final double jump, final double leap, final int health, final float damage,
+			final float resistance, final int fall, final float damageCap) {
 		this.jump = jump;
 		this.leap = leap;
 		this.health = health;

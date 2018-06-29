@@ -37,7 +37,8 @@ public abstract class SymbolEffect extends IForgeRegistryEntry.Impl<SymbolEffect
 		this(name, cost, curse, fallsToEarth, knowledgeKey, cooldown, true);
 	}
 
-	public SymbolEffect(String name, int cost, boolean curse, boolean fallsToEarth, String knowledgeKey, int cooldown, boolean isVisible) {
+	public SymbolEffect(String name, int cost, boolean curse, boolean fallsToEarth, String knowledgeKey, int cooldown,
+			boolean isVisible) {
 		setRegistryName(name);
 		this.curse = curse;
 		this.fallsToEarth = fallsToEarth;
@@ -76,7 +77,8 @@ public abstract class SymbolEffect extends IForgeRegistryEntry.Impl<SymbolEffect
 	}
 
 	public boolean hasValidInfusion(EntityPlayer player, String infusionID) {
-		return player.capabilities.isCreativeMode || (infusionID != null && (!isUnforgivable() || infusionID.equals(InfusionInit.INFERNAL.getInfusionName())));
+		return player.capabilities.isCreativeMode || (infusionID != null
+				&& (!isUnforgivable() || infusionID.equals(InfusionInit.INFERNAL.getInfusionName())));
 	}
 
 	public boolean isVisible(EntityPlayer player) {

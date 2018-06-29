@@ -8,6 +8,6 @@ public class PlayerEffectInit {
 
 	public static final ImpFireTouch IMP_FIRE_TOUCH = new ImpFireTouch();
 	public static final ImpEvaporation IMP_EVAPORATION = new ImpEvaporation();
-	public static final ImpMeltingTouch IMP_METLING_TOUCH = new ImpMeltingTouch();
+	public static final ImpMeltingTouch IMP_MELTING_TOUCH = new ImpMeltingTouch();
 
 }

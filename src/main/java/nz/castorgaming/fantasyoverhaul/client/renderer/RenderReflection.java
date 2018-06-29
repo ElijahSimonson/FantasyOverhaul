@@ -26,8 +26,7 @@ public class RenderReflection extends RenderBiped {
 	public void doRender(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		if (((EntityReflection) entity).getModel() == 0) {
 			super.doRender(entity, x, y, z, entityYaw, partialTicks);
-		}
-		else {
+		} else {
 			wolfman.setRenderManager(renderManager);
 			wolfman.doRender(entity, x, y, z, entityYaw, partialTicks);
 		}
@@ -37,8 +36,7 @@ public class RenderReflection extends RenderBiped {
 	public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {
 		if (((EntityReflection) entityIn).getModel() == 0) {
 			super.doRenderShadowAndFire(entityIn, x, y, z, yaw, partialTicks);
-		}
-		else {
+		} else {
 			wolfman.setRenderManager(renderManager);
 			wolfman.doRenderShadowAndFire(entityIn, x, y, z, yaw, partialTicks);
 		}

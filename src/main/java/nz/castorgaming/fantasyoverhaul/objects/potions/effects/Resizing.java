@@ -32,7 +32,8 @@ import nz.castorgaming.fantasyoverhaul.util.interfaces.potions.IHandlePreRenderL
 import nz.castorgaming.fantasyoverhaul.util.interfaces.potions.IHandleRenderLiving;
 import nz.castorgaming.fantasyoverhaul.util.packets.PacketSyncEntitySize;
 
-public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHandleRenderLiving, IHandleLivingUpdate, IHandleLivingHurt, IHandleLivingJump, IHandleLivingAttack {
+public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHandleRenderLiving, IHandleLivingUpdate,
+		IHandleLivingHurt, IHandleLivingJump, IHandleLivingAttack {
 
 	private static Method methodEntitySetSize;
 	private static Method methodZombieSetSize;
@@ -58,18 +59,18 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 
 	public static float getScaleFactor(final int amplifier) {
 		switch (amplifier) {
-			default: {
-				return 0.25f;
-			}
-			case 1: {
-				return 0.4f;
-			}
-			case 2: {
-				return 2.0f;
-			}
-			case 3: {
-				return 3.0f;
-			}
+		default: {
+			return 0.25f;
+		}
+		case 1: {
+			return 0.4f;
+		}
+		case 2: {
+			return 2.0f;
+		}
+		case 3: {
+			return 3.0f;
+		}
 		}
 	}
 
@@ -78,21 +79,21 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 			return 3;
 		}
 		switch (amplifier.getAmplifier()) {
-			default: {
-				return 3;
-			}
-			case 0: {
-				return 1;
-			}
-			case 1: {
-				return 2;
-			}
-			case 2: {
-				return 4;
-			}
-			case 3: {
-				return 5;
-			}
+		default: {
+			return 3;
+		}
+		case 0: {
+			return 1;
+		}
+		case 1: {
+			return 2;
+		}
+		case 2: {
+			return 4;
+		}
+		case 3: {
+			return 5;
+		}
 		}
 	}
 
@@ -100,31 +101,32 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 		try {
 			if (entity instanceof EntityZombie) {
 				if (Resizing.methodZombieSetSize == null) {
-					Resizing.methodZombieSetSize = ReflectionHelper.findMethod((Class) EntityZombie.class, (Object) entity, new String[] { "setSize", "setSize", "a" },
+					Resizing.methodZombieSetSize = ReflectionHelper.findMethod((Class) EntityZombie.class,
+							(Object) entity, new String[] { "setSize", "setSize", "a" },
 							new Class[] { Float.TYPE, Float.TYPE });
 				}
 				if (Resizing.methodZombieSetSize2 == null) {
-					Resizing.methodZombieSetSize2 = ReflectionHelper.findMethod((Class) EntityZombie.class, (Object) entity, new String[] { "func_146069_a", "a" }, new Class[] { Float.TYPE });
+					Resizing.methodZombieSetSize2 = ReflectionHelper.findMethod((Class) EntityZombie.class,
+							(Object) entity, new String[] { "func_146069_a", "a" }, new Class[] { Float.TYPE });
 				}
 				Resizing.methodZombieSetSize.invoke(entity, width, height);
 				Resizing.methodZombieSetSize2.invoke(entity, 1.0f);
-			}
-			else if (entity instanceof EntityAgeable) {
+			} else if (entity instanceof EntityAgeable) {
 				if (Resizing.methodAgeableSetSize == null) {
-					Resizing.methodAgeableSetSize = ReflectionHelper.findMethod((Class) EntityAgeable.class, (Object) entity, new String[] { "setSize", "setSize", "a" },
+					Resizing.methodAgeableSetSize = ReflectionHelper.findMethod((Class) EntityAgeable.class,
+							(Object) entity, new String[] { "setSize", "setSize", "a" },
 							new Class[] { Float.TYPE, Float.TYPE });
 				}
 				if (Resizing.methodAgeableSetSize2 == null) {
-					Resizing.methodAgeableSetSize2 = ReflectionHelper.findMethod((Class) EntityAgeable.class, (Object) entity, new String[] { "setScale", "setScale", "a" },
-							new Class[] { Float.TYPE });
+					Resizing.methodAgeableSetSize2 = ReflectionHelper.findMethod((Class) EntityAgeable.class,
+							(Object) entity, new String[] { "setScale", "setScale", "a" }, new Class[] { Float.TYPE });
 				}
 				Resizing.methodAgeableSetSize.invoke(entity, width, height);
 				Resizing.methodAgeableSetSize2.invoke(entity, 1.0f);
-			}
-			else {
+			} else {
 				if (Resizing.methodEntitySetSize == null) {
-					Resizing.methodEntitySetSize = ReflectionHelper.findMethod((Class) Entity.class, (Object) entity, new String[] { "setSize", "setSize", "a" },
-							new Class[] { Float.TYPE, Float.TYPE });
+					Resizing.methodEntitySetSize = ReflectionHelper.findMethod((Class) Entity.class, (Object) entity,
+							new String[] { "setSize", "setSize", "a" }, new Class[] { Float.TYPE, Float.TYPE });
 				}
 				Resizing.methodEntitySetSize.invoke(entity, width, height);
 			}
@@ -144,17 +146,22 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 	}
 
 	@Override
-	public void onLivingAttack(final World world, final EntityLivingBase entity, final LivingAttackEvent event, final int amplifier) {
-		if (Reference.modHooks.isAM2Present && !world.isRemote && event.getSource() == DamageSource.inWall && amplifier <= 1 && entity instanceof EntityPlayer
+	public void onLivingAttack(final World world, final EntityLivingBase entity, final LivingAttackEvent event,
+			final int amplifier) {
+		if (Reference.modHooks.isAM2Present && !world.isRemote && event.getSource() == DamageSource.inWall
+				&& amplifier <= 1 && entity instanceof EntityPlayer
 				&& !event.getEntity().worldObj
-						.getBlockState(new BlockPos(MathHelper.floor_double(event.getEntity().posX), MathHelper.floor_double(event.getEntity().posY), MathHelper.floor_double(event.getEntity().posZ)))
+						.getBlockState(new BlockPos(MathHelper.floor_double(event.getEntity().posX),
+								MathHelper.floor_double(event.getEntity().posY),
+								MathHelper.floor_double(event.getEntity().posZ)))
 						.isNormalCube()) {
 			event.setCanceled(true);
 		}
 	}
 
 	@Override
-	public void onLivingHurt(final World world, final EntityLivingBase entity, final LivingHurtEvent event, final int amplifier) {
+	public void onLivingHurt(final World world, final EntityLivingBase entity, final LivingHurtEvent event,
+			final int amplifier) {
 		if (!world.isRemote) {
 			final PotionEffect effectDefender = entity.getActivePotionEffect(this);
 			final boolean isDefenderShrunken = effectDefender != null;
@@ -168,33 +175,35 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 						event.setAmount(event.getAmount() * Math.max(Math.min(scale, 3.0f), 0.5f));
 					}
 				}
-			}
-			else if (source == DamageSource.fall && isDefenderShrunken && getScaleFactor(effectDefender.getAmplifier()) > event.getAmount()) {
+			} else if (source == DamageSource.fall && isDefenderShrunken
+					&& getScaleFactor(effectDefender.getAmplifier()) > event.getAmount()) {
 				event.setCanceled(true);
 			}
 		}
 	}
 
 	@Override
-	public void onLivingJump(final World world, final EntityLivingBase entity, final LivingEvent.LivingJumpEvent event, final int amplifier) {
+	public void onLivingJump(final World world, final EntityLivingBase entity, final LivingEvent.LivingJumpEvent event,
+			final int amplifier) {
 		final float scale = getScaleFactor(amplifier);
 		if (scale > 1.0f) {
 			final EntityLivingBase entityLiving = event.getEntityLiving();
 			entityLiving.motionY *= scale * 0.5 + 0.5;
-		}
-		else {
+		} else {
 			final EntityLivingBase entityLiving2 = event.getEntityLiving();
 			entityLiving2.motionY *= Math.max(scale, 0.5) * 1.5;
 		}
 	}
 
 	@Override
-	public void onLivingRender(final World world, final EntityLivingBase entity, final RenderLivingEvent.Post event, final int amplifier) {
+	public void onLivingRender(final World world, final EntityLivingBase entity, final RenderLivingEvent.Post event,
+			final int amplifier) {
 		GL11.glPopMatrix();
 	}
 
 	@Override
-	public void onLivingRender(final World world, final EntityLivingBase entity, final RenderLivingEvent.Pre event, final int amplifier) {
+	public void onLivingRender(final World world, final EntityLivingBase entity, final RenderLivingEvent.Pre event,
+			final int amplifier) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(event.getX(), event.getY(), event.getZ());
 		final float scale = getModifiedScaleFactor(entity, amplifier);
@@ -203,7 +212,8 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 	}
 
 	@Override
-	public void onLivingUpdate(final World world, final EntityLivingBase entity, final LivingEvent.LivingUpdateEvent event, final int amplifier, final int duration) {
+	public void onLivingUpdate(final World world, final EntityLivingBase entity,
+			final LivingEvent.LivingUpdateEvent event, final int amplifier, final int duration) {
 		final float reductionFactor = 0.03f * (event.getEntity().worldObj.isRemote ? 1 : 20);
 		if (world.isRemote || entity.ticksExisted % 20 == 0) {
 			final EntitySizeInfo sizeInfo = new EntitySizeInfo(entity);
@@ -220,17 +230,19 @@ public class Resizing extends PotionBase implements IHandlePreRenderLiving, IHan
 				}
 				entity.stepHeight = scale < 1.0f ? 0.0f : scale - 1.0f;
 				if (scale < 1.0f) {
-					setEntitySize(entity, Math.max(entity.width - reductionFactor, requiredWidth), Math.max(currentHeight - reductionFactor, requiredHeight));
-				}
-				else {
-					setEntitySize(entity, Math.min(entity.width + reductionFactor, requiredWidth), Math.min(currentHeight + reductionFactor, requiredHeight));
+					setEntitySize(entity, Math.max(entity.width - reductionFactor, requiredWidth),
+							Math.max(currentHeight - reductionFactor, requiredHeight));
+				} else {
+					setEntitySize(entity, Math.min(entity.width + reductionFactor, requiredWidth),
+							Math.min(currentHeight + reductionFactor, requiredHeight));
 				}
 			}
 		}
 	}
 
 	@Override
-	public void removeAttributesModifiersFromEntity(final EntityLivingBase entity, final AbstractAttributeMap attributes, final int amplifier) {
+	public void removeAttributesModifiersFromEntity(final EntityLivingBase entity,
+			final AbstractAttributeMap attributes, final int amplifier) {
 		final EntitySizeInfo sizeInfo = new EntitySizeInfo(entity);
 		setEntitySize(entity, sizeInfo.defaultWidth, sizeInfo.defaultHeight);
 		if (entity instanceof EntityPlayer) {

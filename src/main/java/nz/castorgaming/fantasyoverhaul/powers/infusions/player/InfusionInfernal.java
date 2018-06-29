@@ -56,18 +56,17 @@ public class InfusionInfernal extends Infusion {
 						if (consumeCharges(world, player, 1, true)) {
 							trySacrificeCreature(world, player, (EntityLiving) livingEnt);
 						}
-					}
-					else if (consumeCharges(world, player, 5, true)) {
+					} else if (consumeCharges(world, player, 5, true)) {
 						Enslaved.setEnslaverForMob((EntityLiving) livingEnt, player);
 						EntityUtil.dropAttackTarget((EntityLiving) otherEntity);
 						ParticleEffect.SPELL.send(SoundEffect.MOB_ZOMBIE_INFECT, livingEnt, 1.0, 2.0, 16);
 					}
-				}
-				else {
+				} else {
 					int r = 50;
 					if (consumeCharges(world, player, 1, true)) {
 						int minionCount = 0;
-						AxisAlignedBB bounds = new AxisAlignedBB(player.posX - 50, player.posY - 15.0, player.posZ - 50, player.posX + 50, player.posY + 15.0, player.posZ + 50);
+						AxisAlignedBB bounds = new AxisAlignedBB(player.posX - 50, player.posY - 15.0, player.posZ - 50,
+								player.posX + 50, player.posY + 15.0, player.posZ + 50);
 						for (Object obj : world.getEntitiesWithinAABB(EntityLiving.class, bounds)) {
 							EntityLiving nearbyEnt = (EntityLiving) obj;
 							if (Enslaved.isMobEnslavedBy(nearbyEnt, player)) {
@@ -87,7 +86,8 @@ public class InfusionInfernal extends Infusion {
 									} catch (IllegalAccessException e) {
 										Log.warn(e, "Excpetion Occurred setting ghast target.");
 									} catch (Exception e2) {
-										Log.debug(String.format("Exception occured setting ghast target. %s", e2.toString()));
+										Log.debug(String.format("Exception occured setting ghast target. %s",
+												e2.toString()));
 									}
 								}
 								if (!(nearbyEnt instanceof EntityCreature)) {
@@ -96,10 +96,12 @@ public class InfusionInfernal extends Infusion {
 								EntityCreature nearbyCreature = (EntityCreature) obj;
 								nearbyCreature.setAttackTarget(livingEnt);
 								nearbyCreature.setRevengeTarget(livingEnt);
-								if (!(nearbyCreature instanceof EntityCreature) && !(nearbyCreature instanceof EntityCreeper)) {
+								if (!(nearbyCreature instanceof EntityCreature)
+										&& !(nearbyCreature instanceof EntityCreeper)) {
 									continue;
 								}
-								nearbyCreature.tasks.addTask(2, new EntityAIAttackOnCollide2(nearbyCreature, livingEnt.getClass(), 1.0, false));
+								nearbyCreature.tasks.addTask(2,
+										new EntityAIAttackOnCollide2(nearbyCreature, livingEnt.getClass(), 1.0, false));
 							}
 						}
 						if (minionCount > 0) {
@@ -117,16 +119,16 @@ public class InfusionInfernal extends Infusion {
 			String currentCreaturePowerID = CreaturePower.getCreaturePowerID(player);
 			if (currentCreaturePowerID.equals(power.getCreaturePowerID())) {
 				int currentCharges = CreaturePower.getCreaturePowerCharges(player);
-				CreaturePower.setCreaturePowerCharges(player, MathHelper.floor_double(Math.min(currentCharges + power.getChargesPerSacrifice(), MAX_CHARGES)));
+				CreaturePower.setCreaturePowerCharges(player, MathHelper
+						.floor_double(Math.min(currentCharges + power.getChargesPerSacrifice(), MAX_CHARGES)));
 
-			}
-			else {
+			} else {
 				CreaturePower.setCreaturePowerID(player, power.getCreaturePowerID(), power.getChargesPerSacrifice());
 			}
 			Infusion.syncPlayer(world, player);
-			livingEnt.attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, null), livingEnt.getHealth() + 1.0f);
-		}
-		else {
+			livingEnt.attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, null),
+					livingEnt.getHealth() + 1.0f);
+		} else {
 			playFailSound(world, player);
 		}
 	}
@@ -156,42 +158,44 @@ public class InfusionInfernal extends Infusion {
 			if (player.isSneaking()) {
 				if (rtr != null) {
 					switch (rtr.typeOfHit) {
-						case ENTITY: {
-							playFailSound(world, player);
-						}
-						case BLOCK: {
-							if (EnumFacing.UP.equals(rtr.sideHit)) {
-								int minionCount = 0;
-								int r = 50;
-								AxisAlignedBB bound = new AxisAlignedBB(player.posX - 50.0, player.posY - 15.0, player.posZ - 50.0, player.posX + 50.0, player.posY + 15.0, player.posZ + 50.0);
-								for (Object obj : world.getEntitiesWithinAABB(EntityLiving.class, bound)) {
-									EntityLiving living = (EntityLiving) obj;
-									if (Enslaved.isMobEnslavedBy(living, player)) {
-										++minionCount;
-										living.setAttackTarget(null);
-										living.setRevengeTarget(null);
-										if ((!(living instanceof EntitySpider)
-												&& living.getNavigator().tryMoveToXYZ(rtr.getBlockPos().getX(), rtr.getBlockPos().getY() + 1, rtr.getBlockPos().getZ(), 1.0))) {
-											continue;
-										}
+					case ENTITY: {
+						playFailSound(world, player);
+					}
+					case BLOCK: {
+						if (EnumFacing.UP.equals(rtr.sideHit)) {
+							int minionCount = 0;
+							int r = 50;
+							AxisAlignedBB bound = new AxisAlignedBB(player.posX - 50.0, player.posY - 15.0,
+									player.posZ - 50.0, player.posX + 50.0, player.posY + 15.0, player.posZ + 50.0);
+							for (Object obj : world.getEntitiesWithinAABB(EntityLiving.class, bound)) {
+								EntityLiving living = (EntityLiving) obj;
+								if (Enslaved.isMobEnslavedBy(living, player)) {
+									++minionCount;
+									living.setAttackTarget(null);
+									living.setRevengeTarget(null);
+									if ((!(living instanceof EntitySpider)
+											&& living.getNavigator().tryMoveToXYZ(rtr.getBlockPos().getX(),
+													rtr.getBlockPos().getY() + 1, rtr.getBlockPos().getZ(), 1.0))) {
+										continue;
 									}
 								}
-								if (minionCount > 0) {
-									ParticleEffect.INSTANT_SPELL.send(SoundEffect.RANDOM_POP, world, rtr.getBlockPos().getX(), rtr.getBlockPos().getY() + 1, rtr.getBlockPos().getZ(), 0.5, 2.0, 16);
-								}
-								break;
+							}
+							if (minionCount > 0) {
+								ParticleEffect.INSTANT_SPELL.send(SoundEffect.RANDOM_POP, world,
+										rtr.getBlockPos().getX(), rtr.getBlockPos().getY() + 1,
+										rtr.getBlockPos().getZ(), 0.5, 2.0, 16);
 							}
 							break;
 						}
-						default:
-							break;
+						break;
 					}
-				}
-				else {
+					default:
+						break;
+					}
+				} else {
 					playFailSound(world, player);
 				}
-			}
-			else {
+			} else {
 				String powerID = CreaturePower.getCreaturePowerID(player);
 				if (powerID != null) {
 					CreaturePower power = CreaturePower.get(powerID);
@@ -203,12 +207,10 @@ public class InfusionInfernal extends Infusion {
 							CreaturePower.setCreaturePowerCharges(player, currentCharges - chargesRequired);
 							Infusion.syncPlayer(world, player);
 						}
-					}
-					else {
+					} else {
 						playFailSound(world, player);
 					}
-				}
-				else {
+				} else {
 					playFailSound(world, player);
 				}
 			}

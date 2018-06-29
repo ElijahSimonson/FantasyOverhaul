@@ -9,9 +9,10 @@ import net.minecraftforge.common.capabilities.Capability.IStorage;
 public class PlayerWerewolfStorage implements IStorage<IPlayerWerewolf> {
 
 	@Override
-	public void readNBT(Capability<IPlayerWerewolf> capability, IPlayerWerewolf instance, EnumFacing side, NBTBase nbt) {
+	public void readNBT(Capability<IPlayerWerewolf> capability, IPlayerWerewolf instance, EnumFacing side,
+			NBTBase nbt) {
 		if (nbt instanceof NBTTagCompound) {
-			instance.deserializeNBT(nbt);
+			instance.deserializeNBT((NBTTagCompound) nbt);
 		}
 
 	}

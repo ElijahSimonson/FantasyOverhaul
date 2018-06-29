@@ -55,13 +55,15 @@ import nz.castorgaming.fantasyoverhaul.util.interfaces.IHandleDT;
 
 public class EntityVampire extends EntityCreature implements IHandleDT {
 
-	public static final DataParameter<Byte> GuardType = EntityDataManager.<Byte>createKey(EntityVampire.class, DataSerializers.BYTE);
+	public static final DataParameter<Byte> GuardType = EntityDataManager.<Byte>createKey(EntityVampire.class,
+			DataSerializers.BYTE);
 	private Village villageObj;
 	private BlockPos coffinBlockPos = new BlockPos(0, 0, 0);
 	private ChunkPos coffinChunkPos = new ChunkPos(coffinBlockPos);
 	private int attackTime;
 	float damageDone = 0.0f;
 
+	@SuppressWarnings("unchecked")
 	public EntityVampire(World world) {
 		super(world);
 		((PathNavigateGround) getNavigator()).setBreakDoors(true);
@@ -76,7 +78,8 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		addTask(this, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0f));
 		addTask(this, new EntityAILookIdle(this));
 		targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, false, true, (Predicate) this));
+		targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreature>(this, EntityCreature.class, 0, false,
+				true, (Predicate<? super EntityCreature>) this));
 		experienceValue = 20;
 	}
 
@@ -84,12 +87,17 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ItemInit.CLOTH_VAMPIRE_BOOTS));
 		boolean male = worldObj.rand.nextBoolean();
 		if (male) {
-			setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_LEGGINGS : ItemInit.CLOTH_VAMPIRE_LEGGINGS));
-			setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_MALE_CHESTPLATE : ItemInit.CLOTH_VAMPIRE_MALE_CHESTPLATE));
-		}
-		else {
-			setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(worldObj.rand.nextInt(4) != 0 ? ItemInit.CHAIN_VAMPIRE_LEGGINGS : ItemInit.CLOTH_VAMPIRE_LEGGINGS));
-			setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_FEMALE_CHESTPLATE : ItemInit.CLOTH_VAMPIRE_FEMALE_CHESTPLATE));
+			setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(
+					worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_LEGGINGS : ItemInit.CLOTH_VAMPIRE_LEGGINGS));
+			setItemStackToSlot(EntityEquipmentSlot.CHEST,
+					new ItemStack(worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_MALE_CHESTPLATE
+							: ItemInit.CLOTH_VAMPIRE_MALE_CHESTPLATE));
+		} else {
+			setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(
+					worldObj.rand.nextInt(4) != 0 ? ItemInit.CHAIN_VAMPIRE_LEGGINGS : ItemInit.CLOTH_VAMPIRE_LEGGINGS));
+			setItemStackToSlot(EntityEquipmentSlot.CHEST,
+					new ItemStack(worldObj.rand.nextInt(3) == 0 ? ItemInit.CHAIN_VAMPIRE_FEMALE_CHESTPLATE
+							: ItemInit.CLOTH_VAMPIRE_FEMALE_CHESTPLATE));
 		}
 	}
 
@@ -99,7 +107,8 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 	}
 
 	protected void attackEntity(Entity entity, float f) {
-		if (attackTime <= 0 && f < 2.0f && entity.getEntityBoundingBox().maxY > getEntityBoundingBox().minY && entity.getEntityBoundingBox().minY < getEntityBoundingBox().maxY) {
+		if (attackTime <= 0 && f < 2.0f && entity.getEntityBoundingBox().maxY > getEntityBoundingBox().minY
+				&& entity.getEntityBoundingBox().minY < getEntityBoundingBox().maxY) {
 			attackTime = 20;
 			attackEntityAsMob(entity);
 		}
@@ -112,7 +121,8 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		int i = 0;
 
 		if (entity instanceof EntityLivingBase) {
-			f += EnchantmentHelper.getModifierForCreature(getHeldItem(getActiveHand()), ((EntityLivingBase) entity).getCreatureAttribute());
+			f += EnchantmentHelper.getModifierForCreature(getHeldItem(getActiveHand()),
+					((EntityLivingBase) entity).getCreatureAttribute());
 			i += EnchantmentHelper.getKnockbackModifier(this);
 		}
 		if (entity instanceof EntityVillager) {
@@ -122,19 +132,20 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 				int taken = villagerEx.getCapability(CapabilityInit.EXTENDED_VILLAGER, null).takeBlood(30, this);
 				if (taken > 0) {
 					heal(4.0f);
-					ParticleEffect.REDDUST.send(SoundEffect.fantasyoverhaul_RANDOM_DRINK, worldObj, entity.posX, entity.posY + entity.height * 0.8, entity.posZ, 0.5, 0.2, 16);
+					ParticleEffect.REDDUST.send(SoundEffect.RANDOM_DRINK, worldObj, entity.posX,
+							entity.posY + entity.height * 0.8, entity.posZ, 0.5, 0.2, 16);
 				}
 			}
 			flag = true;
-		}
-		else {
+		} else {
 			boolean needsBlood = damageDone < 20.0f;
 			if (needsBlood) {
 				flag = entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
 				if (flag) {
 					int j;
 					if (i > 0) {
-						entity.addVelocity(-MathHelper.sin((float) (rotationYaw * Math.PI / 180.0f)) * i * 0.5f, 0.1, MathHelper.cos((float) (rotationYaw * Math.PI / 180.0f)) * i * 0.5f);
+						entity.addVelocity(-MathHelper.sin((float) (rotationYaw * Math.PI / 180.0f)) * i * 0.5f, 0.1,
+								MathHelper.cos((float) (rotationYaw * Math.PI / 180.0f)) * i * 0.5f);
 						motionX *= 0.6;
 						motionZ *= 0.6;
 					}
@@ -233,7 +244,8 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 	}
 
 	public boolean isEntityApplicable(Entity entity) {
-		return entity instanceof EntityVillager && villageObj != null || entity instanceof EntityPlayer && !IPlayerVampire.get((EntityPlayer) entity).isVampire();
+		return entity instanceof EntityVillager && villageObj != null
+				|| entity instanceof EntityPlayer && !IPlayerVampire.get((EntityPlayer) entity).isVampire();
 	}
 
 	@Override
@@ -292,7 +304,8 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 		for (int x = coffinBlockPos.getX() - 6; x <= coffinBlockPos.getX() + 6; x++) {
 			for (int y = coffinBlockPos.getY() - 6; y <= coffinBlockPos.getY() + 6; y++) {
 				for (int z = coffinBlockPos.getZ() - 6; z <= coffinBlockPos.getZ() + 6; z++) {
-					BlockBloodCrucible.TileEntityBloodCrucible crucible = BlockUtil.getTileEntity((IBlockAccess) worldObj, x, y, z, BlockBloodCrucible.TileEntityBloodCrucible.class);
+					TileEntityBloodCrucible crucible = BlockUtil.getTileEntity((IBlockAccess) worldObj, x, y, z,
+							TileEntityBloodCrucible.class);
 					if (crucible != null) {
 						crucible.increaseBloodLevel();
 					}
@@ -316,36 +329,37 @@ public class EntityVampire extends EntityCreature implements IHandleDT {
 					villageObj = null;
 					damageDone = 0.0f;
 					if (coffinChunkPos.getDistanceSq(this) > 16.0) {
-						ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
-						EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-						ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+						ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
+						EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(),
+								coffinBlockPos.getZ(), 8);
+						ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 						setHomePosAndDistance(coffinBlockPos, 4);
 					}
 				}
 				if (ticksExisted % 20 == 2 && CreatureUtilities.isInSunlight(this)) {
 					setFire(2);
 				}
-			}
-			else if (damageDone >= 20.0f) {
+			} else if (damageDone >= 20.0f) {
 				if (villageObj != null) {
 					setAttackTarget(null);
 					setRevengeTarget(null);
 					villageObj = null;
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
-					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
+					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(),
+							coffinBlockPos.getZ(), 8);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					setHomePosAndDistance(coffinBlockPos, 4);
 					tryFillBloodCrucible();
 				}
-			}
-			else if (villageObj == null && ticksExisted % 500 == 2) {
+			} else if (villageObj == null && ticksExisted % 500 == 2) {
 
 				villageObj = worldObj.villageCollectionObj.getNearestVillage(new BlockPos(posX, posY, posX), 128);
 				if (villageObj != null) {
 					BlockPos townPos = villageObj.getCenter();
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
-					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(), coffinBlockPos.getZ(), 8);
-					ParticleEffect.SMOKE.send(SoundEffect.fantasyoverhaul_RANDOM_POOF, this, 0.8, 1.5, 16);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
+					EntityUtil.moveBlockToPositionAndUpdate(this, coffinBlockPos.getX(), coffinBlockPos.getY(),
+							coffinBlockPos.getZ(), 8);
+					ParticleEffect.SMOKE.send(SoundEffect.RANDOM_POOF, this, 0.8, 1.5, 16);
 					setHomePosAndDistance(townPos, villageObj.getVillageRadius());
 				}
 

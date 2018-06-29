@@ -53,6 +53,8 @@ import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.IPlayerVampire
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.armor.specialArmors.HuntersClothes;
 import nz.castorgaming.fantasyoverhaul.objects.entities.familiars.Familiar;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityNightmare;
+import nz.castorgaming.fantasyoverhaul.objects.worlds.WorldProviderDreamWorld;
 import nz.castorgaming.fantasyoverhaul.powers.brews.effects.InfusionBrewEffect;
 import nz.castorgaming.fantasyoverhaul.powers.infusions.Infusion;
 import nz.castorgaming.fantasyoverhaul.powers.playereffect.PlayerEffect;
@@ -102,8 +104,7 @@ public class InfusionEventHooks {
 				world.setBlockToAir(pos);
 				return new ItemStack(ItemInit.bucket_flowingspirit);
 			}
-		}
-		else if (block == Fluids.HOLLOW_TEARS) {
+		} else if (block == Fluids.HOLLOW_TEARS) {
 			if (block.getMetaFromState(blockstate) == 0) {
 				world.setBlockToAir(pos);
 				return new ItemStack(ItemInit.bucket_hollowtears);
@@ -142,7 +143,8 @@ public class InfusionEventHooks {
 			final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			Item armorSlot2 = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem();
 
-			if (event.getSource().isFireDamage() && event.isCancelable() && !event.isCanceled() && armorSlot2 != null && armorSlot2 == ItemInit.DEATH_ROBE) {
+			if (event.getSource().isFireDamage() && event.isCancelable() && !event.isCanceled() && armorSlot2 != null
+					&& armorSlot2 == ItemInit.DEATH_ROBE) {
 				if (!player.isPotionActive(MobEffects.FIRE_RESISTANCE)) {
 					player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 100, 0));
 				}
@@ -161,24 +163,22 @@ public class InfusionEventHooks {
 			if (event.getTarget() instanceof EntityPlayer) {
 				final EntityPlayer player = (EntityPlayer) event.getTarget();
 				if (player.isInvisible()) {
-					if (aggressorEntity.worldObj.getNearestAttackablePlayer(new BlockPos(aggressorEntity.posX, aggressorEntity.posY, aggressorEntity.posZ), 16.0, 16.0) != event.getTarget()) {
+					if (aggressorEntity.worldObj.getNearestAttackablePlayer(
+							new BlockPos(aggressorEntity.posX, aggressorEntity.posY, aggressorEntity.posZ), 16.0,
+							16.0) != event.getTarget()) {
 						aggressorEntity.setAttackTarget((EntityLivingBase) null);
 					}
-				}
-				else if (aggressorEntity.isPotionActive(MobEffects.BLINDNESS)) {
+				} else if (aggressorEntity.isPotionActive(MobEffects.BLINDNESS)) {
 					aggressorEntity.setAttackTarget((EntityLivingBase) null);
-				}
-				else if (aggressorEntity instanceof EntityCreeper) {
+				} else if (aggressorEntity instanceof EntityCreeper) {
 					final ItemStack stack = player.inventory.armorItemInSlot(2);
 					if (stack != null && stack.getItem() == ItemInit.WITCH_ROBES) {
 						aggressorEntity.setAttackTarget((EntityLivingBase) null);
 					}
-				}
-				else if (aggressorEntity.isEntityUndead()) {
+				} else if (aggressorEntity.isEntityUndead()) {
 					if (aggressorEntity instanceof EntityZombie && IPlayerVampire.get(player).getVampireLevel() >= 10) {
 						aggressorEntity.setAttackTarget((EntityLivingBase) null);
-					}
-					else {
+					} else {
 						final ItemStack stack = player.inventory.armorItemInSlot(2);
 						if (stack != null && stack.getItem() == ItemInit.NECROMANCERS_ROBES) {
 							aggressorEntity.setAttackTarget((EntityLivingBase) null);
@@ -188,8 +188,8 @@ public class InfusionEventHooks {
 			}
 			if (event.getTarget() instanceof EntityVillageGuard && event.getEntityLiving() instanceof EntityGolem) {
 				aggressorEntity.setAttackTarget((EntityLivingBase) null);
-			}
-			else if (Config.instance().isZombeIgnoreVillagerActive() && event.getTarget() instanceof EntityVillager && event.getEntityLiving() instanceof EntityZombie) {
+			} else if (Config.instance().isZombeIgnoreVillagerActive() && event.getTarget() instanceof EntityVillager
+					&& event.getEntityLiving() instanceof EntityZombie) {
 				aggressorEntity.setAttackTarget((EntityLivingBase) null);
 			}
 		}
@@ -197,7 +197,8 @@ public class InfusionEventHooks {
 
 	@SubscribeEvent
 	public void onLivingDamage(LivingHurtEvent event) {
-		if (event.getEntityLiving() != null && event.getEntityLiving().worldObj != null && !event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityPlayer
+		if (event.getEntityLiving() != null && event.getEntityLiving().worldObj != null
+				&& !event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityPlayer
 				&& !event.isCanceled()) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			PredictionManager.instance().checkIfFulfilled(player, event);
@@ -208,19 +209,22 @@ public class InfusionEventHooks {
 
 	@SubscribeEvent
 	public void onServerChat(final ServerChatEvent event) {
-		if (event.getPlayer() != null && !event.isCanceled() && !event.getPlayer().worldObj.isRemote && event.getMessage() != null) {
+		if (event.getPlayer() != null && !event.isCanceled() && !event.getPlayer().worldObj.isRemote
+				&& event.getMessage() != null) {
 			ItemInit.ruby_slippers.trySayTheresNoPlaceLikeHome(event.getPlayer(), event.getMessage());
 		}
 	}
 
 	@SubscribeEvent
 	public void onHarvestDrops(final BlockEvent.HarvestDropsEvent event) {
-		if (event.getHarvester() != null && event.getHarvester().worldObj != null && !event.getHarvester().worldObj.isRemote) {
+		if (event.getHarvester() != null && event.getHarvester().worldObj != null
+				&& !event.getHarvester().worldObj.isRemote) {
 			PredictionManager.instance().checkIfFulfilled(event.getHarvester(), event);
 			PlayerEffect.onHarvestDrops(event.getHarvester(), event);
 			EntityAIDigBlocks.onHarvestDrops(event.getHarvester(), event);
 		}
-		if (!event.getWorld().isRemote && event.getWorld().provider.getDimension() == Config.instance().dimensionDreamID && !event.isCanceled()) {
+		if (!event.getWorld().isRemote && event.getWorld().provider.getDimension() == Config.instance().dimensionDreamID
+				&& !event.isCanceled()) {
 			final Iterator<ItemStack> iterator = event.getDrops().iterator();
 			while (iterator.hasNext()) {
 				final ItemStack stack = iterator.next();
@@ -233,7 +237,8 @@ public class InfusionEventHooks {
 
 	@SubscribeEvent
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		if (event.getEntityLiving() != null && event.getEntityLiving().worldObj != null && !event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityPlayer
+		if (event.getEntityLiving() != null && event.getEntityLiving().worldObj != null
+				&& !event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityPlayer
 				&& !event.isCanceled()) {
 			final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			PredictionManager.instance().checkIfFulfilled(player, event);
@@ -258,13 +263,16 @@ public class InfusionEventHooks {
 						this.handleBrewDepthsEffect(player, nbtPlayer);
 						this.handleCurseEffects(player, nbtPlayer);
 						this.handleSeepingShoesEffect(player, nbtPlayer);
-						InfusionBrewEffect.checkActiveEffects(player.worldObj, player, nbtPlayer, counter % 1200L == 0L, time);
+						InfusionBrewEffect.checkActiveEffects(player.worldObj, player, nbtPlayer, counter % 1200L == 0L,
+								time);
 					}
 					if (counter % 100L == 0L && !event.isCanceled()) {
 						PredictionManager.instance().checkIfFulfilled(player, event);
-						if (Config.instance().allowCovenWitchVisits && nbtPlayer.hasKey(Reference.COVEN) && player.worldObj.rand.nextInt(20) == 0) {
-							final ChunkCoordinates coords = player.getBedLocation(player.dimension);
-							if (coords != null && coords.getDistanceSquared((int) player.posX, (int) player.posY, (int) player.posZ) < 256.0f) {
+						if (Config.instance().allowCovenWitchVisits && nbtPlayer.hasKey(Reference.COVEN)
+								&& player.worldObj.rand.nextInt(20) == 0) {
+							final BlockPos coords = player.getBedLocation(player.dimension);
+							if (coords != null && coords.getDistance((int) player.posX, (int) player.posY,
+									(int) player.posZ) < 256.0f) {
 								final NBTTagList nbtCovenList = nbtPlayer.getTagList("WITCCoven", 10);
 								if (nbtCovenList.tagCount() > 0) {
 									EntityCovenWitch.summonCovenMember(player.worldObj, player, 90);
@@ -280,21 +288,23 @@ public class InfusionEventHooks {
 			}
 			this.handleIcySlippersEffect(player);
 			this.handleFamiliarFollowerSync(player);
-		}
-		else if (!event.getEntityLiving().worldObj.isRemote && counter % 20L == 0L) {
+		} else if (!event.getEntityLiving().worldObj.isRemote && counter % 20L == 0L) {
 			this.handleCurseEffects(event.getEntityLiving(), event.getEntityLiving().getEntityData());
 		}
 		if (counter % 100L == 0L) {
 			final ItemStack belt = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.LEGS);
 			if (belt != null && belt.getItem() == ItemInit.BARK_BELT) {
-				final Block blockID = event.getEntityLiving().worldObj.getBlock(MathHelper.floor_double(event.getEntityLiving().posX), MathHelper.floor_double(event.getEntityLiving().posY) - 1,
+				final Block blockID = event.getEntityLiving().worldObj.getBlock(
+						MathHelper.floor_double(event.getEntityLiving().posX),
+						MathHelper.floor_double(event.getEntityLiving().posY) - 1,
 						MathHelper.floor_double(event.getEntityLiving().posZ));
 				if (blockID == Blocks.GRASS || blockID == Blocks.MYCELIUM) {
 					final int maxChargeLevel = ItemInit.BARK_BELT.getMaxChargeLevel(event.getEntityLiving());
 					final int currentChargeLevel = ItemInit.BARK_BELT.getChargeLevel(belt);
 					if (currentChargeLevel < maxChargeLevel) {
 						ItemInit.BARK_BELT.setChargeLevel(belt, Math.min(currentChargeLevel + 1, maxChargeLevel));
-						event.getEntityLiving().worldObj.playSoundAtEntity(event.getEntityLiving(), "witchery:random.wood_creak", 0.5f,
+						event.getEntityLiving().worldObj.playSoundAtEntity(event.getEntityLiving(),
+								"witchery:random.wood_creak", 0.5f,
 								(float) (0.8 + 2.0 * event.getEntityLiving().worldObj.rand.nextGaussian()));
 					}
 				}
@@ -356,7 +366,8 @@ public class InfusionEventHooks {
 			if (compound.hasKey(Reference.LAST_POS)) {
 				final NBTTagCompound pos = compound.getCompoundTag("WITC_LASTPOS");
 				final int lastDimension = pos.getInteger("D");
-				if (lastDimension != player.dimension || Math.abs(pos.getDouble("X") - player.posX) > 32.0 || Math.abs(pos.getDouble("Z") - player.posZ) > 32.0) {
+				if (lastDimension != player.dimension || Math.abs(pos.getDouble("X") - player.posX) > 32.0
+						|| Math.abs(pos.getDouble("Z") - player.posZ) > 32.0) {
 					if ((lastDimension != player.dimension && player.dimension == -1) || lastDimension == -1) {
 						final NBTTagCompound nbtPlayer = Infusion.getNBT(player);
 						nbtPlayer.setBoolean("WITCVisitedNether", true);
@@ -371,10 +382,16 @@ public class InfusionEventHooks {
 							for (int l = 0; l <= 4 && !done; ++l) {
 								for (int i1 = 0; i1 <= 4 && !done; ++i1) {
 									for (int dy = 0; dy <= 4 && !done; ++dy) {
-										if (player.worldObj.getBlockState(new BlockPos(ipx + l, k + dy - 1, j + i1)).isSideSolid(player.worldObj, new BlockPos(ipx + l, k + dy - 1, j + i1),
-												EnumFacing.UP) && !player.worldObj.getBlockState(new BlockPos(ipx + l, k + dy, j + i1)).isNormalCube()
-												&& !player.worldObj.getBlockState(new BlockPos(ipx + l, k + dy + 1, j + i1)).isNormalCube()) {
-											EntityUtil.teleportToLocation(player.worldObj, 0.5 + ipx + l, k + dy, 0.5 + j + i1, player.dimension, familiar, true);
+										if (player.worldObj.getBlockState(new BlockPos(ipx + l, k + dy - 1, j + i1))
+												.isSideSolid(player.worldObj, new BlockPos(ipx + l, k + dy - 1, j + i1),
+														EnumFacing.UP)
+												&& !player.worldObj.getBlockState(new BlockPos(ipx + l, k + dy, j + i1))
+														.isNormalCube()
+												&& !player.worldObj
+														.getBlockState(new BlockPos(ipx + l, k + dy + 1, j + i1))
+														.isNormalCube()) {
+											EntityUtil.teleportToLocation(player.worldObj, 0.5 + ipx + l, k + dy,
+													0.5 + j + i1, player.dimension, familiar, true);
 											done = true;
 										}
 									}
@@ -386,8 +403,7 @@ public class InfusionEventHooks {
 				pos.setDouble("X", player.posX);
 				pos.setDouble("Z", player.posZ);
 				pos.setInteger("D", player.dimension);
-			}
-			else {
+			} else {
 				final NBTTagCompound pos = new NBTTagCompound();
 				pos.setDouble("X", player.posX);
 				pos.setDouble("Z", player.posZ);
@@ -407,8 +423,7 @@ public class InfusionEventHooks {
 				final Block blockID = player.worldObj.getBlockState(new BlockPos(j, k, l)).getBlock();
 				if (blockID == Blocks.FLOWING_WATER || blockID == Blocks.WATER) {
 					player.worldObj.setBlockState(new BlockPos(j, k, l), Blocks.ICE.getDefaultState());
-				}
-				else if (blockID == Blocks.FLOWING_LAVA || blockID == Blocks.LAVA) {
+				} else if (blockID == Blocks.FLOWING_LAVA || blockID == Blocks.LAVA) {
 					player.worldObj.setBlockState(new BlockPos(j, k, l), Blocks.OBSIDIAN.getDefaultState());
 					if (player.worldObj.rand.nextInt(10) == 0) {
 						shoes.damageItem(1, player);
@@ -429,8 +444,7 @@ public class InfusionEventHooks {
 					if (!player.isPotionActive(MobEffects.WITHER)) {
 						player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 100, 1));
 					}
-				}
-				else if (player.isPotionActive(MobEffects.WITHER)) {
+				} else if (player.isPotionActive(MobEffects.WITHER)) {
 					player.removePotionEffect(MobEffects.WITHER);
 				}
 			}
@@ -442,8 +456,7 @@ public class InfusionEventHooks {
 				if (player.isPotionActive(MobEffects.POISON)) {
 					player.removePotionEffect(MobEffects.POISON);
 				}
-			}
-			else {
+			} else {
 				nbtTag.setInteger(Reference.INFUSION_DEPTHS, timeLeft);
 			}
 		}
@@ -454,21 +467,24 @@ public class InfusionEventHooks {
 			int timeLeft = nbtTag.getInteger(Reference.INFUSION_GROTESQUE);
 			if (timeLeft > 0) {
 				final float radius = 4.0f;
-				final AxisAlignedBB bounds = new AxisAlignedBB(new BlockPos(player.posX - 4.0, player.posY - 4.0, player.posZ - 4.0),
+				final AxisAlignedBB bounds = new AxisAlignedBB(
+						new BlockPos(player.posX - 4.0, player.posY - 4.0, player.posZ - 4.0),
 						new BlockPos(player.posX + 4.0, player.posY + 4.0, player.posZ + 4.0));
 				final List<EntityLiving> list = player.worldObj.getEntitiesWithinAABB(EntityLiving.class, bounds);
 				for (final EntityLiving entity : list) {
-					final boolean victim = !(entity instanceof EntityDemon) && entity.isNonBoss() && !(entity instanceof EntityGolem) && !(entity instanceof EntityWitch);
-					if (victim && Coord.distance(entity.posX, entity.posY, entity.posZ, player.posX, player.posY, player.posZ) < 4.0) {
-						RiteProtectionCircleRepulsive.push(player.worldObj, entity, player.posX, player.posY, player.posZ);
+					final boolean victim = !(entity instanceof EntityDemon) && entity.isNonBoss()
+							&& !(entity instanceof EntityGolem) && !(entity instanceof EntityWitch);
+					if (victim && Coord.distance(entity.posX, entity.posY, entity.posZ, player.posX, player.posY,
+							player.posZ) < 4.0) {
+						RiteProtectionCircleRepulsive.push(player.worldObj, entity, player.posX, player.posY,
+								player.posZ);
 					}
 				}
 			}
 			if (--timeLeft <= 0) {
 				nbtTag.removeTag(Reference.INFUSION_GROTESQUE);
 				Reference.PACKET_HANDLER.sendToDimension(new PacketPlayerStyle(player), player.dimension);
-			}
-			else {
+			} else {
 				nbtTag.setInteger(Reference.INFUSION_GROTESQUE, timeLeft);
 			}
 		}
@@ -482,64 +498,67 @@ public class InfusionEventHooks {
 					if (entity.isInWater() || (entity instanceof EntityPlayer && !entity.onGround)) {
 						if (entity.motionY < 0.0) {
 							entity.motionY *= 1.0 + Math.min(0.1 * level, 0.4);
-						}
-						else if (entity.motionY > 0.0) {
+						} else if (entity.motionY > 0.0) {
 							entity.motionY *= 1.0 - Math.min(0.1 * level, 0.4);
 						}
 					}
-				}
-				else {
+				} else {
 					nbtTag.removeTag(Reference.INFUSION_SINKING);
 				}
 			}
 			if (nbtTag.hasKey(Reference.INFUSION_CURSED)) {
 				final int level = nbtTag.getInteger(Reference.INFUSION_CURSED);
 				if (level > 0) {
-					if (!entity.isPotionActive(MobEffects.BLINDNESS) && !entity.isPotionActive(MobEffects.WEAKNESS) && !entity.isPotionActive(MobEffects.MINING_FATIGUE)
-							&& !entity.isPotionActive(MobEffects.SLOWNESS) && !entity.isPotionActive(MobEffects.POISON) && entity.worldObj.rand.nextInt(20) == 0) {
-						switch (entity.worldObj.rand.nextInt((level >= 5) ? 6 : ((level >= 4) ? 5 : ((level >= 3) ? 4 : ((level >= 2) ? 3 : 2))))) {
-							case 0: {
-								entity.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 600, Math.min(level - 1, 4)));
+					if (!entity.isPotionActive(MobEffects.BLINDNESS) && !entity.isPotionActive(MobEffects.WEAKNESS)
+							&& !entity.isPotionActive(MobEffects.MINING_FATIGUE)
+							&& !entity.isPotionActive(MobEffects.SLOWNESS) && !entity.isPotionActive(MobEffects.POISON)
+							&& entity.worldObj.rand.nextInt(20) == 0) {
+						switch (entity.worldObj.rand.nextInt(
+								(level >= 5) ? 6 : ((level >= 4) ? 5 : ((level >= 3) ? 4 : ((level >= 2) ? 3 : 2))))) {
+						case 0: {
+							entity.addPotionEffect(
+									new PotionEffect(MobEffects.MINING_FATIGUE, 600, Math.min(level - 1, 4)));
+							break;
+						}
+						case 1: {
+							entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 600, Math.min(level - 1, 4)));
+							break;
+						}
+						case 2: {
+							entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, (13 + 2 * level) * 20,
+									Math.min(level - 2, 4)));
+							break;
+						}
+						case 3: {
+							entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * level * 20));
+							if (level > 5) {
+								entity.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 5 * level * 20));
 								break;
 							}
-							case 1: {
-								entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 600, Math.min(level - 1, 4)));
-								break;
-							}
-							case 2: {
-								entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, (13 + 2 * level) * 20, Math.min(level - 2, 4)));
-								break;
-							}
-							case 3: {
-								entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 5 * level * 20));
-								if (level > 5) {
-									entity.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 5 * level * 20));
-									break;
+							break;
+						}
+						case 5: {
+							if (entity instanceof EntityPlayer) {
+								final EntityPlayer player = (EntityPlayer) entity;
+								final int heldItemIndex = player.inventory.currentItem;
+								if (player.inventory.mainInventory[heldItemIndex] != null) {
+									player.dropPlayerItemWithRandomChoice(player.inventory.mainInventory[heldItemIndex],
+											true);
+									player.inventory.mainInventory[heldItemIndex] = null;
 								}
 								break;
 							}
-							case 5: {
-								if (entity instanceof EntityPlayer) {
-									final EntityPlayer player = (EntityPlayer) entity;
-									final int heldItemIndex = player.inventory.currentItem;
-									if (player.inventory.mainInventory[heldItemIndex] != null) {
-										player.dropPlayerItemWithRandomChoice(player.inventory.mainInventory[heldItemIndex], true);
-										player.inventory.mainInventory[heldItemIndex] = null;
-									}
-									break;
-								}
-								final ItemStack heldItem = entity.getHeldItemMainhand();
-								if (heldItem != null) {
-									Infusion.dropEntityItemWithRandomChoice(entity, heldItem, true);
-									entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
-									break;
-								}
+							final ItemStack heldItem = entity.getHeldItemMainhand();
+							if (heldItem != null) {
+								Infusion.dropEntityItemWithRandomChoice(entity, heldItem, true);
+								entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 								break;
 							}
+							break;
+						}
 						}
 					}
-				}
-				else {
+				} else {
 					nbtTag.removeTag(Reference.INFUSION_CURSED);
 				}
 			}
@@ -551,12 +570,12 @@ public class InfusionEventHooks {
 						final int x = MathHelper.floor_double(entity.posX);
 						final int z = MathHelper.floor_double(entity.posZ);
 						final Biome biome = world.getBiomeForCoordsBody(new BlockPos(x, 64, z));
-						if (biome.getTemperature() >= 1.5 && (!biome.canRain() || !world.isRaining()) && !entity.isInWater()) {
+						if (biome.getTemperature() >= 1.5 && (!biome.canRain() || !world.isRaining())
+								&& !entity.isInWater()) {
 							entity.setFire(Math.min(world.rand.nextInt((level < 4) ? 2 : (level - 1)) + 1, 4));
 						}
 					}
-				}
-				else {
+				} else {
 					nbtTag.removeTag(Reference.INFUSION_OVERHEAT);
 				}
 			}
@@ -568,23 +587,24 @@ public class InfusionEventHooks {
 					if (world2.rand.nextInt((level2 > 4) ? 30 : ((level2 > 2) ? 60 : 180)) == 0) {
 						final double R = 16.0;
 						final double H = 8.0;
-						final AxisAlignedBB bounds = new AxisAlignedBB(entity.posX - 16.0, entity.posY - 8.0, entity.posZ - 16.0, entity.posX + 16.0, entity.posY + 8.0, entity.posZ + 16.0);
+						final AxisAlignedBB bounds = new AxisAlignedBB(entity.posX - 16.0, entity.posY - 8.0,
+								entity.posZ - 16.0, entity.posX + 16.0, entity.posY + 8.0, entity.posZ + 16.0);
 						final List entities = world2.getEntitiesWithinAABB(EntityNightmare.class, bounds);
 						boolean doNothing = false;
 						for (final Object obj : entities) {
 							final EntityNightmare nightmare = (EntityNightmare) obj;
-							if (nightmare.getVictimName().equalsIgnoreCase(player2.getCommandSenderEntity().getUniqueID())) {
+							if (nightmare.getVictimUUID().equals(player2.getCommandSenderEntity().getUniqueID())) {
 								doNothing = true;
 								break;
 							}
 						}
 						if (!doNothing) {
-							Infusion.spawnCreature(world2, EntityNightmare.class, MathHelper.floor_double(player2.posX), MathHelper.floor_double(player2.posY), MathHelper.floor_double(player2.posZ),
+							Infusion.spawnCreature(world2, EntityNightmare.class, MathHelper.floor_double(player2.posX),
+									MathHelper.floor_double(player2.posY), MathHelper.floor_double(player2.posZ),
 									player2, 2, 6);
 						}
 					}
-				}
-				else {
+				} else {
 					nbtTag.removeTag(Reference.INFUSION_NIGHTMARE);
 				}
 			}
@@ -598,39 +618,37 @@ public class InfusionEventHooks {
 					if (world.rand.nextInt((level > 2) ? 25 : ((level > 1) ? 30 : 35)) == 0) {
 						Class<? extends EntityCreature> creatureType = null;
 						switch (world.rand.nextInt(3)) {
-							default: {
-								creatureType = EntityIllusionCreeper.class;
-								break;
-							}
-							case 1: {
-								creatureType = EntityIllusionSpider.class;
-								break;
-							}
-							case 2: {
-								creatureType = EntityIllusionZombie.class;
-								break;
-							}
+						default: {
+							creatureType = EntityIllusionCreeper.class;
+							break;
+						}
+						case 1: {
+							creatureType = EntityIllusionSpider.class;
+							break;
+						}
+						case 2: {
+							creatureType = EntityIllusionZombie.class;
+							break;
+						}
 						}
 						final int MAX_DISTANCE = 9;
 						final int MIN_DISTANCE = 4;
 						Infusion.spawnCreature(world, creatureType, x, y, z2, entity, 4, 9);
-					}
-					else if (level >= 4 && world.rand.nextInt(20) == 0) {
+					} else if (level >= 4 && world.rand.nextInt(20) == 0) {
 						SoundEffect sound = SoundEffect.NONE;
 						switch (world.rand.nextInt(3)) {
-							default: {
-								sound = SoundEffect.RANDOM_EXPLODE;
-								break;
-							}
-							case 1: {
-								sound = SoundEffect.MOB_ENDERMAN_IDLE;
-								break;
-							}
+						default: {
+							sound = SoundEffect.RANDOM_EXPLODE;
+							break;
+						}
+						case 1: {
+							sound = SoundEffect.MOB_ENDERMAN_IDLE;
+							break;
+						}
 						}
 						sound.playOnlyTo((EntityPlayer) entity, 1.0f, 1.0f);
 					}
-				}
-				else {
+				} else {
 					nbtTag.removeTag(Reference.INFUSION_INSANITY);
 				}
 			}

@@ -26,7 +26,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import nz.castorgaming.fantasyoverhaul.capabilities.PlayerCapabilityMaster;
-import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.IExtendPlayer;
+import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.ExtendedPlayer;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.IPlayerWerewolf;
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityAttackBat;
@@ -66,7 +66,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			return toInt(this);
 		}
 
-		public static int toInt(Enum e) {
+		public static int toInt(Enum<VampirePower> e) {
 			return e.ordinal();
 		}
 
@@ -83,7 +83,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			return toInt(this);
 		}
 
-		public static int toInt(Enum e) {
+		public static int toInt(Enum<VampireUltimate> e) {
 			return e.ordinal();
 		}
 
@@ -130,13 +130,12 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 	@Override
 	public void checkSleep(boolean start) {
 		if (start) {
-			if (isVampire() && player.sleeping && player.worldObj.isDaytime()) {
+			if (isVampire() && player.isPlayerSleeping() && player.worldObj.isDaytime()) {
 				resetSleep = true;
 				cachedSky = player.worldObj.getSkylightSubtracted();
 				player.worldObj.setSkylightSubtracted(4);
 			}
-		}
-		else if (resetSleep) {
+		} else if (resetSleep) {
 			resetSleep = false;
 			player.worldObj.setSkylightSubtracted(cachedSky);
 		}
@@ -210,7 +209,9 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 
 	@Override
 	public int getMaxBloodPower() {
-		return 500 + ((IPlayerWerewolf.get(player).getWerewolfLevel() >= 2) ? ((int) Math.floor(getVampireLevel() * 0.5)) : getVampireLevel()) * 250;
+		return 500
+				+ ((IPlayerWerewolf.get(player).getWerewolfLevel() >= 2) ? ((int) Math.floor(getVampireLevel() * 0.5))
+						: getVampireLevel()) * 250;
 	}
 
 	@Override
@@ -248,7 +249,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 	@Override
 	public boolean hasVampireBook() {
 		for (ItemStack stack : player.inventory.mainInventory) {
-			if (stack != null && stack.getItem() == ItemInit.book_vampire) {
+			if (stack != null && stack.getItem() == ItemInit.BOOK_VAMPIRE) {
 				return stack.getItemDamage() < 9;
 			}
 		}
@@ -259,7 +260,8 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 	public void increaseBloodPower(int quantity) {
 		if (bloodPower < getMaxBloodPower()) {
 			setBloodPower(bloodPower + quantity);
-			if (Config.instance().allowVampireQuests && getVampireLevel() == 1 && getBloodPower() == getMaxBloodPower()) {
+			if (Config.instance().allowVampireQuests && getVampireLevel() == 1
+					&& getBloodPower() == getMaxBloodPower()) {
 				increaseVampireLevel();
 			}
 		}
@@ -394,16 +396,14 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			visitedChunks.clear();
 			if (level == 0 && !player.worldObj.isRemote) {
 				ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.NONE);
-			}
-			else {
+			} else {
 				ShapeShift.INSTANCE.initCurrentShift(player);
 			}
 			bloodPower = 0;
 			humanBlood = 0;
 			ultimate = 0;
 			ultimateCharges = 0;
-		}
-		else {
+		} else {
 			ShapeShift.INSTANCE.initCurrentShift(player);
 		}
 		selectedPower = VampirePower.NONE;
@@ -449,8 +449,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 		setHumanBlood(remainder);
 		if (humanBlood < (int) Math.ceil(250.0)) {
 			player.attackEntityFrom(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker), 1.0f);
-		}
-		else if (!player.isPlayerSleeping()) {
+		} else if (!player.isPlayerSleeping()) {
 			player.attackEntityFrom(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker), 0.1f);
 		}
 		return taken;
@@ -470,8 +469,7 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			if (!vampVisionActive) {
 				player.removePotionEffect(MobEffects.NIGHT_VISION);
 			}
-		}
-		else {
+		} else {
 			player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 400, 0, true, false));
 		}
 	}
@@ -493,173 +491,179 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			if (cooldown <= 0) {
 				cooldown = 10;
 				switch (power) {
-					case MESMERIZE: {
-						if (player.isSneaking()) {
-							toggleVampireVision();
-							break;
-						}
+				case MESMERIZE: {
+					if (player.isSneaking()) {
+						toggleVampireVision();
 						break;
 					}
-					case SPEED: {
-						if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
-							PotionEffect effect = player.getActivePotionEffect(MobEffects.SPEED);
-							int currentLevel = (int) ((effect == null) ? 0 : Math.ceil(Math.log(effect.getAmplifier() + 1) / Math.log(2.0)));
-							if (level >= 4 && currentLevel <= Math.ceil((level - 3) / 2.0f)) {
-								if (decreaseBloodPower(power.INITIAL_COST, true)) {
-									SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
-									int level = (effect == null) ? 2 : ((effect.getAmplifier() + 1) * 2);
-									int duration = (effect == null) ? TimeUtilities.secsToTicks(10) : (effect.getDuration() + 60);
-									player.addPotionEffect(new PotionEffect(MobEffects.SPEED, duration, level - 1, true, false));
-									player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, duration, currentLevel + 1, true, false));
-								}
-								else {
-									SoundEffect.NOTE_SNARE.playOnlyTo(player);
-								}
-							}
-							else {
-								SoundEffect.NOTE_SNARE.playOnlyTo(player);
-							}
-							break;
-						}
-						SoundEffect.NOTE_SNARE.playOnlyTo(player);
-						break;
-					}
-					case BAT: {
-						if (level < 7) {
-							SoundEffect.NOTE_SNARE.playOnlyTo(player);
-							break;
-						}
-						if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+					break;
+				}
+				case SPEED: {
+					if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						PotionEffect effect = player.getActivePotionEffect(MobEffects.SPEED);
+						int currentLevel = (int) ((effect == null) ? 0
+								: Math.ceil(Math.log(effect.getAmplifier() + 1) / Math.log(2.0)));
+						if (level >= 4 && currentLevel <= Math.ceil((level - 3) / 2.0f)) {
 							if (decreaseBloodPower(power.INITIAL_COST, true)) {
 								SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
-								ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.BAT);
-								break;
+								int level = (effect == null) ? 2 : ((effect.getAmplifier() + 1) * 2);
+								int duration = (effect == null) ? TimeUtilities.secsToTicks(10)
+										: (effect.getDuration() + 60);
+								player.addPotionEffect(
+										new PotionEffect(MobEffects.SPEED, duration, level - 1, true, false));
+								player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, duration,
+										currentLevel + 1, true, false));
+							} else {
+								SoundEffect.NOTE_SNARE.playOnlyTo(player);
 							}
+						} else {
 							SoundEffect.NOTE_SNARE.playOnlyTo(player);
-							break;
 						}
-						else {
-							if (IExtendPlayer.get(player).getCreatureType() == TransformCreatures.BAT) {
-								SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
-								ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.NONE);
-								break;
-							}
-							SoundEffect.NOTE_SNARE.playOnlyTo(player);
-							break;
-						}
+						break;
 					}
-					case ULTIMATE: {
-						if (level >= 10 && ultimateCharges > 0 && IExtendPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
-							switch (getVampireUltimate()) {
-								case FARM:
-									boolean done = false;
-									if (player.dimension != Config.instance().dimensionDreamID) {
-										BlockPos coords = player.getBedLocation(player.dimension);
-										int dimension = player.dimension;
-										World world = player.worldObj;
-										if (coords == null) {
-											coords = player.getBedLocation(0);
-											dimension = 0;
-											if (!world.isRemote) {
-												world = world.getMinecraftServer().worldServerForDimension(0);
-											}
-											else {
-												world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-											}
-
-											if (coords == null) {
-												coords = world.getSpawnPoint();
-												while (world.getBlockState(coords).isNormalCube() && coords.getY() < 255) {
-													coords = new BlockPos(coords.getX(), coords.getY() + 1, coords.getZ());
-												}
-											}
-
-										}
-										if (coords != null) {
-											double HOME_DIST = 6.0, HOME_DIST_SQ = 36.0;
-											coords = Blocks.BED.getBedSpawnPosition(null, world, coords, null);
-											if (coords != null) {
-												if (dimension == player.dimension && player.getDistanceSq(coords.getX(), player.posY, coords.getZ()) <= 36.0) {
-													Village village = world.villageCollectionObj.getNearestVillage(player.getPosition(), 512);
-													if (village != null) {
-														BlockPos townPos = village.getCenter();
-														if (EntityUtil.teleportToLocationSafely(player.worldObj, townPos.getX() + 0.5, townPos.getY() + 1.0, townPos.getZ() + 0.5, dimension, player,
-																true)) {
-															done = true;
-														}
-													}
-												}
-												else {
-													if (EntityUtil.teleportToLocationSafely(player.worldObj, coords.getX() + 0.5, coords.getY() + 1.0, coords.getZ() + 0.5, dimension, player, true)) {
-														done = true;
-													}
-												}
-											}
-										}
-									}
-									if (!done) {
-										SoundEffect.NOTE_SNARE.playOnlyTo(player);
-										break;
-									}
-									break;
-								case STORM: {
-									WorldInfo worldinfo = ((WorldServer) player.worldObj).getWorldInfo();
-									if (!worldinfo.isRaining()) {
-										int i = (300 + player.worldObj.rand.nextInt(600)) * 20;
-										worldinfo.setThunderTime(i);
-										worldinfo.setThundering(true);
-										worldinfo.setRaining(true);
-										worldinfo.setRainTime(i);
-										SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
-										if (!player.capabilities.isCreativeMode) {
-											--ultimateCharges;
-											sync();
-										}
-										break;
-									}
-									SoundEffect.NOTE_SNARE.playOnlyTo(player);
-									break;
-								}
-								case SWARM: {
-									for (int i = 0; i < 15; i++) {
-										EntityLiving creature = spawnCreature(player.worldObj, EntityAttackBat.class, player.posX, player.posY + 3 + player.worldObj.rand.nextDouble(), player.posZ, 1,
-												4, ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF);
-										if (creature != null) {
-											EntityAttackBat bat = (EntityAttackBat) creature;
-											bat.setOwner(player);
-											bat.setIsBatHanging(false);
-											NBTTagCompound nbtBat = bat.getEntityData();
-											nbtBat.setBoolean(Reference.NO_DROPS, true);
-										}
-
-									}
-									if (!player.capabilities.isCreativeMode) {
-										--ultimateCharges;
-										sync();
-										break;
-									}
-									break;
-								}
-								default:
-									break;
-							}
+					SoundEffect.NOTE_SNARE.playOnlyTo(player);
+					break;
+				}
+				case BAT: {
+					if (level < 7) {
+						SoundEffect.NOTE_SNARE.playOnlyTo(player);
+						break;
+					}
+					if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						if (decreaseBloodPower(power.INITIAL_COST, true)) {
+							SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
+							ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.BAT);
+							break;
+						}
+						SoundEffect.NOTE_SNARE.playOnlyTo(player);
+						break;
+					} else {
+						if (ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.BAT) {
+							SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
+							ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.NONE);
 							break;
 						}
 						SoundEffect.NOTE_SNARE.playOnlyTo(player);
 						break;
 					}
-					default:
-						break;
 				}
-			}
-			else {
+				case ULTIMATE: {
+					if (level >= 10 && ultimateCharges > 0
+							&& ExtendedPlayer.get(player).getCreatureType() == TransformCreatures.NONE) {
+						switch (getVampireUltimate()) {
+						case FARM:
+							boolean done = false;
+							if (player.dimension != Config.instance().dimensionDreamID) {
+								BlockPos coords = player.getBedLocation(player.dimension);
+								int dimension = player.dimension;
+								World world = player.worldObj;
+								if (coords == null) {
+									coords = player.getBedLocation(0);
+									dimension = 0;
+									if (!world.isRemote) {
+										world = world.getMinecraftServer().worldServerForDimension(0);
+									} else {
+										world = FMLCommonHandler.instance().getMinecraftServerInstance()
+												.worldServerForDimension(0);
+									}
+
+									if (coords == null) {
+										coords = world.getSpawnPoint();
+										while (world.getBlockState(coords).isNormalCube() && coords.getY() < 255) {
+											coords = new BlockPos(coords.getX(), coords.getY() + 1, coords.getZ());
+										}
+									}
+
+								}
+								if (coords != null) {
+									coords = Blocks.BED.getBedSpawnPosition(null, world, coords, null);
+									if (coords != null) {
+										if (dimension == player.dimension && player.getDistanceSq(coords.getX(),
+												player.posY, coords.getZ()) <= 36.0) {
+											Village village = world.villageCollectionObj
+													.getNearestVillage(player.getPosition(), 512);
+											if (village != null) {
+												BlockPos townPos = village.getCenter();
+												if (EntityUtil.teleportToLocationSafely(player.worldObj,
+														townPos.getX() + 0.5, townPos.getY() + 1.0,
+														townPos.getZ() + 0.5, dimension, player, true)) {
+													done = true;
+												}
+											}
+										} else {
+											if (EntityUtil.teleportToLocationSafely(player.worldObj,
+													coords.getX() + 0.5, coords.getY() + 1.0, coords.getZ() + 0.5,
+													dimension, player, true)) {
+												done = true;
+											}
+										}
+									}
+								}
+							}
+							if (!done) {
+								SoundEffect.NOTE_SNARE.playOnlyTo(player);
+								break;
+							}
+							break;
+						case STORM: {
+							WorldInfo worldinfo = ((WorldServer) player.worldObj).getWorldInfo();
+							if (!worldinfo.isRaining()) {
+								int i = (300 + player.worldObj.rand.nextInt(600)) * 20;
+								worldinfo.setThunderTime(i);
+								worldinfo.setThundering(true);
+								worldinfo.setRaining(true);
+								worldinfo.setRainTime(i);
+								SoundEffect.RANDOM_FIZZ.playOnlyTo(player);
+								if (!player.capabilities.isCreativeMode) {
+									--ultimateCharges;
+									sync();
+								}
+								break;
+							}
+							SoundEffect.NOTE_SNARE.playOnlyTo(player);
+							break;
+						}
+						case SWARM: {
+							for (int i = 0; i < 15; i++) {
+								EntityLiving creature = spawnCreature(player.worldObj, EntityAttackBat.class,
+										player.posX, player.posY + 3 + player.worldObj.rand.nextDouble(), player.posZ,
+										1, 4, ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF);
+								if (creature != null) {
+									EntityAttackBat bat = (EntityAttackBat) creature;
+									bat.setOwner(player);
+									bat.setIsBatHanging(false);
+									NBTTagCompound nbtBat = bat.getEntityData();
+									nbtBat.setBoolean(Reference.NO_DROPS, true);
+								}
+
+							}
+							if (!player.capabilities.isCreativeMode) {
+								--ultimateCharges;
+								sync();
+								break;
+							}
+							break;
+						}
+						default:
+							break;
+						}
+						break;
+					}
+					SoundEffect.NOTE_SNARE.playOnlyTo(player);
+					break;
+				}
+				default:
+					break;
+				}
+			} else {
 				SoundEffect.NOTE_SNARE.playOnlyTo(player);
 			}
 		}
 	}
 
-	public static EntityLiving spawnCreature(final World world, final Class<? extends EntityLiving> creatureType, final double posX, final double posY, final double posZ, final int minRange,
-			final int maxRange, final ParticleEffect effect, final SoundEffect effectSound) {
+	public static EntityLiving spawnCreature(final World world, final Class<? extends EntityLiving> creatureType,
+			final double posX, final double posY, final double posZ, final int minRange, final int maxRange,
+			final ParticleEffect effect, final SoundEffect effectSound) {
 		if (!world.isRemote) {
 			final int x = MathHelper.floor_double(posX);
 			final int y = MathHelper.floor_double(posY);
@@ -687,8 +691,8 @@ public class PlayerVampire extends PlayerCapabilityMaster implements IPlayerVamp
 			Log.instance().debug("Creature: hy: " + hy + " (" + nx + "," + ny + "," + nz + ")");
 			if (hy >= 2) {
 				try {
-					final Constructor ctor = creatureType.getConstructor(World.class);
-					final EntityLiving creature = (EntityLiving) ctor.newInstance(world);
+					final Constructor<? extends EntityLiving> ctor = creatureType.getConstructor(World.class);
+					final EntityLiving creature = ctor.newInstance(world);
 					creature.setLocationAndAngles(0.5 + nx, 0.05 + ny + 1.0, 0.5 + nz, 0.0f, 0.0f);
 					world.spawnEntityInWorld(creature);
 					if (effect != null) {

@@ -27,8 +27,7 @@ public class PacketSyncEntitySize implements IMessage {
 		stepSize = entity.stepHeight;
 		if (entity instanceof EntityPlayer) {
 			eyeHeight = entity.getEyeHeight();
-		}
-		else {
+		} else {
 			eyeHeight = -1.0f;
 		}
 	}

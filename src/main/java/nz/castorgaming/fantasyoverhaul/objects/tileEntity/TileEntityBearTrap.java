@@ -49,7 +49,7 @@ public class TileEntityBearTrap extends TileEntityBase {
 		if (silvered && living instanceof EntityWolfman) {
 			EntityWolfman wolf = (EntityWolfman) living;
 			if (spawnedWolfID != null && wolf != null && wolf.getPersistanceID().equals(spawnedWolfID)) {
-				SoundEffect.fantasyoverhaul_MOB_WOLFMAN_LORD.playAt(this, 1.0f);
+				SoundEffect.MOB_WOLFMAN_HOWL.playAt(this, 1.0f);
 				wolf.setInfectious();
 				return true;
 			}
@@ -68,25 +68,25 @@ public class TileEntityBearTrap extends TileEntityBase {
 	@Override
 	public void update() {
 		super.update();
-		if (!worldObj.isRemote && silvered && !isSprung() && spawnedWolfID == null && TimeUtilities.secondsElapsed(10, ticks)) {
+		if (!worldObj.isRemote && silvered && !isSprung() && spawnedWolfID == null
+				&& TimeUtilities.secondsElapsed(10, ticks)) {
 			if (baitFound() && CreatureUtilities.isFullMoon(worldObj)) {
 				long time = worldObj.getTotalWorldTime();
 				if (startTime > 0) {
 					long activateTime = startTime;
 					if (time > activateTime && CreatureUtilities.isFullMoon(worldObj)) {
-						EntityCreature creature = Infusion.spawnCreature(worldObj, EntityWolfman.class, pos.getX(), pos.getY(), pos.getZ(), null, 10, 32, ParticleEffect.SMOKE,
-								SoundEffect.fantasyoverhaul_MOB_WOLFMAN_TALK);
+						EntityCreature creature = Infusion.spawnCreature(worldObj, EntityWolfman.class, pos.getX(),
+								pos.getY(), pos.getZ(), null, 10, 32, ParticleEffect.SMOKE,
+								SoundEffect.MOB_WOLFMAN_TALK);
 						if (creature != null) {
 							creature.enablePersistence();
 							spawnedWolfID = creature.getPersistentID();
 						}
 					}
-				}
-				else {
+				} else {
 					startTime = time;
 				}
-			}
-			else {
+			} else {
 				startTime = 0;
 			}
 		}
@@ -94,7 +94,8 @@ public class TileEntityBearTrap extends TileEntityBase {
 
 	private boolean baitFound() {
 		boolean foundSheep = false;
-		AxisAlignedBB bounds = new AxisAlignedBB(0.5 + pos.getX() - 8.0, 0.5 + pos.getY() - 8.0, 0.5 + pos.getZ() - 8.0, 0.5 + pos.getX() + 8.0, 0.5 + pos.getY() + 8.0, 0.5 + pos.getZ() + 8.0);
+		AxisAlignedBB bounds = new AxisAlignedBB(0.5 + pos.getX() - 8.0, 0.5 + pos.getY() - 8.0, 0.5 + pos.getZ() - 8.0,
+				0.5 + pos.getX() + 8.0, 0.5 + pos.getY() + 8.0, 0.5 + pos.getZ() + 8.0);
 		ArrayList<EntitySheep> sheep = (ArrayList) worldObj.getEntitiesWithinAABB(EntitySheep.class, bounds);
 		for (EntitySheep aSheep : sheep) {
 			if (aSheep.getDistanceSq(getPos()) <= 64.0 && aSheep.getLeashed()) {
@@ -117,7 +118,8 @@ public class TileEntityBearTrap extends TileEntityBase {
 	}
 
 	public boolean isVisibleTo(EntityPlayer player) {
-		return isSprung() || getOwner() == null || silvered || (player != null && player.getGameProfile().equals(getOwner()));
+		return isSprung() || getOwner() == null || silvered
+				|| (player != null && player.getGameProfile().equals(getOwner()));
 	}
 
 	@Override
@@ -145,15 +147,13 @@ public class TileEntityBearTrap extends TileEntityBase {
 		startTime = compound.getLong("WolfTrapStart");
 		if (compound.hasKey("Owner", 10)) {
 			setOwner(NBTUtil.readGameProfileFromNBT(compound.getCompoundTag("Owner")));
-		}
-		else {
+		} else {
 			setOwner(null);
 		}
 
 		if (compound.hasKey("WolfMost") && compound.hasKey("WolfLeast")) {
 			spawnedWolfID = new UUID(compound.getLong("WolfMost"), compound.getLong("WolfLeast"));
-		}
-		else {
+		} else {
 			spawnedWolfID = null;
 		}
 	}

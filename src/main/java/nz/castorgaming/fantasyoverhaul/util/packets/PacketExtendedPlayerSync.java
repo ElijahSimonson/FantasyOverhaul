@@ -8,25 +8,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import nz.castorgaming.fantasyoverhaul.FantasyOverhaul;
 import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.ExtendedPlayer;
-import nz.castorgaming.fantasyoverhaul.capabilities.extendedPlayer.IExtendPlayer;
-import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.IPlayerVampire;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.PlayerVampire;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.PlayerVampire.VampirePower;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.PlayerVampire.VampireUltimate;
-import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.IPlayerWerewolf;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.PlayerWerewolf;
 
 public class PacketExtendedPlayerSync implements IMessage {
 
-	private int werewolfLevel, vampireLevel, bloodLevel, ultimate, creatureOrdinal, selected, ultimateCharges, reserveBlood;
+	private int werewolfLevel, vampireLevel, bloodLevel, ultimate, creatureOrdinal, selected, ultimateCharges,
+			reserveBlood;
 
 	public PacketExtendedPlayerSync() {
 	}
 
 	public PacketExtendedPlayerSync(EntityPlayer player) {
-		ExtendedPlayer playerEx = IExtendPlayer.get(player);
-		PlayerVampire vampire = IPlayerVampire.get(player);
-		PlayerWerewolf werewolf = IPlayerWerewolf.get(player);
+		ExtendedPlayer playerEx = ExtendedPlayer.get(player);
+		PlayerVampire vampire = playerEx.vampire;
+		PlayerWerewolf werewolf = playerEx.werewolf;
 		werewolfLevel = werewolf.getWerewolfLevel();
 		creatureOrdinal = playerEx.getCreatureType().toInt();
 		vampireLevel = vampire.getVampireLevel();
@@ -71,9 +69,9 @@ public class PacketExtendedPlayerSync implements IMessage {
 
 		private void handle(PacketExtendedPlayerSync message, MessageContext ctx) {
 			EntityPlayer player = FantasyOverhaul.proxy.getPlayer(ctx);
-			ExtendedPlayer extend = IExtendPlayer.get(player);
-			PlayerVampire vampire = IPlayerVampire.get(player);
-			PlayerWerewolf werewolf = IPlayerWerewolf.get(player);
+			ExtendedPlayer extend = ExtendedPlayer.get(player);
+			PlayerVampire vampire = extend.vampire;
+			PlayerWerewolf werewolf = extend.werewolf;
 
 			werewolf.setWerewolfLevel(message.werewolfLevel);
 

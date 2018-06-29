@@ -30,7 +30,8 @@ public class EntityAttackBat extends EntityBat {
 
 	@Override
 	protected void collideWithNearbyEntities() {
-		List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224, 0.0, 0.20000000298023224));
+		List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this,
+				this.getEntityBoundingBox().expand(0.20000000298023224, 0.0, 0.20000000298023224));
 		if (list != null && !list.isEmpty()) {
 			for (Entity entity : list) {
 				if (entity.canBePushed()) {
@@ -49,7 +50,7 @@ public class EntityAttackBat extends EntityBat {
 			}
 			if (target != ownerPlayer && !(target instanceof EntityBat) && !target.isDead) {
 				target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, ownerPlayer), 4.0f);
-				ParticleEffect.REDDUST.send(SoundEffect.fantasyoverhaul_RANDOM_DRINK, entity, entity.width, entity.height, 16);
+				ParticleEffect.REDDUST.send(SoundEffect.RANDOM_DRINK, entity, entity.width, entity.height, 16);
 				setDead();
 			}
 		}
@@ -62,15 +63,16 @@ public class EntityAttackBat extends EntityBat {
 			if (ticksExisted > 300) {
 				ParticleEffect.SMOKE.send(SoundEffect.NONE, this, this.width, this.height, 16);
 				setDead();
-			}
-			else {
+			} else {
 				if (ownerPlayer == null) {
 					ownerPlayer = getOwner();
 				}
 				if (ownerPlayer != null && ownerPlayer.dimension == dimension) {
 					RayTraceResult rtr = InfusionOtherwhere.raytraceEntities(worldObj, ownerPlayer, true, 32.0);
-					if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.ENTITY && rtr.entityHit instanceof EntityLivingBase && !(rtr.entityHit instanceof EntityBat)) {
-						double divider = Math.sqrt(Math.pow(rtr.entityHit.posX + posX, 2) + Math.pow(rtr.entityHit.posY + posY, 2) + Math.pow(rtr.entityHit.posZ + posZ, 2));
+					if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.ENTITY
+							&& rtr.entityHit instanceof EntityLivingBase && !(rtr.entityHit instanceof EntityBat)) {
+						double divider = Math.sqrt(Math.pow(rtr.entityHit.posX + posX, 2)
+								+ Math.pow(rtr.entityHit.posY + posY, 2) + Math.pow(rtr.entityHit.posZ + posZ, 2));
 						if (isCourseTraversable(rtr.entityHit.posX, rtr.entityHit.posY, rtr.entityHit.posZ, divider)) {
 							motionX += (rtr.entityHit.posX - posX) / divider * 0.1;
 							motionY += (rtr.entityHit.posY - posY) / divider * 0.1;

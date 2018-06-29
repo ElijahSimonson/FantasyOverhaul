@@ -52,7 +52,8 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onPlayerDrops(event.getEntityPlayer().getEntityWorld(), event.getEntityPlayer(), event, effect.getAmplifier());
+			handler.onPlayerDrops(event.getEntityPlayer().getEntityWorld(), event.getEntityPlayer(), event,
+					effect.getAmplifier());
 		}
 	}
 
@@ -80,7 +81,8 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onLivingHurt(event.getEntityLiving().worldObj, event.getEntityLiving(), event, (effect != null) ? effect.getAmplifier() : -1);
+			handler.onLivingHurt(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					(effect != null) ? effect.getAmplifier() : -1);
 		}
 	}
 
@@ -94,7 +96,8 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onLivingUpdate(event.getEntityLiving().worldObj, event.getEntityLiving(), event, effect.getAmplifier(), effect.getDuration());
+			handler.onLivingUpdate(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					effect.getAmplifier(), effect.getDuration());
 		}
 	}
 
@@ -108,11 +111,14 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onLivingAttack(event.getEntityLiving().worldObj, event.getEntityLiving(), event, effect.getAmplifier());
+			handler.onLivingAttack(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					effect.getAmplifier());
 		}
-		if (Reference.modHooks.isAM2Present && !event.isCanceled() && !event.getEntity().worldObj.isRemote && event.getSource() == DamageSource.inWall && event.getEntity() instanceof EntityPlayer
+		if (Reference.modHooks.isAM2Present && !event.isCanceled() && !event.getEntity().worldObj.isRemote
+				&& event.getSource() == DamageSource.inWall && event.getEntity() instanceof EntityPlayer
 				&& (IExtendPlayer.get((EntityPlayer) event.getEntity()).getCreatureType() == TransformCreatures.WOLF
-						|| IExtendPlayer.get((EntityPlayer) event.getEntity()).getCreatureType() == TransformCreatures.BAT)
+						|| IExtendPlayer.get((EntityPlayer) event.getEntity())
+								.getCreatureType() == TransformCreatures.BAT)
 				&& !event.getEntity().worldObj.getBlockState(event.getEntity().getPosition()).isNormalCube()) {
 			event.setCanceled(true);
 		}
@@ -128,13 +134,15 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onLivingJump(event.getEntityLiving().worldObj, event.getEntityLiving(), event, effect.getAmplifier());
+			handler.onLivingJump(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					effect.getAmplifier());
 		}
 	}
 
 	@SubscribeEvent
 	public void onEnderTeleport(final EnderTeleportEvent event) {
-		if (event.getEntityLiving() != null && (event.getEntityLiving().worldObj.provider.getDimension() == Config.instance().dimensionTormentID
+		if (event.getEntityLiving() != null && (event.getEntityLiving().worldObj.provider
+				.getDimension() == Config.instance().dimensionTormentID
 				|| event.getEntityLiving().worldObj.provider.getDimension() == Config.instance().dimensionMirrorID)) {
 			event.setCanceled(true);
 			return;
@@ -147,7 +155,8 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onEnderTeleport(event.getEntityLiving().worldObj, event.getEntityLiving(), event, effect.getAmplifier());
+			handler.onEnderTeleport(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					effect.getAmplifier());
 		}
 	}
 
@@ -155,7 +164,8 @@ public class PotionHooks {
 	public void onLivingSetAttackTarget(final LivingSetAttackTargetEvent event) {
 		if (event.getEntityLiving() instanceof EntityLiving) {
 			final EntityLiving livingEntity = (EntityLiving) event.getEntityLiving();
-			if (livingEntity != null && Potions.ENSLAVED != null && event.getTarget() != null && event.getTarget() instanceof EntityPlayer) {
+			if (livingEntity != null && Potions.ENSLAVED != null && event.getTarget() != null
+					&& event.getTarget() instanceof EntityPlayer) {
 				final EntityPlayer player = (EntityPlayer) event.getTarget();
 				if (!livingEntity.isPotionActive(Potions.ENSLAVED) && Enslaved.isMobEnslavedBy(livingEntity, player)) {
 					livingEntity.setAttackTarget((EntityLivingBase) null);
@@ -169,7 +179,8 @@ public class PotionHooks {
 					continue;
 				}
 				final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-				handler.onLivingSetAttackTarget(event.getEntityLiving().worldObj, livingEntity, event, effect.getAmplifier());
+				handler.onLivingSetAttackTarget(event.getEntityLiving().worldObj, livingEntity, event,
+						effect.getAmplifier());
 			}
 		}
 	}
@@ -184,7 +195,8 @@ public class PotionHooks {
 				continue;
 			}
 			final PotionEffect effect = event.getEntityLiving().getActivePotionEffect(handler.getPotion());
-			handler.onLivingDeath(event.getEntityLiving().worldObj, event.getEntityLiving(), event, effect.getAmplifier());
+			handler.onLivingDeath(event.getEntityLiving().worldObj, event.getEntityLiving(), event,
+					effect.getAmplifier());
 		}
 		if (!event.getEntityLiving().worldObj.isRemote && event.getEntityLiving() instanceof EntityPlayer) {
 			final EntityPlayer player = (EntityPlayer) event.getEntityLiving();

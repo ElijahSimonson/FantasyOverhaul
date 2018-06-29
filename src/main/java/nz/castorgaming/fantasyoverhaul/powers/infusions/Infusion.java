@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import nz.castorgaming.fantasyoverhaul.init.InitArrays;
+import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityNightmare;
 import nz.castorgaming.fantasyoverhaul.powers.infusions.creature.CreaturePower;
 import nz.castorgaming.fantasyoverhaul.util.Log;
 import nz.castorgaming.fantasyoverhaul.util.Reference;
@@ -36,6 +37,7 @@ import nz.castorgaming.fantasyoverhaul.util.packets.PlayerSyncPacket;
 
 public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 
+	@SuppressWarnings("unchecked")
 	public static final RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion> REGISTRY = (RegistryNamespacedDefaultedByKey<ResourceLocation, Infusion>) GameRegistry
 			.findRegistry(Infusion.class);
 
@@ -65,11 +67,12 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 			entityItem.motionX = -MathHelper.sin(f3) * f2;
 			entityItem.motionZ = MathHelper.cos(f3) * f2;
 			entityItem.motionY = 0.20000000298023224;
-		}
-		else {
+		} else {
 			f = 0.3f;
-			entityItem.motionX = -MathHelper.sin(entity.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(entity.rotationPitch / 180.0f * 3.1415927f) * f;
-			entityItem.motionZ = MathHelper.cos(entity.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(entity.rotationPitch / 180.0f * 3.1415927f) * f;
+			entityItem.motionX = -MathHelper.sin(entity.rotationYaw / 180.0f * 3.1415927f)
+					* MathHelper.cos(entity.rotationPitch / 180.0f * 3.1415927f) * f;
+			entityItem.motionZ = MathHelper.cos(entity.rotationYaw / 180.0f * 3.1415927f)
+					* MathHelper.cos(entity.rotationPitch / 180.0f * 3.1415927f) * f;
 			entityItem.motionY = -MathHelper.sin(entity.rotationPitch / 180.0f * 3.1415927f) * f + 0.1f;
 			f = 0.02f;
 			final float f2 = entity.worldObj.rand.nextFloat() * 3.1415927f * 2.0f;
@@ -85,20 +88,21 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 		return entityItem;
 	}
 
-	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType, EntityLivingBase victim, int minRange, int maxRange, ParticleEffect effect,
-			SoundEffect sound) {
+	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType,
+			EntityLivingBase victim, int minRange, int maxRange, ParticleEffect effect, SoundEffect sound) {
 		int x = MathHelper.floor_double(victim.posX);
 		int y = MathHelper.floor_double(victim.posY);
 		int z = MathHelper.floor_double(victim.posZ);
 		return spawnCreature(world, creatureType, x, y, z, victim, minRange, maxRange, effect, sound);
 	}
 
-	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType, int x, int y, int z, EntityLivingBase victim, int minRange, int maxRange) {
+	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType, int x, int y,
+			int z, EntityLivingBase victim, int minRange, int maxRange) {
 		return spawnCreature(world, creatureType, x, y, z, victim, minRange, maxRange, null, SoundEffect.NONE);
 	}
 
-	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType, int x, int y, int z, EntityLivingBase victim, int minRange, int maxRange,
-			ParticleEffect effect, SoundEffect sound) {
+	public static EntityCreature spawnCreature(World world, Class<? extends EntityCreature> creatureType, int x, int y,
+			int z, EntityLivingBase victim, int minRange, int maxRange, ParticleEffect effect, SoundEffect sound) {
 		if (!world.isRemote) {
 			int activeRadius = maxRange - minRange;
 			int ax = world.rand.nextInt(activeRadius * 2 + 1);
@@ -130,8 +134,7 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 						EntityPlayer player = (EntityPlayer) victim;
 						if (creature instanceof EntityIllusion) {
 							((EntityIllusion) creature).setVictim(player.getUniqueID());
-						}
-						else if (creature instanceof EntityNightmare) {
+						} else if (creature instanceof EntityNightmare) {
 							((EntityNightmare) creature).setVictim(player.getUniqueID());
 							creature.setAttackTarget(victim);
 						}
@@ -204,7 +207,8 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 		}
 		int charges = getCurrentPower(player);
 		if (charges - cost < 0) {
-			world.playSound(player, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f, 0.4f / ((float) Math.random() - 0.4f + 0.8f));
+			world.playSound(player, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f,
+					0.4f / ((float) Math.random() - 0.4f + 0.8f));
 			clearInfusion(player);
 			return false;
 		}
@@ -218,7 +222,8 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 
 	public void onLeftClickEntity(ItemStack stack, World world, EntityPlayer player, Entity otherEntity) {
 		if (!world.isRemote) {
-			world.playSound(null, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f, 0.4f / ((float) Math.random() * 0.4f + 0.8f));
+			world.playSound(null, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f,
+					0.4f / ((float) Math.random() * 0.4f + 0.8f));
 		}
 	}
 
@@ -231,12 +236,14 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int countdown) {
 		if (!world.isRemote) {
-			world.playSound(null, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f, 0.4f / ((float) Math.random() * 0.4f));
+			world.playSound(null, player.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.PLAYERS, 0.5f,
+					0.4f / ((float) Math.random() * 0.4f));
 		}
 	}
 
 	public void playSound(World world, EntityPlayer player, SoundEvent sound) {
-		world.playSound(null, player.getPosition(), sound, SoundCategory.PLAYERS, 0.5f, 0.4f / ((float) world.rand.nextDouble() * 0.4f + 0.8f));
+		world.playSound(null, player.getPosition(), sound, SoundCategory.PLAYERS, 0.5f,
+				0.4f / ((float) world.rand.nextDouble() * 0.4f + 0.8f));
 	}
 
 	public void playFailSound(World world, EntityPlayer player) {
@@ -332,10 +339,13 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 		return nbtPlayer != null && aquireEnergy(world, player, nbtPlayer, cost, showMessages);
 	}
 
-	public static boolean aquireEnergy(World world, EntityPlayer player, NBTTagCompound nbtPlayer, int cost, boolean showMessages) {
-		if (nbtPlayer == null || !nbtPlayer.hasKey(Reference.INFUSION_ID_KEY) || !nbtPlayer.hasKey(Reference.INFUSION_CHARGES_KEY)) {
+	public static boolean aquireEnergy(World world, EntityPlayer player, NBTTagCompound nbtPlayer, int cost,
+			boolean showMessages) {
+		if (nbtPlayer == null || !nbtPlayer.hasKey(Reference.INFUSION_ID_KEY)
+				|| !nbtPlayer.hasKey(Reference.INFUSION_CHARGES_KEY)) {
 			if (showMessages) {
-				ChatUtilities.sendTranslated(TextFormatting.RED, (ICommandSender) player, Reference.INFUSION_REQUIRED, new Object[0]);
+				ChatUtilities.sendTranslated(TextFormatting.RED, (ICommandSender) player, Reference.INFUSION_REQUIRED,
+						new Object[0]);
 				SoundEffect.NOTE_SNARE.playAtPlayer(world, player);
 			}
 			return false;
@@ -347,7 +357,8 @@ public class Infusion extends IForgeRegistryEntry.Impl<Infusion> {
 			return true;
 		}
 		if (showMessages) {
-			ChatUtilities.sendTranslated(TextFormatting.RED, (ICommandSender) player, Reference.INFUSION_NOCHARGE, new Object[0]);
+			ChatUtilities.sendTranslated(TextFormatting.RED, (ICommandSender) player, Reference.INFUSION_NOCHARGE,
+					new Object[0]);
 			SoundEffect.NOTE_SNARE.playAtPlayer(world, player);
 		}
 		return false;

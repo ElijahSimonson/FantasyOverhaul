@@ -24,8 +24,8 @@ public class PacketSound implements IMessage {
 		this(effect, location, -1.0f, -1.0f);
 	}
 
-	public PacketSound(SoundEffect effect, Entity location, float volume, float pitch) {
-		this.effect = effect;
+	public PacketSound(SoundEffect soundEffect, Entity location, float volume, float pitch) {
+		this.effect = soundEffect;
 		this.x = location.posX;
 		this.y = location.posY;
 		this.z = location.posZ;
@@ -55,6 +55,7 @@ public class PacketSound implements IMessage {
 
 	public class Handler implements IMessageHandler<PacketSound, IMessage> {
 
+		@Override
 		public IMessage onMessage(PacketSound message, MessageContext ctx) {
 			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
 			return null;

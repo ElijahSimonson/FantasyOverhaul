@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nz.castorgaming.fantasyoverhaul.init.InitArrays;
+import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.init.Potions;
 import nz.castorgaming.fantasyoverhaul.objects.potions.PotionBase;
 import nz.castorgaming.fantasyoverhaul.powers.brews.effects.InfusionBrewEffect;
@@ -37,7 +38,6 @@ public class RegistryHandler {
 		buildRegistry("foplayereffects", PlayerEffect.class);
 		buildRegistry("fobreweffect", InfusionBrewEffect.class);
 		buildRegistry("fosymboleffect", SymbolEffect.class);
-
 	}
 
 	private static void buildRegistry(String string, Class<? extends IForgeRegistryEntry.Impl> class1) {

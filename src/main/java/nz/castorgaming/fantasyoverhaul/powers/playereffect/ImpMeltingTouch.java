@@ -31,8 +31,7 @@ public class ImpMeltingTouch extends PlayerEffect {
 					++itemStack.stackSize;
 				}
 				newDrops.add(smelted);
-			}
-			else {
+			} else {
 				Log.instance().debug("Smelting Touch: " + drop.toString() + " -> none");
 				newDrops.add(drop);
 			}
@@ -45,5 +44,9 @@ public class ImpMeltingTouch extends PlayerEffect {
 
 	@Override
 	protected void doInteract(final EntityPlayer player, final PlayerInteractEvent event) {
+	}
+
+	@Override
+	public void onDeath(EntityPlayer player) {
 	}
 }

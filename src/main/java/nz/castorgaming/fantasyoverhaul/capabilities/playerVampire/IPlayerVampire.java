@@ -26,7 +26,8 @@ public interface IPlayerVampire extends INBTSerializable<NBTTagCompound> {
 	public static void loadProxyData(EntityPlayer player) {
 	}
 
-	public static EntityLiving spawnCreature(World world, Class<? extends EntityLiving> creatureType, BlockPos pos, int minRange, int maxRange, ParticleEffect effect, SoundEffect sound) {
+	public static EntityLiving spawnCreature(World world, Class<? extends EntityLiving> creatureType, BlockPos pos,
+			int minRange, int maxRange, ParticleEffect effect, SoundEffect sound) {
 		return null;
 	}
 

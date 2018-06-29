@@ -36,7 +36,8 @@ public class BlockUtil {
 		return isReplaceableBlock(world, posX, posY, posZ, null);
 	}
 
-	public static boolean isReplaceableBlock(final World world, final int posX, final int posY, final int posZ, final EntityLivingBase player) {
+	public static boolean isReplaceableBlock(final World world, final int posX, final int posY, final int posZ,
+			final EntityLivingBase player) {
 		final Block block = getBlock(world, posX, posY, posZ);
 		IBlockState state = world.getBlockState(new BlockPos(posX, posY, posZ));
 		if (player != null) {
@@ -77,10 +78,14 @@ public class BlockUtil {
 			return getBlock(world, posX, posY, posZ);
 		}
 		if (before) {
-			final int x = mop.getBlockPos().getX() + ((mop.sideHit == EnumFacing.NORTH) ? -1 : ((mop.sideHit == EnumFacing.SOUTH) ? 1 : 0));
-			final int z = mop.getBlockPos().getZ() + ((mop.sideHit == EnumFacing.EAST) ? -1 : ((mop.sideHit == EnumFacing.WEST) ? 1 : 0));
-			int y = mop.getBlockPos().getY() + ((mop.sideHit == EnumFacing.DOWN) ? -1 : ((mop.sideHit == EnumFacing.UP) ? 1 : 0));
-			if (mop.sideHit == EnumFacing.UP && !getMaterial(world, new BlockPos(x, mop.getBlockPos().getY(), z)).isSolid()) {
+			final int x = mop.getBlockPos().getX()
+					+ ((mop.sideHit == EnumFacing.NORTH) ? -1 : ((mop.sideHit == EnumFacing.SOUTH) ? 1 : 0));
+			final int z = mop.getBlockPos().getZ()
+					+ ((mop.sideHit == EnumFacing.EAST) ? -1 : ((mop.sideHit == EnumFacing.WEST) ? 1 : 0));
+			int y = mop.getBlockPos().getY()
+					+ ((mop.sideHit == EnumFacing.DOWN) ? -1 : ((mop.sideHit == EnumFacing.UP) ? 1 : 0));
+			if (mop.sideHit == EnumFacing.UP
+					&& !getMaterial(world, new BlockPos(x, mop.getBlockPos().getY(), z)).isSolid()) {
 				--y;
 			}
 			return getBlock(world, x, y, z);
@@ -99,9 +104,12 @@ public class BlockUtil {
 			return new int[] { posX, posY, posZ };
 		}
 		if (before) {
-			final int x = mop.getBlockPos().getX() + ((mop.sideHit == EnumFacing.NORTH) ? -1 : ((mop.sideHit == EnumFacing.SOUTH) ? 1 : 0));
-			final int z = mop.getBlockPos().getZ() + ((mop.sideHit == EnumFacing.EAST) ? -1 : ((mop.sideHit == EnumFacing.WEST) ? 1 : 0));
-			int y = mop.getBlockPos().getY() + ((mop.sideHit == EnumFacing.DOWN) ? -1 : ((mop.sideHit == EnumFacing.UP) ? 1 : 0));
+			final int x = mop.getBlockPos().getX()
+					+ ((mop.sideHit == EnumFacing.NORTH) ? -1 : ((mop.sideHit == EnumFacing.SOUTH) ? 1 : 0));
+			final int z = mop.getBlockPos().getZ()
+					+ ((mop.sideHit == EnumFacing.EAST) ? -1 : ((mop.sideHit == EnumFacing.WEST) ? 1 : 0));
+			int y = mop.getBlockPos().getY()
+					+ ((mop.sideHit == EnumFacing.DOWN) ? -1 : ((mop.sideHit == EnumFacing.UP) ? 1 : 0));
 			if (mop.sideHit == EnumFacing.UP && !getMaterial(world, mop.getBlockPos()).isSolid()) {
 				--y;
 			}
@@ -119,7 +127,8 @@ public class BlockUtil {
 		return getTileEntity(world, pos.getX(), pos.getY(), pos.getZ(), clazz);
 	}
 
-	public static <T> T getTileEntity(final IBlockAccess world, final int posX, final int posY, final int posZ, final Class<T> clazz) {
+	public static <T> T getTileEntity(final IBlockAccess world, final int posX, final int posY, final int posZ,
+			final Class<T> clazz) {
 		final TileEntity tile = world.getTileEntity(new BlockPos(posX, posY, posZ));
 		if (tile != null && clazz.isAssignableFrom(tile.getClass())) {
 			return clazz.cast(tile);
@@ -130,8 +139,7 @@ public class BlockUtil {
 	public static void setBlock(final World world, BlockPos pos, IBlockState state, final int updateFlags) {
 		if (state != null) {
 			world.setBlockState(pos, state, updateFlags);
-		}
-		else {
+		} else {
 			world.setBlockToAir(pos);
 		}
 	}
@@ -139,25 +147,27 @@ public class BlockUtil {
 	public static void setBlock(final World world, BlockPos pos, IBlockState state) {
 		if (state != null) {
 			world.setBlockState(pos, state);
-		}
-		else {
+		} else {
 			world.setBlockToAir(pos);
 		}
 
 	}
 
-	public static void setBlock(final World world, final double posX, final double posY, final double posZ, final Block block) {
+	public static void setBlock(final World world, final double posX, final double posY, final double posZ,
+			final Block block) {
 		final int x = MathHelper.floor_double(posX);
 		final int y = MathHelper.floor_double(posY);
 		final int z = MathHelper.floor_double(posZ);
 		setBlock(world, x, y, z, block);
 	}
 
-	public static void setMetadata(final World world, final int posX, final int posY, final int posZ, IBlockState newMetadata) {
+	public static void setMetadata(final World world, final int posX, final int posY, final int posZ,
+			IBlockState newMetadata) {
 		setMetadata(world, posX, posY, posZ, newMetadata, 3);
 	}
 
-	public static void setMetadata(final World world, final int posX, final int posY, final int posZ, IBlockState newMetadata, final int updateFlags) {
+	public static void setMetadata(final World world, final int posX, final int posY, final int posZ,
+			IBlockState newMetadata, final int updateFlags) {
 		world.setBlockState(new BlockPos(posX, posY, posZ), newMetadata, updateFlags);
 	}
 
@@ -191,25 +201,26 @@ public class BlockUtil {
 	}
 
 	public static boolean isNormalCube(final Block block) {
-		return block.getMaterial(block.getDefaultState()).blocksMovement() && EnumBlockRenderType.MODEL == block.getRenderType(block.getDefaultState());
+		return block.getMaterial(block.getDefaultState()).blocksMovement()
+				&& EnumBlockRenderType.MODEL == block.getRenderType(block.getDefaultState());
 	}
 
-	public static Coord getClosestPlantableBlock(final World world, final int x, final int y, final int z, final EnumFacing side, final EntityLivingBase entity) {
+	public static Coord getClosestPlantableBlock(final World world, final int x, final int y, final int z,
+			final EnumFacing side, final EntityLivingBase entity) {
 		return getClosestPlantableBlock(world, x, y, z, side, entity, false);
 	}
 
-	public static Coord getClosestPlantableBlock(final World world, int x, int y, int z, final EnumFacing side, final EntityLivingBase entity, final boolean allowAir) {
+	public static Coord getClosestPlantableBlock(final World world, int x, int y, int z, final EnumFacing side,
+			final EntityLivingBase entity, final boolean allowAir) {
 		boolean foundBase = false;
 		if (isReplaceableBlock(world, x, y, z) && (!allowAir || !world.isAirBlock(new BlockPos(x, y, z)))) {
 			do {
 				--y;
 			} while (isReplaceableBlock(world, x, y, z));
 			foundBase = true;
-		}
-		else if (side == EnumFacing.UP || side == null) {
+		} else if (side == EnumFacing.UP || side == null) {
 			foundBase = true;
-		}
-		else if (side != EnumFacing.DOWN) {
+		} else if (side != EnumFacing.DOWN) {
 			x += side.getFrontOffsetX();
 			z += side.getFrontOffsetZ();
 			if (isReplaceableBlock(world, x, y, z)) {
@@ -226,11 +237,13 @@ public class BlockUtil {
 		return null;
 	}
 
-	public static boolean setBlockIfReplaceable(final World world, final int x, final int y, final int z, final Block block) {
+	public static boolean setBlockIfReplaceable(final World world, final int x, final int y, final int z,
+			final Block block) {
 		return setBlockIfReplaceable(world, x, y, z, block, 0);
 	}
 
-	public static boolean setBlockIfReplaceable(final World world, final int x, final int y, final int z, final Block block, final int meta) {
+	public static boolean setBlockIfReplaceable(final World world, final int x, final int y, final int z,
+			final Block block, final int meta) {
 		BlockPos pos = new BlockPos(x, y, z);
 		final Block currentBlock = getBlock(world, pos);
 		if (currentBlock != null && currentBlock.isReplaceable(world, pos)) {

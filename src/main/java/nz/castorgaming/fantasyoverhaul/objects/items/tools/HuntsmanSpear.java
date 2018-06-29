@@ -12,7 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import nz.castorgaming.fantasyoverhaul.objects.items.ToolSword;
+import nz.castorgaming.fantasyoverhaul.objects.items.main.ToolSword;
 
 public class HuntsmanSpear extends ToolSword {
 

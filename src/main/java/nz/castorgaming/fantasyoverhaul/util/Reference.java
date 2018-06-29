@@ -47,6 +47,8 @@ public class Reference {
 	public static final String BREW_START_KEY = "FOBrewStart";
 	public static final String BREW_REMAINING_KEY = "FOBrewRemaining";
 	public static final String SPELL_BOOK_KEY = "FOSpellBook";
+	public static final String WAKING_NIGHTMARE = "FOWakingNightmare";
+	public static final String SHOP_STOCK = "FOShopStock";
 
 	// Resource Keys
 	public static final String INFUSION_REQUIRED = "infuse.infusionrequired";
@@ -70,6 +72,8 @@ public class Reference {
 	// Chat Util Keys
 	public static final String WERE_CHUNK_VISITED = "fo.werewolf.chunkvisited";
 	public static final String WERE_INFECTION = "fo.werewolf.infection";
+	public static final String MANIFESTATION_COUNTDOWN = "fo.rite.manifestation.countdown";
+	public static final String TORMENT_NOSTONE = "fo.tormentContract.nostones";
 
 	// Constants
 	public static final int TICKS_PER_SECOND = 20;
@@ -87,6 +91,7 @@ public class Reference {
 	public static final int MILLISECS_PER_MINUTE = 60000;
 	public static final long MILLISECS_PER_TICK = 50L;
 	public static final UUID BLANK_UUID = new UUID(0L, 0L);
+	public static final String BOUND_TO = "item.taglock_kit.boundto";
 
 	public static ResourceLocation location(String path) {
 		return new ResourceLocation(MODID, path);

@@ -15,13 +15,11 @@ import nz.castorgaming.fantasyoverhaul.util.classes.TimeUtilities;
 
 public abstract class InfusionBrewEffect extends IForgeRegistryEntry.Impl<InfusionBrewEffect> {
 
-	private int id;
 	private long durationTicks;
 	private String effectName;
 	private static IForgeRegistry<InfusionBrewEffect> REGISTRY = GameRegistry.findRegistry(InfusionBrewEffect.class);
 
 	protected InfusionBrewEffect(int id, long durationMS, String name) {
-		this.id = id;
 		this.durationTicks = durationMS;
 		effectName = name;
 		setRegistryName(effectName);
@@ -86,7 +84,8 @@ public abstract class InfusionBrewEffect extends IForgeRegistryEntry.Impl<Infusi
 		}
 	}
 
-	public static void setActiveBrew(World world, EntityPlayer player, NBTTagCompound nbt, InfusionBrewEffect brew, boolean sync) {
+	public static void setActiveBrew(World world, EntityPlayer player, NBTTagCompound nbt, InfusionBrewEffect brew,
+			boolean sync) {
 		if (nbt != null && !world.isRemote) {
 			nbt.setString(Reference.BREW_TYPE_KEY, brew.effectName);
 			nbt.setLong(Reference.BREW_START_KEY, TimeUtilities.getServerTimeInTicks());
@@ -106,7 +105,8 @@ public abstract class InfusionBrewEffect extends IForgeRegistryEntry.Impl<Infusi
 		nbt.setLong(Reference.BREW_START_KEY, startTime);
 	}
 
-	public static void checkActiveEffects(World world, EntityPlayer player, NBTTagCompound nbt, boolean sync, long currentTime) {
+	public static void checkActiveEffects(World world, EntityPlayer player, NBTTagCompound nbt, boolean sync,
+			long currentTime) {
 		if (nbt != null && !world.isRemote) {
 			InfusionBrewEffect activeEffect = getActiveBrew(nbt);
 			if (activeEffect != null) {

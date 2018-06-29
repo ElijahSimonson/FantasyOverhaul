@@ -22,8 +22,7 @@ public abstract class ModHook {
 		if (initialized) {
 			doInit();
 			Log.instance().debug(String.format("Mod: %s support initialized", getModID()));
-		}
-		else {
+		} else {
 			Log.instance().debug(String.format("Mod: %s not found", getModID()));
 		}
 	}

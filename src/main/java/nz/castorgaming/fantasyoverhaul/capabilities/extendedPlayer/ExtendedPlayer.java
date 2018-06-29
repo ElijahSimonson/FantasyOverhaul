@@ -22,11 +22,10 @@ import net.minecraft.util.StringUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nz.castorgaming.fantasyoverhaul.capabilities.PlayerCapabilityMaster;
-import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.IPlayerVampire;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerVampire.PlayerVampire;
-import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.IPlayerWerewolf;
 import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.PlayerWerewolf;
 import nz.castorgaming.fantasyoverhaul.client.renderer.RenderReflection;
+import nz.castorgaming.fantasyoverhaul.init.CapabilityInit;
 import nz.castorgaming.fantasyoverhaul.init.Potions;
 import nz.castorgaming.fantasyoverhaul.objects.potions.PotionBase;
 import nz.castorgaming.fantasyoverhaul.util.Reference;
@@ -39,8 +38,10 @@ import nz.castorgaming.fantasyoverhaul.util.packets.PacketPlayerStyle;
 public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPlayer {
 
 	private static final int MAX_SKILL_LEVEL_POTION_BOTTLING = 100;
-
 	private static final int MAX_SKILL_LEVEL_POTION_THROWING = 100;
+
+	public PlayerVampire vampire;
+	public PlayerWerewolf werewolf;
 
 	static final long COOLDOWN_ESCAPE_1_TICKS;
 	static final long COOLDOWN_ESCAPE_2_TICKS;
@@ -50,11 +51,9 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 		COOLDOWN_ESCAPE_2_TICKS = TimeUtilities.minsToTicks(3);
 	}
 
-	private static final int DEFAULT_ULTIMATE_CHARGES = 5;
-
 	public static void loadProxyData(EntityPlayer player) {
 		if (player != null) {
-			ExtendedPlayer playerEx = IExtendPlayer.get(player);
+			ExtendedPlayer playerEx = ExtendedPlayer.get(player);
 			playerEx.sync();
 		}
 	}
@@ -78,10 +77,6 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 	boolean getPlayerData;
 	boolean resetSleep;
 	int cachedSky;
-
-	private PlayerVampire vampireCapability;
-
-	private PlayerWerewolf werewolfCapability;
 
 	private Coord mirrorWorldEntryPoint;
 
@@ -188,8 +183,8 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 		Object object = textureManager.getTexture(location);
 		if (object == null) {
-			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(name)), RenderReflection.SKIN,
-					new ImageBufferDownload());
+			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png",
+					StringUtils.stripControlCodes(name)), RenderReflection.SKIN, new ImageBufferDownload());
 			textureManager.loadTexture(location, (ITextureObject) object);
 		}
 		return (ThreadDownloadImageData) object;
@@ -234,7 +229,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 
 	@Override
 	public int increaseSkillPotionBottling() {
-		skillLevelPotionBottling = Math.min(skillLevelPotionBottling + 1, 100);
+		skillLevelPotionBottling = Math.min(skillLevelPotionBottling + 1, MAX_SKILL_LEVEL_POTION_BOTTLING);
 		if (skillLevelPotionBottling == 30 || skillLevelPotionBottling == 60) {
 			ChatUtilities.sendTranslated(player, Reference.BREW_SKILL_INCREASE, new Object[0]);
 		}
@@ -243,7 +238,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 
 	@Override
 	public int increaseSkillPotionThrowing() {
-		skillLevelPotionThrowing = Math.min(skillLevelPotionThrowing + 1, 100);
+		skillLevelPotionThrowing = Math.min(skillLevelPotionThrowing + 1, MAX_SKILL_LEVEL_POTION_THROWING);
 		return getSkillPotionThrowing();
 	}
 
@@ -332,8 +327,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 			String name = Minecraft.getMinecraft().theWorld.getPlayerEntityByUUID(ownerUUID).getName();
 			locationSkin = AbstractClientPlayer.getLocationSkin(name);
 			downloadImageSkin = getDownloadImageSkin(locationSkin, name);
-		}
-		else {
+		} else {
 			locationSkin = null;
 			downloadImageSkin = null;
 		}
@@ -342,7 +336,8 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 	@Override
 	public void updateWorship() {
 		if (cachedWorship >= 0) {
-			player.addPotionEffect(new PotionEffect(Potions.WORSHIP, TimeUtilities.secsToTicks(60), cachedWorship, true, false));
+			player.addPotionEffect(
+					new PotionEffect(Potions.WORSHIP, TimeUtilities.secsToTicks(60), cachedWorship, true, false));
 			cachedWorship = -1;
 		}
 		processSync();
@@ -352,9 +347,13 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 	public Map<PlayerType, Integer> getLevels() {
 		Map<PlayerType, Integer> levels = new HashMap<PlayerType, Integer>();
 
-		levels.put(PlayerType.VAMPIRE, IPlayerVampire.get(player).getVampireLevel());
-		levels.put(PlayerType.VAMPIRE, IPlayerWerewolf.get(player).getWerewolfLevel());
+		levels.put(PlayerType.VAMPIRE, vampire.getVampireLevel());
+		levels.put(PlayerType.VAMPIRE, werewolf.getWerewolfLevel());
 		return levels;
+	}
+
+	public static ExtendedPlayer get(EntityPlayer player) {
+		return (ExtendedPlayer) player.getCapability(CapabilityInit.EXTENDED_PLAYER, null);
 	}
 
 }

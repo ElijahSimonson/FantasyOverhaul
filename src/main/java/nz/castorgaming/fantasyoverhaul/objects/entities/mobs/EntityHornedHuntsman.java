@@ -219,8 +219,7 @@ public class EntityHornedHuntsman extends EntityMob implements IRangedAttackMob,
 		if (par1 == 1) {
 			attackTimer = 10;
 			playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0f, 1.0f);
-		}
-		else {
+		} else {
 			super.handleStatusUpdate(par1);
 		}
 	}
@@ -263,8 +262,7 @@ public class EntityHornedHuntsman extends EntityMob implements IRangedAttackMob,
 		setInvulTime(compound.getInteger("InvulTime"));
 		if (compound.hasKey("explosiveEntrance")) {
 			explosiveEntrance = compound.getBoolean("explosiveEntrance");
-		}
-		else {
+		} else {
 			explosiveEntrance = false;
 		}
 	}
@@ -278,8 +276,7 @@ public class EntityHornedHuntsman extends EntityMob implements IRangedAttackMob,
 		byte b0 = dataManager.get(PLAYER_CREATED);
 		if (playerCreated) {
 			dataManager.set(PLAYER_CREATED, (byte) (b0 | 0x1));
-		}
-		else {
+		} else {
 			dataManager.set(PLAYER_CREATED, (byte) (b0 & 0xFFFFFFFF));
 		}
 	}
@@ -301,8 +298,7 @@ public class EntityHornedHuntsman extends EntityMob implements IRangedAttackMob,
 				IBlockState testState = worldObj.getBlockState(testPos);
 				if (testState.getMaterial().blocksMovement()) {
 					flag2 = true;
-				}
-				else {
+				} else {
 					--posY;
 					--j;
 				}
@@ -361,8 +357,7 @@ public class EntityHornedHuntsman extends EntityMob implements IRangedAttackMob,
 			if (ticksExisted % 10 == 0) {
 				heal(20.f);
 			}
-		}
-		else {
+		} else {
 			super.updateAITasks();
 			if (ticksExisted % 20 == 0) {
 				heal(1.0f);

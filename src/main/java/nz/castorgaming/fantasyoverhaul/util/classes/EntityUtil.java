@@ -73,7 +73,9 @@ public class EntityUtil {
 			String s = "witchery:death.attack" + damageType;
 			String s2 = s + ",player";
 			TextComponentTranslation textOutput = entityLivingBase1 != null && I18n.hasKey(s2)
-					? new TextComponentTranslation(s2, new Object[] { entity.getCommandSenderEntity().getName(), entityLivingBase1.getCommandSenderEntity().getName() })
+					? new TextComponentTranslation(s2,
+							new Object[] { entity.getCommandSenderEntity().getName(),
+									entityLivingBase1.getCommandSenderEntity().getName() })
 					: new TextComponentTranslation(s, new Object[] { entity.getCommandSenderEntity().getName() });
 			return textOutput;
 		}
@@ -104,15 +106,18 @@ public class EntityUtil {
 		fieldTrackedEntities = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void correctProjectileTrackerSync(World world, Entity projectile) {
 		if (!world.isRemote && world instanceof WorldServer) {
 			try {
 				if (fieldTrackedEntities == null) {
-					fieldTrackedEntities = ReflectionHelper.findField(EntityTracker.class, new String[] { "trackedEntities", "trackedEntities", "b" });
+					fieldTrackedEntities = ReflectionHelper.findField(EntityTracker.class,
+							new String[] { "trackedEntities", "trackedEntities", "b" });
 				}
 				if (fieldTrackedEntities != null) {
 					EntityTracker tracker = ((WorldServer) world).getEntityTracker();
-					Set<EntityTrackerEntry> trackedEntities = (Set<EntityTrackerEntry>) fieldTrackedEntities.get(tracker);
+					Set<EntityTrackerEntry> trackedEntities = (Set<EntityTrackerEntry>) fieldTrackedEntities
+							.get(tracker);
 
 					for (EntityTrackerEntry next : trackedEntities) {
 						if (next.getTrackedEntity() == projectile) {
@@ -137,8 +142,10 @@ public class EntityUtil {
 		}
 	}
 
-	public static <T extends Entity> T findNearestEntityWithinAABB(World world, Class<T> clazz, AxisAlignedBB bounds, Entity entity) {
-		Entity foundEntity = world.findNearestEntityWithinAABB((Class) clazz, bounds, entity);
+	@SuppressWarnings("unchecked")
+	public static <T extends Entity> T findNearestEntityWithinAABB(World world, Class<T> clazz, AxisAlignedBB bounds,
+			Entity entity) {
+		Entity foundEntity = world.findNearestEntityWithinAABB((Class<? extends Entity>) clazz, bounds, entity);
 		if (foundEntity != null) {
 			return (T) foundEntity;
 		}
@@ -146,17 +153,21 @@ public class EntityUtil {
 	}
 
 	public static <T extends Entity> List<T> getEntityInRadius(Class<T> clazz, TileEntity tile, double radius) {
-		return getEntityInRadius(clazz, tile.getWorld(), 0.5 + tile.getPos().getX(), 0.5 + tile.getPos().getY(), 0.5 + tile.getPos().getZ(), radius);
+		return getEntityInRadius(clazz, tile.getWorld(), 0.5 + tile.getPos().getX(), 0.5 + tile.getPos().getY(),
+				0.5 + tile.getPos().getZ(), radius);
 	}
 
-	public static <T extends Entity> List<T> getEntityInRadius(Class<T> clazz, World world, double x, double y, double z, double radius) {
-		AxisAlignedBB bounds = new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
-		List<T> entities = world.getEntitiesWithinAABB((Class) clazz, bounds);
+	@SuppressWarnings("unchecked")
+	public static <T extends Entity> List<T> getEntityInRadius(Class<T> clazz, World world, double x, double y,
+			double z, double radius) {
+		AxisAlignedBB bounds = new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius,
+				z + radius);
+		List<? extends Entity> entities = world.getEntitiesWithinAABB((Class<? extends Entity>) clazz, bounds);
 		ArrayList<T> nearbyEntities = new ArrayList<T>();
 		double radiusSq = radius * radius;
-		for (T entity : entities) {
+		for (Entity entity : entities) {
 			if (entity.getDistanceSq(x, entity.posY, z) <= radiusSq) {
-				nearbyEntities.add(entity);
+				nearbyEntities.add((T) entity);
 			}
 		}
 		return nearbyEntities;
@@ -178,8 +189,7 @@ public class EntityUtil {
 		}
 		if (damage <= 00.0f) {
 			damage = 0.0f;
-		}
-		else {
+		} else {
 			i = EnchantmentHelper.getEnchantmentModifierDamage(entity.getHeldEquipment(), event.getSource());
 			if (i > 20) {
 				float j = 25 - i;
@@ -195,13 +205,11 @@ public class EntityUtil {
 			if (entity instanceof EntityLiving) {
 				if (attacker == null) {
 					entity.onDeath(DamageSource.magic);
-				}
-				else {
+				} else {
 					entity.onDeath(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker));
 				}
 				entity.setDead();
-			}
-			else if (entity instanceof EntityPlayer) {
+			} else if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
 				if (!player.capabilities.isCreativeMode) {
 					if (player.isPlayerSleeping()) {
@@ -209,9 +217,9 @@ public class EntityUtil {
 					}
 					entity.setHealth(0.0f);
 					if (IPlayerVampire.get(player).isVampire()) {
-						entity.onDeath(attacker == null ? DamageSourceSunlight.SUN : new DamageSourceSunlight(attacker));
-					}
-					else {
+						entity.onDeath(
+								attacker == null ? DamageSourceSunlight.SUN : new DamageSourceSunlight(attacker));
+					} else {
 						entity.onDeath(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker));
 					}
 				}
@@ -232,10 +240,10 @@ public class EntityUtil {
 		int mod = 0;
 		int sign = -1;
 		while (!done && mod <= 2 * maxDY && y < 250 && y > 2) {
-			if (BlockUtil.isNormalCube(world.getBlockState(new BlockPos(x, y, z)).getBlock()) && world.isAirBlock(new BlockPos(x, y + 1, z)) && world.isAirBlock(new BlockPos(x, y + 2, z))) {
+			if (BlockUtil.isNormalCube(world.getBlockState(new BlockPos(x, y, z)).getBlock())
+					&& world.isAirBlock(new BlockPos(x, y + 1, z)) && world.isAirBlock(new BlockPos(x, y + 2, z))) {
 				done = true;
-			}
-			else {
+			} else {
 				++mod;
 				sign *= -1;
 				y += mod * sign;
@@ -284,8 +292,7 @@ public class EntityUtil {
 		}
 		if (entity instanceof EntityPlayer) {
 			Reference.PACKET_HANDLER.sendTo((IMessage) new PushTarget(mx, my, mz), (EntityPlayer) entity);
-		}
-		else {
+		} else {
 			entity.motionX = mx;
 			entity.motionY = my;
 			entity.motionZ = mz;
@@ -304,20 +311,17 @@ public class EntityUtil {
 			double d7 = -(d3 * 0.01999999955296516 / d4) * Math.pow(6.0, 3.0);
 			if (d5 > 0.0) {
 				d5 = 0.22;
-			}
-			else if (d5 < 0.0) {
+			} else if (d5 < 0.0) {
 				d5 = -0.22;
 			}
 			if (d6 > 0.2) {
 				d6 = 0.12;
-			}
-			else if (d6 < -0.1) {
+			} else if (d6 < -0.1) {
 				d6 = 0.12;
 			}
 			if (d7 > 0.0) {
 				d7 = 0.22;
-			}
-			else if (d7 < 0.0) {
+			} else if (d7 < 0.0) {
 				d7 = -0.22;
 			}
 			entity.motionX += d5 * power;
@@ -338,8 +342,7 @@ public class EntityUtil {
 
 		if (entity instanceof EntityPlayer) {
 			Reference.PACKET_HANDLER.sendTo((IMessage) new PushTarget(dx, dy, dz), (EntityPlayer) entity);
-		}
-		else {
+		} else {
 			entity.motionX = dx;
 			entity.motionY = dy;
 			entity.motionZ = dz;
@@ -359,11 +362,13 @@ public class EntityUtil {
 			try {
 				EntityGhast ghastEntity = (EntityGhast) attacker;
 				if (fieldGhastTargetedEntity == null) {
-					fieldGhastTargetedEntity = ReflectionHelper.findField(EntityGhast.class, new String[] { "targetedEntity", "targetedEntity", "g" });
+					fieldGhastTargetedEntity = ReflectionHelper.findField(EntityGhast.class,
+							new String[] { "targetedEntity", "targetedEntity", "g" });
 				}
 				fieldGhastTargetedEntity.set(ghastEntity, victim);
 				if (fieldGhastAggroCooldown == null) {
-					fieldGhastAggroCooldown = ReflectionHelper.findField(EntityGhast.class, new String[] { "aggroCooldown", "aggroCooldown", "h" });
+					fieldGhastAggroCooldown = ReflectionHelper.findField(EntityGhast.class,
+							new String[] { "aggroCooldown", "aggroCooldown", "h" });
 				}
 				fieldGhastAggroCooldown.set(ghastEntity, 20000);
 			} catch (IllegalAccessException e) {
@@ -379,7 +384,7 @@ public class EntityUtil {
 			attackerCreature.setRevengeTarget(victim);
 			if (attackerCreature instanceof EntityZombie || attackerCreature instanceof EntityCreeper) {
 				boolean found = false;
-				Class victimClass = victim.getClass();
+				Class<? extends EntityLivingBase> victimClass = victim.getClass();
 				for (Object obj : attackerCreature.targetTasks.taskEntries) {
 					EntityAITasks.EntityAITaskEntry task = (EntityAITasks.EntityAITaskEntry) obj;
 					if (task.action instanceof EntityAIAttackOnCollide2) {
@@ -430,8 +435,7 @@ public class EntityUtil {
 				creature.attackEntityFrom(source, 0.0f);
 				creature.setHealth(Math.max(creature.getHealth() - Math.min(damage, cap), 0.0f));
 				creature.attackEntityFrom(source, 0.0f);
-			}
-			else if (victim instanceof EntityPlayer) {
+			} else if (victim instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) victim;
 				if (player.capabilities.isCreativeMode) {
 					return false;
@@ -440,12 +444,10 @@ public class EntityUtil {
 				if (player.getHealth() <= 0.0f) {
 					if (attacker == null) {
 						player.onDeath(DamageSource.magic);
-					}
-					else {
+					} else {
 						player.onDeath(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker));
 					}
-				}
-				else {
+				} else {
 					player.attackEntityFrom(new EntityDamageSource(DamageSource.magic.getDamageType(), attacker), 0.0f);
 				}
 			}
@@ -457,20 +459,23 @@ public class EntityUtil {
 		return !world.isRemote ? world.getMinecraftServer() : FMLCommonHandler.instance().getMinecraftServerInstance();
 	}
 
-	public static boolean teleportToLocationSafely(final World world, final double posX, final double posY, final double posZ, final int dimension, final Entity entity, final boolean presetPosition) {
+	public static boolean teleportToLocationSafely(final World world, final double posX, final double posY,
+			final double posZ, final int dimension, final Entity entity, final boolean presetPosition) {
 		final World targetWorld = getServer(world).worldServerForDimension(dimension);
 		final int x = MathHelper.floor_double(posX);
 		final int y = MathHelper.floor_double(posY);
 		final int z = MathHelper.floor_double(posZ);
 		for (int i = 0; i < 16; ++i) {
 			int dy = y + i;
-			if (dy < 250 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
+			if (dy < 250 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
 					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
 				teleportToLocation(world, x, dy + 1, z, dimension, entity, presetPosition);
 				return true;
 			}
 			dy = y - i;
-			if (i > 0 && dy > 1 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
+			if (i > 0 && dy > 1 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
 					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
 				teleportToLocation(world, x, dy + 1, z, dimension, entity, presetPosition);
 				return true;
@@ -479,18 +484,23 @@ public class EntityUtil {
 		return false;
 	}
 
-	public static void teleportToLocation(final World world, final double posX, final double posY, final double posZ, final int dimension, final Entity entity, final boolean presetPosition) {
-		teleportToLocation(world, posX, posY, posZ, dimension, entity, presetPosition, ParticleEffect.PORTAL, SoundEffect.MOB_ENDERMEN_PORTAL);
+	public static void teleportToLocation(final World world, final double posX, final double posY, final double posZ,
+			final int dimension, final Entity entity, final boolean presetPosition) {
+		teleportToLocation(world, posX, posY, posZ, dimension, entity, presetPosition, ParticleEffect.PORTAL,
+				SoundEffect.MOB_ENDERMEN_PORTAL);
 	}
 
-	public static void teleportToLocation(final World world, final double posX, final double posY, final double posZ, final int dimension, final Entity entity, final boolean presetPosition,
-			final ParticleEffect particle, final SoundEffect sound) {
+	public static void teleportToLocation(final World world, final double posX, final double posY, final double posZ,
+			final int dimension, final Entity entity, final boolean presetPosition, final ParticleEffect particle,
+			final SoundEffect sound) {
 		final boolean isVampire = CreatureUtilities.isVampire(entity);
 		if (isVampire) {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
-		}
-		else {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
+			Reference.PACKET_HANDLER.sendToAllAround(
+					new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
+		} else {
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
 		}
 		if (entity instanceof EntityPlayer) {
 			final EntityPlayer player = (EntityPlayer) entity;
@@ -501,26 +511,24 @@ public class EntityUtil {
 				travelToDimension(player, dimension);
 			}
 			player.setPositionAndUpdate(posX, posY, posZ);
-		}
-		else if (entity instanceof EntityLiving) {
+		} else if (entity instanceof EntityLiving) {
 			if (entity.dimension != dimension) {
 				travelToDimension(entity, dimension, posX, posY, posZ);
-			}
-			else {
+			} else {
 				entity.setLocationAndAngles(posX, posY, posZ, entity.rotationYaw, entity.rotationPitch);
 			}
-		}
-		else if (entity.dimension != dimension) {
+		} else if (entity.dimension != dimension) {
 			travelToDimension(entity, dimension, posX, posY, posZ);
-		}
-		else {
+		} else {
 			entity.setLocationAndAngles(posX, posY, posZ, entity.rotationYaw, entity.rotationPitch);
 		}
 		if (isVampire) {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.fantasyoverhaul_RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
-		}
-		else {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
+			Reference.PACKET_HANDLER.sendToAllAround(
+					new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
+		} else {
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
 		}
 	}
 
@@ -528,11 +536,13 @@ public class EntityUtil {
 		if (!player.worldObj.isRemote & player instanceof EntityPlayerMP) {
 			final MinecraftServer server = getServer(player.worldObj);
 			final WorldServer newWorldServer = server.worldServerForDimension(dimension);
-			server.getPlayerList().transferPlayerToDimension((EntityPlayerMP) player, dimension, new FOTeleporter(newWorldServer));
+			server.getPlayerList().transferPlayerToDimension((EntityPlayerMP) player, dimension,
+					new FOTeleporter(newWorldServer));
 		}
 	}
 
-	private static Entity travelToDimension(final Entity thisE, final int newDimension, final double posX, final double posY, final double posZ) {
+	private static Entity travelToDimension(final Entity thisE, final int newDimension, final double posX,
+			final double posY, final double posZ) {
 		if (!thisE.worldObj.isRemote && !thisE.isDead) {
 			final MinecraftServer minecraftserver = getServer(thisE.worldObj);
 			int currentDimension = thisE.dimension;
@@ -558,7 +568,8 @@ public class EntityUtil {
 			 * worldserver.resetUpdateEntityTick(); worldserver2.resetUpdateEntityTick();
 			 * thisE.worldObj.theProfiler.endSection();
 			 */
-			minecraftserver.getPlayerList().transferEntityToWorld(thisE, currentDimension, currentWorldServer, newWorldServer, new FOTeleporter(newWorldServer));
+			minecraftserver.getPlayerList().transferEntityToWorld(thisE, currentDimension, currentWorldServer,
+					newWorldServer, new FOTeleporter(newWorldServer));
 
 			return thisE;
 		}

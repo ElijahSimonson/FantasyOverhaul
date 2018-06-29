@@ -85,8 +85,7 @@ public class ExtendVillager implements IExtendVillager {
 			this.sleeping = sleeping;
 			if (this.sleeping) {
 				Resizing.setEntitySize(villager, 0.8f, 1.1f);
-			}
-			else {
+			} else {
 				Resizing.setEntitySize(villager, 0.6f, 1.8f);
 				if (sleepingTicks > TimeUtilities.minsToTicks(1)) {
 					int blops = sleepingTicks / TimeUtilities.minsToTicks(1);
@@ -122,8 +121,7 @@ public class ExtendVillager implements IExtendVillager {
 		if (player instanceof EntityPlayer) {
 			if (blood < Math.ceil(250.0)) {
 				villager.attackEntityFrom(new EntityDamageSource(DamageSource.magic.getDamageType(), player), 1.3f);
-			}
-			else if (!isKnockedOut) {
+			} else if (!isKnockedOut) {
 				villager.attackEntityFrom(new EntityDamageSource(DamageSource.magic.getDamageType(), player), 0.1f);
 			}
 		}

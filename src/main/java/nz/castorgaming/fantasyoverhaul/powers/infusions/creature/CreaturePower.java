@@ -62,8 +62,7 @@ public class CreaturePower extends IForgeRegistryEntry.Impl<CreaturePower> {
 		if (beastPower != null) {
 			tags.setInteger(Reference.BEAST_POWER_CHARGES_KEY, beastCharges);
 			tags.setString(Reference.BEAST_POWER_KEY, beastPower);
-		}
-		else {
+		} else {
 			if (tags.hasKey(Reference.BEAST_POWER_KEY)) {
 				tags.removeTag(Reference.BEAST_POWER_KEY);
 			}

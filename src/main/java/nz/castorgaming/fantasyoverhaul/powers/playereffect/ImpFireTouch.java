@@ -29,7 +29,8 @@ public class ImpFireTouch extends PlayerEffect {
 	protected void doInteract(final EntityPlayer player, final PlayerInteractEvent event) {
 		final World world = player.worldObj;
 		if (world.rand.nextDouble() < 0.2) {
-			final Block block = BlockUtil.getBlock(world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+			final Block block = BlockUtil.getBlock(world, event.getPos().getX(), event.getPos().getY(),
+					event.getPos().getZ());
 			if (block != null && block != Blocks.AIR) {
 				int par4 = event.getPos().getX();
 				int par5 = event.getPos().getY();
@@ -57,11 +58,20 @@ public class ImpFireTouch extends PlayerEffect {
 					par4 = par4 - 1 + world.rand.nextInt(3);
 					par6 = par6 - 1 + world.rand.nextInt(3);
 				}
-				if (world.isAirBlock(new BlockPos(par4, par5, par6)) && !world.isAirBlock(new BlockPos(par4, par5 - 1, par6))) {
-					world.playSound(null, new BlockPos(par4 + 0.5, par5 + 0.5, par6 + 0.5), SoundEffect.FIRE_FIRE.event(), SoundCategory.PLAYERS, 1.0f, world.rand.nextFloat() * 0.4f + 0.8f);
+				if (world.isAirBlock(new BlockPos(par4, par5, par6))
+						&& !world.isAirBlock(new BlockPos(par4, par5 - 1, par6))) {
+					world.playSound(null, new BlockPos(par4 + 0.5, par5 + 0.5, par6 + 0.5),
+							SoundEffect.FIRE_FIRE.event(), SoundCategory.PLAYERS, 1.0f,
+							world.rand.nextFloat() * 0.4f + 0.8f);
 					world.setBlockState(new BlockPos(par4, par5, par6), Blocks.FIRE.getDefaultState());
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onDeath(EntityPlayer player) {
+		// TODO Auto-generated method stub
+
 	}
 }

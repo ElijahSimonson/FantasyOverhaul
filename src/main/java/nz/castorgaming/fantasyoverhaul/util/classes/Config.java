@@ -54,7 +54,6 @@ public class Config {
 	public boolean allowMineFactoryReloaded;
 	public boolean allowArsMagica2;
 	public boolean allowForestry;
-	public boolean allowTreecapitator;
 	public boolean allowJustEnoughItems;
 	public boolean respectOtherDeathChestMods;
 
@@ -105,7 +104,8 @@ public class Config {
 	public int townKeepChance;
 	public int townKeepWeight;
 
-	public boolean townAllowSandy, townAllowPlains, townAllowMountian, townAllowHills, townAllowForest, townAllowSnowy, townAllowWasteland, townAllowMesa, townAllowJungle;
+	public boolean townAllowSandy, townAllowPlains, townAllowMountian, townAllowHills, townAllowForest, townAllowSnowy,
+			townAllowWasteland, townAllowMesa, townAllowJungle;
 
 	public List<Building> townParts;
 
@@ -146,92 +146,122 @@ public class Config {
 
 		guiOnLeft = configuration.getBoolean("GUIOnLeft", category, true, "Set GUI on Left");
 
-		allowNamePlateMasquerading = configuration.getBoolean("AllowNamePlateMasquerading", category, true, "Allow Name Plate Masquerading");
-		allowChatMasquerading = configuration.getBoolean("AllowChatMasquerading", category, true, "Allow Chat Masquerading");
+		allowNamePlateMasquerading = configuration.getBoolean("AllowNamePlateMasquerading", category, true,
+				"Allow Name Plate Masquerading");
+		allowChatMasquerading = configuration.getBoolean("AllowChatMasquerading", category, true,
+				"Allow Chat Masquerading");
 
-		allowCovenWitchVisits = configuration.getBoolean("AllowCovenWitchVisits", category, true, "Allow Coven Witch Visits");
+		allowCovenWitchVisits = configuration.getBoolean("AllowCovenWitchVisits", category, true,
+				"Allow Coven Witch Visits");
 
-		allowHellOnEarthFire = configuration.getBoolean("AllowHellOnEarthFires", category, true, "Allow Hell on Earth Fires");
+		allowHellOnEarthFire = configuration.getBoolean("AllowHellOnEarthFires", category, true,
+				"Allow Hell on Earth Fires");
 
 		branchIconSet = configuration.get(category, "BranchIconSet", 0).getInt();
 
-		percentageOfPlayersSleepingForBuff = configuration.getInt("PlayerSleepingBuffPercentage", category, 100, 1, 100, "Percentage of Players sleeping for buffs");
+		percentageOfPlayersSleepingForBuff = configuration.getInt("PlayerSleepingBuffPercentage", category, 100, 1, 100,
+				"Percentage of Players sleeping for buffs");
 
 		render3dGlintEffect = configuration.getBoolean("Render3DGlintEffect", category, true, "Render 3D Glint Effect");
 
-		renderHuntsmanGlintEffect = configuration.getBoolean("RenderHuntsmanGlintEffect", category, true, "Render Glint Effect ong Huntsman");
+		renderHuntsmanGlintEffect = configuration.getBoolean("RenderHuntsmanGlintEffect", category, true,
+				"Render Glint Effect ong Huntsman");
 
-		decurseTeleportPullRadius = configuration.getInt("DecurseTeleportPullRadius", category, 32, 0, 128, "Radius for Decurse Teleport");
-		decurseDirectedRadius = configuration.getInt("DecurseDirectedRadius", category, 32, 0, 128, "Radius of Directed Decurse Radius");
-		allowDecurseTeleport = configuration.getBoolean("DecurseTeleportPullEnabled", category, false, "Allow Decurse Teleport");
-		allowDecurseDirected = configuration.getBoolean("DecurseDirectedEnabled", category, false, "Allow Directed Decurse");
+		decurseTeleportPullRadius = configuration.getInt("DecurseTeleportPullRadius", category, 32, 0, 128,
+				"Radius for Decurse Teleport");
+		decurseDirectedRadius = configuration.getInt("DecurseDirectedRadius", category, 32, 0, 128,
+				"Radius of Directed Decurse Radius");
+		allowDecurseTeleport = configuration.getBoolean("DecurseTeleportPullEnabled", category, false,
+				"Allow Decurse Teleport");
+		allowDecurseDirected = configuration.getBoolean("DecurseDirectedEnabled", category, false,
+				"Allow Directed Decurse");
 
-		allowDeathHoodFreezeVictims = configuration.getBoolean("AllowDeathHoodToFreezeVictims", category, true, "Allow Death's Hood to freeze targets");
+		allowDeathHoodFreezeVictims = configuration.getBoolean("AllowDeathHoodToFreezeVictims", category, true,
+				"Allow Death's Hood to freeze targets");
 
-		allowExplodingCreeperHearts = configuration.getBoolean("AllowExplodingCreeperHearts", category, true, "Shoudl Creeper Hearts exlopde when eaten");
+		allowExplodingCreeperHearts = configuration.getBoolean("AllowExplodingCreeperHearts", category, true,
+				"Shoudl Creeper Hearts exlopde when eaten");
 
-		diseaseRemovalChance = configuration.getInt("DiseaseBlockRemovalChance", category, 10, 0, 100, "Chance of Disease Removal");
+		diseaseRemovalChance = configuration.getInt("DiseaseBlockRemovalChance", category, 10, 0, 100,
+				"Chance of Disease Removal");
 
 		mantrapAlpha = configuration.getFloat("MantrapOpacity", category, 0.3f, 0.1f, 1.0f, "Mantrap Opacity");
 
-		mutandisExtras = configuration.getStringList("NutandisAdditionalBlocks", category, new String[] { "fantasyoverhaul:glintweed", "tallgrass" },
+		mutandisExtras = configuration.getStringList("NutandisAdditionalBlocks", category,
+				new String[] { "fantasyoverhaul:glintweed", "tallgrass" },
 				"Additional Blocks that mutandis should transmute");
 
-		allowVolatilityPotionBlockDamage = configuration.getBoolean("AllowVolatilityPotionBlockDamage", category, true, "Allow volatility potion damage on blocks");
+		allowVolatilityPotionBlockDamage = configuration.getBoolean("AllowVolatilityPotionBlockDamage", category, true,
+				"Allow volatility potion damage on blocks");
 
-		restrictPoppetShelvesToVanillaAndSpiritDimensions = configuration.getBoolean("RestrictPoppetsShelvesToVanillaAndSpiritDimensions", category, true,
+		restrictPoppetShelvesToVanillaAndSpiritDimensions = configuration.getBoolean(
+				"RestrictPoppetsShelvesToVanillaAndSpiritDimensions", category, true,
 				"Allow poppet shelves only in vanilla and Fantasy Overhaul Dimensions");
 
-		restrictTaglockCollectionOnNonPVP = configuration.getBoolean("TaglockRestrictPVPServer", category, false, "Should Taglock Collection be restricted on PVE Server");
+		restrictTaglockCollectionOnNonPVP = configuration.getBoolean("TaglockRestrictPVPServer", category, false,
+				"Should Taglock Collection be restricted on PVE Server");
 
-		restrictTaglockCollectionForStaffMembers = configuration.getBoolean("TaglockRestrictStaff", category, false, "Should taglock collection be restricted against staff");
+		restrictTaglockCollectionForStaffMembers = configuration.getBoolean("TaglockRestrictStaff", category, false,
+				"Should taglock collection be restricted against staff");
 
 	}
 
 	private void syncIntegration() {
 		String category = Reference.INTEGRATION;
 
-		allowBlockBreakEvents = configuration.getBoolean("AllowInterModBlockBreakEvents", category, true, "Enable Mod Block Break Event Interactions");
+		allowBlockBreakEvents = configuration.getBoolean("AllowInterModBlockBreakEvents", category, true,
+				"Enable Mod Block Break Event Interactions");
 		allowModIntegration = configuration.get(category, "AllowModIntegration", true).getBoolean(true);
 		allowThaumcraft = configuration.get(category, "AllowThaumcraft", true).getBoolean(true);
 		allowMineFactoryReloaded = configuration.get(category, "AllowMineFactoryReloaded", true).getBoolean(true);
 		allowForestry = configuration.get(category, "AllowForestry", true).getBoolean(true);
-		allowTreecapitator = configuration.get(category, "AllowTreeCapitator", true).getBoolean(true);
 		allowJustEnoughItems = configuration.get(category, "AllowJustEnoughItems", true).getBoolean(true);
 		allowArsMagica2 = configuration.get(category, "AllowArsMagica2", true).getBoolean(true);
 
-		respectOtherDeathChestMods = configuration.getBoolean("RespectOtherDeathChestMods", category, true, "Respect Other Death Chest Mods");
+		respectOtherDeathChestMods = configuration.getBoolean("RespectOtherDeathChestMods", category, true,
+				"Respect Other Death Chest Mods");
 	}
 
 	private void syncExtenedPlayerOptions() {
 		String category = Reference.EXTENDED_PLAYER;
 
-		allowVampireWerewolfHybrids = configuration.getBoolean("AllowVampireWerewolfHybrids", category, true, "Allow Vampire Werewolf Hybrid Creation");
+		allowVampireWerewolfHybrids = configuration.getBoolean("AllowVampireWerewolfHybrids", category, true,
+				"Allow Vampire Werewolf Hybrid Creation");
 	}
 
 	private void syncVampire() {
 		String category = Reference.VAMPIRE;
-		allowVampireQuests = configuration.getBoolean("AllowVampireQuests", category, true, "Allow Vampire Quest Progression");
-		allowVampireRitual = configuration.getBoolean("AllowVampireRitual", category, true, "Allow Vampire Creation Ritual");
-		allowStakingVampires = configuration.getBoolean("AllowVampireStaking", category, true, "Allow Vampires to be staked");
+		allowVampireQuests = configuration.getBoolean("AllowVampireQuests", category, true,
+				"Allow Vampire Quest Progression");
+		allowVampireRitual = configuration.getBoolean("AllowVampireRitual", category, true,
+				"Allow Vampire Creation Ritual");
+		allowStakingVampires = configuration.getBoolean("AllowVampireStaking", category, true,
+				"Allow Vampires to be staked");
 		vampireDeathItemKeepAliveMins = configuration.get(category, "VampireDeathItemKeepAliveMins", 12).getInt();
-		hudShowVampireTargetBloodText = configuration.getBoolean("HUDShowVampireTargetBloodText", category, false, "Show Vampire Blood Text Hud");
+		hudShowVampireTargetBloodText = configuration.getBoolean("HUDShowVampireTargetBloodText", category, false,
+				"Show Vampire Blood Text Hud");
 
 	}
 
 	private void syncWerewolf() {
 		String category = Reference.WEREWOLF;
-		allowPlayerToPlayerWolfInfection = configuration.getBoolean("AllowPlayerToPlayerWolfInfection", category, true, "Allow PVP Wolf infection");
-		allowWerewolfQuests = configuration.getBoolean("AllowWerewolfQuests", "Werewolf", true, "Allow Werewolf Quest Progression");
+		allowPlayerToPlayerWolfInfection = configuration.getBoolean("AllowPlayerToPlayerWolfInfection", category, true,
+				"Allow PVP Wolf infection");
+		allowWerewolfQuests = configuration.getBoolean("AllowWerewolfQuests", "Werewolf", true,
+				"Allow Werewolf Quest Progression");
 
-		allowGoddessStatueRecipe = configuration.getBoolean("AllowGodessStatueRecipe", category, true, "Allow Crafting of Goddess Statue");
+		allowGoddessStatueRecipe = configuration.getBoolean("AllowGodessStatueRecipe", category, true,
+				"Allow Crafting of Goddess Statue");
 	}
 
 	private void syncCrafting() {
 		String category = Reference.CRAFTING;
-		smeltAllSaplingsToWoodAsh = configuration.getBoolean("AddSmeltingForAllSaplingsToWoodAsh", category, true, "Enable to allow all saplings to be smelted to wood ash");
-		doubleFumeFilterChance = configuration.getBoolean("DoubleFumeFilterChance", category, false, "Enable to double fume filter chance");
-		allowVoidBrambleRecipe = configuration.getBoolean("AllowVoidBrambleRecipe", category, false, "Allow Void Bramble Recipe");
+		smeltAllSaplingsToWoodAsh = configuration.getBoolean("AddSmeltingForAllSaplingsToWoodAsh", category, true,
+				"Enable to allow all saplings to be smelted to wood ash");
+		doubleFumeFilterChance = configuration.getBoolean("DoubleFumeFilterChance", category, false,
+				"Enable to double fume filter chance");
+		allowVoidBrambleRecipe = configuration.getBoolean("AllowVoidBrambleRecipe", category, false,
+				"Allow Void Bramble Recipe");
 
 	}
 
@@ -242,26 +272,33 @@ public class Config {
 		dimensionTormentID = configuration.get(category, "TormentDimensionID", -38).getInt();
 		dimensionMirrorID = configuration.get(category, "MirrorDimensionID", -39).getInt();
 
-		shrinkMirrorWorld = configuration.getBoolean("ShrinkMirrorWorld", category, false, "Should Mirror world be shrunk");
+		shrinkMirrorWorld = configuration.getBoolean("ShrinkMirrorWorld", category, false,
+				"Should Mirror world be shrunk");
 	}
 
 	private void syncSpawning() {
 		String category = Reference.SPAWNING;
 
-		covenWitchSpawnWeight = configuration.getInt("CovenWitchSpawnWeight", category, 2, 0, 10, "Coven Spawning Weight");
+		covenWitchSpawnWeight = configuration.getInt("CovenWitchSpawnWeight", category, 2, 0, 10,
+				"Coven Spawning Weight");
 
 		goblinSpawnWeight = configuration.getInt("HobgoblinSpawnWeight", category, 2, 0, 10, "Goblin Spawn Weighting");
 		goblinSpawnRate = configuration.getInt("HobgoblinSpawnRate", category, 2, 0, 10, "Goblin Spawn Rate");
-		goblinDespawnBlock = configuration.getBoolean("HobgoblinDespawnBlock", category, true, "Hobgoblin Despawn Block Enabled");
-		hobgoblinGodSpawnChance = configuration.getInt("HobgoblinGodSpawnChance", category, 10, 0, 100, "Hobgoblin God Spawn Chance");
+		goblinDespawnBlock = configuration.getBoolean("HobgoblinDespawnBlock", category, true,
+				"Hobgoblin Despawn Block Enabled");
+		hobgoblinGodSpawnChance = configuration.getInt("HobgoblinGodSpawnChance", category, 10, 0, 100,
+				"Hobgoblin God Spawn Chance");
 
-		strawmanSpawnerRules = configuration.getStringList("StrawmanSpawnerRules", category, new String[] { "Zombie", "Zombie", "Skeleton" }, "Strawman Allowed Spawners");
+		strawmanSpawnerRules = configuration.getStringList("StrawmanSpawnerRules", category,
+				new String[] { "Zombie", "Zombie", "Skeleton" }, "Strawman Allowed Spawners");
 
 		hellhoundSpawnRate = configuration.getInt("HellhoundSpawnWeight", category, 25, 0, 100, "Hellhound Spawn Rate");
 
-		vampireHunterSpawnChance = configuration.getFloat("VamprieHunterSpawnChance", category, 0.01f, 0.0f, 1.0f, "Vampire Hunter Spawn Chance");
+		vampireHunterSpawnChance = configuration.getFloat("VamprieHunterSpawnChance", category, 0.01f, 0.0f, 1.0f,
+				"Vampire Hunter Spawn Chance");
 
-		fairestSpawnChance = configuration.getFloat("NewFairestSpawnChance", category, 0.01f, 0.1f, 1.0f, "Fairest SpawN Chance");
+		fairestSpawnChance = configuration.getFloat("NewFairestSpawnChance", category, 0.01f, 0.1f, 1.0f,
+				"Fairest SpawN Chance");
 
 		spawnSpiritWeight = configuration.getInt("SpawnSpiritWeight", category, 1, 1, 1000, "Spirit Spawn Weighting");
 
@@ -279,11 +316,13 @@ public class Config {
 
 		townAllowSandy = configuration.getBoolean("TownBiomeSandyAllowed", category, true, "Sandy Biome Towns Allowed");
 		townAllowPlains = configuration.getBoolean("TownBiomePlainsAllow", category, true, "Plains Biome Towns Allow");
-		townAllowMountian = configuration.getBoolean("TownBiomeMountainAllow", category, true, "Mountian Biome Towns Allow");
+		townAllowMountian = configuration.getBoolean("TownBiomeMountainAllow", category, true,
+				"Mountian Biome Towns Allow");
 		townAllowHills = configuration.getBoolean("TownBiomeHillsAllow", category, true, "Hills Biome Towns Allow");
 		townAllowForest = configuration.getBoolean("TownBiomeForestAllow", category, true, "Forest Biome Towns Allow");
 		townAllowSnowy = configuration.getBoolean("TownBiomeSnowyAllow", category, true, "Snowy Biome Towns Allow");
-		townAllowWasteland = configuration.getBoolean("TownBiomeWastelandAllow", category, true, "Wasteland Biome Towns Allow");
+		townAllowWasteland = configuration.getBoolean("TownBiomeWastelandAllow", category, true,
+				"Wasteland Biome Towns Allow");
 		townAllowMesa = configuration.getBoolean("TownBiomeMesaAllow", category, true, "Mesa Biome Town Allow");
 		townAllowJungle = configuration.getBoolean("TownBiomeJungleAllow", category, true, "Jungle Biome Towns Allow");
 
@@ -303,14 +342,19 @@ public class Config {
 	private void syncGeneration() {
 		String category = Reference.GENERATION;
 
-		generateApothecaries = configuration.getBoolean("GenerateApothecaries", category, true, "Enable Apothecary Generation");
+		generateApothecaries = configuration.getBoolean("GenerateApothecaries", category, true,
+				"Enable Apothecary Generation");
 		generateCovens = configuration.getBoolean("GenerateCovens", category, true, "Enable Coven Generation");
-		generateWickerMen = configuration.getBoolean("GenerateWickerMen", category, true, "Enable Wickermen Generation");
+		generateWickerMen = configuration.getBoolean("GenerateWickerMen", category, true,
+				"Enable Wickermen Generation");
 		generateShacks = configuration.getBoolean("GenerateShacks", category, true, "Enable Shack Generation");
-		generateGoblinHuts = configuration.getBoolean("GenerateGoblinHuts", category, true, "Enable Goblin Hut Generation");
-		generateWitchHuts = configuration.getBoolean("GenerateWitchHuts", category, true, "Enable Witch Hut Generation");
+		generateGoblinHuts = configuration.getBoolean("GenerateGoblinHuts", category, true,
+				"Enable Goblin Hut Generation");
+		generateWitchHuts = configuration.getBoolean("GenerateWitchHuts", category, true,
+				"Enable Witch Hut Generation");
 		generateBookShops = configuration.getBoolean("GenerateBookShops", category, true, "Enable Bookshop Generation");
-		worldGenTwilightForest = configuration.getBoolean("WorldGenTwilightForest", category, true, "Enable Twilight Generation");
+		worldGenTwilightForest = configuration.getBoolean("WorldGenTwilightForest", category, true,
+				"Enable Twilight Generation");
 
 		worldGenFrequency = configuration.get(category, "WorldGenFrequency", 12).getInt();
 
@@ -319,13 +363,17 @@ public class Config {
 	private void syncRitualsRites() {
 		String category = Reference.RITUAL_RITE;
 
-		allowDeathItemRecoveryRite = configuration.getBoolean("AllowDeathItemRecoveryRite", category, true, "Allow Death Item Recovery Rite");
+		allowDeathItemRecoveryRite = configuration.getBoolean("AllowDeathItemRecoveryRite", category, true,
+				"Allow Death Item Recovery Rite");
 
-		allowBiomeChanging = configuration.getBoolean("AllowBiomeModificationRitual", category, true, "Allow Biome Modification Ritual");
+		allowBiomeChanging = configuration.getBoolean("AllowBiomeModificationRitual", category, true,
+				"Allow Biome Modification Ritual");
 
-		riteOfEclipseCooldownInSecs = configuration.getInt("RiteOfEclipseCooldownInSecs", category, 0, 0, 3600, "Rite of Eclipse Cooldown Secs");
+		riteOfEclipseCooldownInSecs = configuration.getInt("RiteOfEclipseCooldownInSecs", category, 0, 0, 3600,
+				"Rite of Eclipse Cooldown Secs");
 
-		String[] replaceableBlocks = configuration.getStringList("NaturesPowerReplaceableBlocks", category, new String[] { "mycelium" }, "Blocks replaceable by Natures Power (modid:block)");
+		String[] replaceableBlocks = configuration.getStringList("NaturesPowerReplaceableBlocks", category,
+				new String[] { "mycelium" }, "Blocks replaceable by Natures Power (modid:block)");
 		for (String extra : replaceableBlocks) {
 			try {
 				naturePowerReplaceableBlocks.add(new BlockMeta(extra));
@@ -388,7 +436,8 @@ public class Config {
 		public final int groups, weight, min, max;
 		public final Class<? extends StructureVillagePieces.Village> clazz;
 
-		public Building(Class<? extends Village> clazz, String name, int groups, int weight, int min, int max, Config config) {
+		public Building(Class<? extends Village> clazz, String name, int groups, int weight, int min, int max,
+				Config config) {
 			this.clazz = clazz;
 			this.groups = config.configuration.get("Buildings", TOWN + name + "ClusterGroups", groups).getInt();
 			this.weight = config.configuration.get("Buildings", TOWN + name + "ClusterWeight", weight).getInt();
