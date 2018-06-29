@@ -12,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIFlyingTempt extends EntityAIBase{
+public class EntityAIFlyingTempt extends EntityAIBase {
 
 	private EntityCreature temptedEntity;
 	private Set<Item> temptItem;
@@ -25,19 +25,19 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 	public EntityAIFlyingTempt(EntityCreature temptedEntityIn, boolean scaredByPlayerMovementIn,
 			Set<Item> temptItemIn) {
 		this.temptedEntity = temptedEntityIn;
-        this.temptItem = temptItemIn;
-        this.scaredByPlayerMovement = scaredByPlayerMovementIn;
+		this.temptItem = temptItemIn;
+		this.scaredByPlayerMovement = scaredByPlayerMovementIn;
 		setMutexBits(1);
 	}
-	
+
 	@Override
 	public boolean shouldExecute() {
-		boolean isTame = temptedEntity instanceof EntityTameable && ((EntityTameable)temptedEntity).isTamed();
+		boolean isTame = temptedEntity instanceof EntityTameable && ((EntityTameable) temptedEntity).isTamed();
 		if (isTame) {
 			return false;
 		}
 		if (delayTemptCounter > 0) {
-			delayTemptCounter --;
+			delayTemptCounter--;
 			return false;
 		}
 		temptingPlayer = temptedEntity.worldObj.getClosestPlayerToEntity(temptedEntity, 10.0);
@@ -47,14 +47,14 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 		ItemStack stack = temptingPlayer.inventory.getCurrentItem();
 		return stack != null && isBreedingFood(stack);
 	}
-	
+
 	private boolean isBreedingFood(ItemStack stack) {
 		for (Item item : temptItem) {
 			if (stack.getItem() == item) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -65,14 +65,13 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 				if (temptingPlayer.getDistanceSq(targetPos) > 0.01000000000002) {
 					return false;
 				}
-			}
-			else {
+			} else {
 				targetPos = temptingPlayer.getPosition();
 			}
 		}
 		return shouldExecute();
 	}
-	
+
 	@Override
 	public void startExecuting() {
 		isRunning = true;
@@ -84,19 +83,21 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 		delayTemptCounter = 100;
 		isRunning = false;
 	}
-	
+
 	@Override
 	public void updateTask() {
 		if (temptedEntity.getDistanceSqToEntity(temptingPlayer) >= 3.0) {
-			double dx,dy,dz;
-			double moveSq = (Math.pow((dx = targetPos.getX() - temptedEntity.posX), 2) + Math.pow((dy = targetPos.getY() - temptedEntity.posY), 2) + Math.pow((dz = targetPos.getZ() - temptedEntity.posZ), 2));
+			double dx, dy, dz;
+			double moveSq = (Math.pow((dx = targetPos.getX() - temptedEntity.posX), 2)
+					+ Math.pow((dy = targetPos.getY() - temptedEntity.posY), 2)
+					+ Math.pow((dz = targetPos.getZ() - temptedEntity.posZ), 2));
 			double move = MathHelper.sqrt_double(moveSq);
 			if (isCourseTraversable(targetPos, move)) {
 				EntityCreature entityTempted = temptedEntity;
 				entityTempted.motionX += dx / move * 0.05;
 				if (entityTempted.posY < targetPos.getY() + 1.0) {
 					entityTempted.motionY += dy / move * 0.05 + 0.025;
-				}else {
+				} else {
 					entityTempted.motionY += dy / move * 0.05;
 				}
 				entityTempted.motionZ += dz / move * 0.05;
@@ -106,14 +107,15 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 			temptedEntity.renderYawOffset = n;
 		}
 	}
-	
+
 	private boolean isCourseTraversable(BlockPos target, double distance) {
 		double x = (target.getX() - temptedEntity.posX) / distance;
 		double y = (target.getY() - temptedEntity.posY) / distance;
 		double z = (target.getZ() - temptedEntity.posZ) / distance;
 		AxisAlignedBB temptedBound = temptedEntity.getCollisionBoundingBox();
-		AxisAlignedBB bounds = new AxisAlignedBB(temptedBound.minX, temptedBound.minY, temptedBound.minZ, temptedBound.maxX, temptedBound.maxY, temptedBound.maxZ);
-		for (int i = 1; i < distance; i++) {		
+		AxisAlignedBB bounds = new AxisAlignedBB(temptedBound.minX, temptedBound.minY, temptedBound.minZ,
+				temptedBound.maxX, temptedBound.maxY, temptedBound.maxZ);
+		for (int i = 1; i < distance; i++) {
 			bounds.offset(x, y, z);
 			if (!temptedEntity.worldObj.getCollisionBoxes(temptedEntity, bounds).isEmpty()) {
 				return false;
@@ -121,7 +123,7 @@ public class EntityAIFlyingTempt extends EntityAIBase{
 		}
 		return true;
 	}
-	
+
 	public boolean isRunning() {
 		return isRunning;
 	}

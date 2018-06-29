@@ -26,7 +26,8 @@ public abstract class PlayerEffect extends IForgeRegistryEntry.Impl<PlayerEffect
 
 	protected abstract void doInteract(final EntityPlayer p0, final PlayerInteractEvent p1);
 
-	public void harvest(final NBTTagCompound nbtEffects, final BlockEvent.HarvestDropsEvent event, final EntityPlayer player) {
+	public void harvest(final NBTTagCompound nbtEffects, final BlockEvent.HarvestDropsEvent event,
+			final EntityPlayer player) {
 		if (nbtEffects.hasKey(this.unlocalizedName)) {
 			this.doHarvest(player, event);
 		}
@@ -57,8 +58,7 @@ public abstract class PlayerEffect extends IForgeRegistryEntry.Impl<PlayerEffect
 			final int newTicks = Math.max(remainingTicks - ticks, 0);
 			if (newTicks == 0) {
 				this.removeFrom(nbtEffects);
-			}
-			else {
+			} else {
 				nbtEffects.setInteger(this.unlocalizedName, newTicks);
 				this.doUpdate(player, ticks);
 			}

@@ -9,9 +9,10 @@ import net.minecraft.world.World;
 public interface ICasterTriggerManager {
 
 	/**
-	 * This class will be called by casters with the proper parameters. It is up to you to decide what to do with them.
+	 * This class will be called by casters with the proper parameters. It is up to
+	 * you to decide what to do with them.
 	 */
-	public boolean performTrigger(World world, ItemStack casterStack, EntityPlayer player, 
-			BlockPos pos, EnumFacing side, int event);
-	
+	public boolean performTrigger(World world, ItemStack casterStack, EntityPlayer player, BlockPos pos,
+			EnumFacing side, int event);
+
 }

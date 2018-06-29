@@ -8,12 +8,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.Brew;
 
-public class ItemQuicklime extends Brew{
+public class ItemQuicklime extends Brew {
 
 	public ItemQuicklime(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {

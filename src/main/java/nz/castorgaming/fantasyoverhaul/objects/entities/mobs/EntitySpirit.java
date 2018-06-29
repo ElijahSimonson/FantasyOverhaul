@@ -152,15 +152,17 @@ public class EntitySpirit extends EntityFlyingTameable {
 								return;
 							}
 						}
-					}else if (cp instanceof ChunkProviderOverworld) {
+					} else if (cp instanceof ChunkProviderOverworld) {
 						if (EntitySpirit.fieldVillageGenerator == null) {
-							EntitySpirit.fieldVillageGenerator = ReflectionHelper.findField(ChunkProviderOverworld.class, "villageGenerator");
+							EntitySpirit.fieldVillageGenerator = ReflectionHelper
+									.findField(ChunkProviderOverworld.class, "villageGenerator");
 						}
 						if (EntitySpirit.fieldVillageGenerator != null) {
 							setWaypointTo(EntitySpirit.fieldVillageGenerator.get(cp), MapGenVillage.class);
 						}
-					}else if (cp instanceof ChunkProviderHell) {
-						Field fieldGenNetherBridge = ReflectionHelper.findField(ChunkProviderHell.class, "genNetherBridge");
+					} else if (cp instanceof ChunkProviderHell) {
+						Field fieldGenNetherBridge = ReflectionHelper.findField(ChunkProviderHell.class,
+								"genNetherBridge");
 						MapGenStructure genNetherBridge = (MapGenStructure) fieldGenNetherBridge.get(cp);
 						setWaypointTo(genNetherBridge);
 					}
@@ -170,7 +172,6 @@ public class EntitySpirit extends EntityFlyingTameable {
 		} catch (IllegalAccessException e) {
 		}
 	}
-	
 
 	private void setWaypointTo(MapGenStructure mapStructure) {
 		if (mapStructure != null) {

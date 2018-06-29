@@ -7,29 +7,26 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PotionVisExhaust extends Potion
-{
-    public static PotionVisExhaust instance = null; // will be instantiated at runtime
-    private int statusIconIndex = -1;
-    
-    public PotionVisExhaust(boolean par2, int par3)
-    {
-    	super(par2,par3);
-    	setIconIndex(5, 1);
-    }
-    
-    @Override
+public class PotionVisExhaust extends Potion {
+	public static PotionVisExhaust instance = null; // will be instantiated at runtime
+	private int statusIconIndex = -1;
+
+	public PotionVisExhaust(boolean par2, int par3) {
+		super(par2, par3);
+		setIconIndex(5, 1);
+	}
+
+	@Override
 	public String getName() {
 		return "vis_exhaust";
 	}
-    
-    public static void init()
-    {
-    	instance.setPotionName("potion.visexhaust");
-    	instance.setIconIndex(5, 1);
-    	instance.setEffectiveness(0.25D);
-    }
-    
+
+	public static void init() {
+		instance.setPotionName("potion.visexhaust");
+		instance.setIconIndex(5, 1);
+		instance.setEffectiveness(0.25D);
+	}
+
 	@Override
 	public boolean isBadEffect() {
 		return true;
@@ -41,13 +38,12 @@ public class PotionVisExhaust extends Potion
 		Minecraft.getMinecraft().renderEngine.bindTexture(rl);
 		return super.getStatusIconIndex();
 	}
-	
-	static final ResourceLocation rl = new ResourceLocation("thaumcraft","textures/misc/potions.png");
-	
+
+	static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/misc/potions.png");
+
 	@Override
 	public void performEffect(EntityLivingBase target, int par2) {
-		
+
 	}
-    
-    
+
 }

@@ -15,8 +15,7 @@ public class TileEntityBase extends TileEntity implements ITickable {
 	public void update() {
 		if (ticks == 0L) {
 			initiate();
-		}
-		else if (ticks >= Long.MAX_VALUE) {
+		} else if (ticks >= Long.MAX_VALUE) {
 			ticks = 1L;
 		}
 		ticks++;

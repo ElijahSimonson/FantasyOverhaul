@@ -11,17 +11,17 @@ import net.minecraft.world.World;
 public interface IArchitect {
 
 	/**
-	 * Returns a list of blocks that should be highlighted in world. The starting point is whichever block the player currently has highlighted in the world.
+	 * Returns a list of blocks that should be highlighted in world. The starting
+	 * point is whichever block the player currently has highlighted in the world.
 	 */
-	public ArrayList<BlockPos> getArchitectBlocks(ItemStack stack, World world, 
-			BlockPos pos, EnumFacing side, EntityPlayer player);
-	
+	public ArrayList<BlockPos> getArchitectBlocks(ItemStack stack, World world, BlockPos pos, EnumFacing side,
+			EntityPlayer player);
+
 	/**
-	 * which axis should be displayed. 
+	 * which axis should be displayed.
 	 */
-	public boolean showAxis(ItemStack stack, World world, EntityPlayer player, EnumFacing side, 
-			EnumAxis axis);
-	
+	public boolean showAxis(ItemStack stack, World world, EntityPlayer player, EnumFacing side, EnumAxis axis);
+
 	public enum EnumAxis {
 		X, // east / west
 		Y, // up / down

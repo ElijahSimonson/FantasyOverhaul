@@ -98,8 +98,7 @@ public class ModelVampireArmor extends ModelBiped {
 				skirtMiddle2.render(scale);
 				skirtMiddle3.render(scale);
 			}
-		}
-		else if (bipedBody.showModel) {
+		} else if (bipedBody.showModel) {
 			if (!(entityIn instanceof EntityVampire)) {
 				cloakRight.render(scale);
 				cloakLeft.render(scale);
@@ -158,8 +157,7 @@ public class ModelVampireArmor extends ModelBiped {
 			skirtBack.rotationPointY = (skirtFront.rotationPointY = skirtMiddle3.rotationPointY = skirtMiddle.rotationPointY = skirtMiddle2.rotationPointY = 8.0F);
 
 			cloakMain.rotateAngleX = 0.6F;
-		}
-		else {
+		} else {
 			skirtBack.rotationPointZ = (skirtFront.rotationPointZ = skirtMiddle3.rotationPointZ = skirtMiddle.rotationPointZ = skirtMiddle2.rotationPointZ = 0.0F);
 			skirtBack.rotationPointY = (skirtFront.rotationPointY = skirtMiddle3.rotationPointY = skirtMiddle.rotationPointY = skirtMiddle2.rotationPointY = 11.0F);
 
@@ -173,8 +171,7 @@ public class ModelVampireArmor extends ModelBiped {
 		if (bipedHead.rotateAngleX < -0.15D) {
 			cloakLeft.rotateAngleX = (bipedHead.rotateAngleX - 0.15F);
 			cloakRight.rotateAngleX = (bipedHead.rotateAngleX - 0.15F);
-		}
-		else {
+		} else {
 			cloakLeft.rotateAngleX = (cloakRight.rotateAngleX = -0.3F);
 		}
 	}

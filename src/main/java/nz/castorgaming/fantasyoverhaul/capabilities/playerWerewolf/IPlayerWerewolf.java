@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import nz.castorgaming.fantasyoverhaul.capabilities.PlayerCapabilityMaster.QuestState;
 import nz.castorgaming.fantasyoverhaul.init.CapabilityInit;
 
-public interface IPlayerWerewolf extends INBTSerializable<NBTTagCompound>{
+public interface IPlayerWerewolf extends INBTSerializable<NBTTagCompound> {
 	public static PlayerWerewolf get(EntityPlayer player) {
 		return (PlayerWerewolf) player.getCapability(CapabilityInit.PLAYER_WEREWOLF, null);
 	}

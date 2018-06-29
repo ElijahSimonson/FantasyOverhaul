@@ -11,9 +11,8 @@ import net.minecraft.world.World;
 import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.blocks.BlockDoorBase;
 
-public class BlockDoorRowan extends BlockDoorBase{
+public class BlockDoorRowan extends BlockDoorBase {
 
-	
 	public BlockDoorRowan(String name, Material material) {
 		super(name, material);
 	}

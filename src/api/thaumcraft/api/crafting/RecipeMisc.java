@@ -6,12 +6,12 @@ import net.minecraft.item.ItemStack;
  * 
  * @author Azanor
  * 
- * Used as a placeholder recipe for the thaumonomicon. Currently only used for smelting recipes.
- * Will always be considered a 'fake' recipe.
+ *         Used as a placeholder recipe for the thaumonomicon. Currently only
+ *         used for smelting recipes. Will always be considered a 'fake' recipe.
  *
  */
 public class RecipeMisc {
-	
+
 	public enum MiscRecipeType {
 		SMELTING
 	}
@@ -19,7 +19,7 @@ public class RecipeMisc {
 	MiscRecipeType type;
 	ItemStack input;
 	ItemStack output;
-	
+
 	public RecipeMisc(ItemStack input, ItemStack output, MiscRecipeType type) {
 		this.input = input;
 		this.output = output;
@@ -34,7 +34,8 @@ public class RecipeMisc {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(MiscRecipeType type) {
 		this.type = type;
@@ -48,7 +49,8 @@ public class RecipeMisc {
 	}
 
 	/**
-	 * @param input the input to set
+	 * @param input
+	 *            the input to set
 	 */
 	public void setInput(ItemStack input) {
 		this.input = input;
@@ -62,12 +64,11 @@ public class RecipeMisc {
 	}
 
 	/**
-	 * @param output the output to set
+	 * @param output
+	 *            the output to set
 	 */
 	public void setOutput(ItemStack output) {
 		this.output = output;
 	}
-	
-	
-	
+
 }

@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 
 public class BlocksTC {
 
-	
 	// World
 	public static Block oreAmber;
 	public static Block oreCinnabar;
@@ -14,9 +13,9 @@ public class BlocksTC {
 	public static Block sapling;
 	public static Block shimmerleaf;
 	public static Block cinderpearl;
-	public static Block vishroom;	
+	public static Block vishroom;
 	public static Block plank;
-	
+
 	public static Block stoneArcane;
 	public static Block stoneArcaneBrick;
 	public static Block stoneAncient;
@@ -24,9 +23,9 @@ public class BlocksTC {
 	public static Block stoneAncientRock;
 	public static Block stoneAncientDoorway;
 	public static Block stoneAncientGlyphed;
-	public static Block stoneEldritchTile;	
-	public static Block stonePorous;		
-	
+	public static Block stoneEldritchTile;
+	public static Block stonePorous;
+
 	public static Block translucent;
 	public static Block stairsArcane;
 	public static Block stairsArcaneBrick;
@@ -53,8 +52,8 @@ public class BlocksTC {
 	public static Block crystalEntropy;
 	public static Block crystalTaint;
 	public static Block grassAmbient;
-	
-	// Doodads	
+
+	// Doodads
 	public static Block tableWood;
 	public static Block tableStone;
 	/** THAUMIUM, VOID, ALCHEMICAL, ADVANCED_ALCHEMICAL, BRASS */
@@ -62,22 +61,22 @@ public class BlocksTC {
 	public static Block candle;
 	public static Block nitor;
 	public static Block bloom;
-	public static Block pedestal;	
+	public static Block pedestal;
 	public static Block itemGrate;
 	public static Block fleshBlock;
 	public static Block banner;
 	public static Block pavingStone;
-	public static Block pillar;	
+	public static Block pillar;
 	public static Block redstoneRelay;
 	public static Block matrixSpeed;
 	public static Block matrixCost;
-	
+
 	// Machines
 	public static Block arcaneEar;
 	public static Block arcaneEarToggle;
 	public static Block levitator;
 	public static Block dioptra;
-	public static Block crucible;	
+	public static Block crucible;
 	public static Block arcaneWorkbench;
 	public static Block arcaneWorkbenchCharger;
 	public static Block wandWorkbench;
@@ -119,46 +118,16 @@ public class BlocksTC {
 	public static Block essentiaTransportOutput;
 	public static Block patternCrafter;
 	public static Block activatorRail;
-	
+
 	// Fluids
-	public static Block fluxGoo;	
+	public static Block fluxGoo;
 	public static Block purifyingFluid;
 	public static Block liquidDeath;
-		
+
 	// Misc
 	public static Block hole;
 	public static Block effect;
 	public static Block barrier;
 	public static Block placeholder;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
 
 }

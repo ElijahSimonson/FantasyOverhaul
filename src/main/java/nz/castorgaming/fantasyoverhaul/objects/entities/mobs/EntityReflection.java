@@ -71,8 +71,10 @@ import nz.castorgaming.fantasyoverhaul.util.interfaces.IHandleDT;
 
 public class EntityReflection extends EntityMob implements IRangedAttackMob, IHandleDT {
 
-	public static final DataParameter<Byte> ModelType = EntityDataManager.createKey(EntityReflection.class, DataSerializers.BYTE);
-	public static final DataParameter<String> Owner = EntityDataManager.createKey(EntityReflection.class, DataSerializers.STRING);
+	public static final DataParameter<Byte> ModelType = EntityDataManager.createKey(EntityReflection.class,
+			DataSerializers.BYTE);
+	public static final DataParameter<String> Owner = EntityDataManager.createKey(EntityReflection.class,
+			DataSerializers.STRING);
 	private int attackTimer;
 	private boolean freeSpawn;
 	private boolean isVampire;
@@ -202,8 +204,7 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 			if (ownerEntity == null || !ownerFound) {
 				if (closest != null) {
 					setOwner(closest.getCommandSenderEntity().getUniqueID());
-				}
-				else {
+				} else {
 					setOwner(Reference.BLANK_UUID);
 				}
 			}
@@ -212,7 +213,8 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 			if (getOwnerEntity() != null && getOwnerSkin() != Reference.BLANK_UUID) {
 				EntityPlayer owner = (ownerEntity == null || !ownerFound) ? getOwnerEntity() : ownerEntity;
 				if (owner != null) {
-					for (EntityEquipmentSlot slot : new EntityEquipmentSlot[] { EntityEquipmentSlot.FEET, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD }) {
+					for (EntityEquipmentSlot slot : new EntityEquipmentSlot[] { EntityEquipmentSlot.FEET,
+							EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD }) {
 						ItemStack stack = owner.inventory.getStackInSlot(slot.getSlotIndex());
 						if (stack != null) {
 							stack = stack.copy();
@@ -224,8 +226,11 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 					for (int hot = 0; hot < 9; ++hot) {
 						ItemStack stack2 = owner.inventory.getStackInSlot(hot);
 						if (stack2 != null) {
-							Multimap<String, AttributeModifier> modifierMap = stack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-							Iterator<AttributeModifier> itr = modifierMap.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName()).iterator();
+							Multimap<String, AttributeModifier> modifierMap = stack2
+									.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+							Iterator<AttributeModifier> itr = modifierMap
+									.get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName())
+									.iterator();
 							double damage = 0.0;
 							while (itr.hasNext()) {
 								AttributeModifier modifier = (AttributeModifier) itr.next();
@@ -247,7 +252,8 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 							skinName = playerEx.getOtherPlayerSkin();
 						}
 					}
-					ItemStack heldItem = (bestWeapon != null) ? bestWeapon : owner.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+					ItemStack heldItem = (bestWeapon != null) ? bestWeapon
+							: owner.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 					if (heldItem != null) {
 						heldItem = heldItem.copy();
 						Reference.modHooks.makeItemModProof(heldItem);
@@ -255,8 +261,7 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 					if (getModel() == 1) {
 						heldItem = null;
 						getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0);
-					}
-					else {
+					} else {
 						getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0);
 					}
 
@@ -271,43 +276,47 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 				}
 			}
 			if (resetGear) {
-				for (EntityEquipmentSlot slot : new EntityEquipmentSlot[] { EntityEquipmentSlot.FEET, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD }) {
+				for (EntityEquipmentSlot slot : new EntityEquipmentSlot[] { EntityEquipmentSlot.FEET,
+						EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD }) {
 					setItemStackToSlot(slot, null);
 				}
 			}
 			setOwnerSkin(skinName);
 			ItemStack held = getHeldItem(EnumHand.MAIN_HAND);
 			if (held != null) {
-				if (held.getItem() == ItemInit.mystic_branch || held.getItem() == ItemInit.crossbow_pistol || held.getItem() instanceof ItemBow) {
+				if (held.getItem() == ItemInit.mystic_branch || held.getItem() == ItemInit.crossbow_pistol
+						|| held.getItem() instanceof ItemBow) {
 					if (task == Task.MELEE) {
 						tasks.removeTask(aiAttackOnCollide);
 					}
 					tasks.addTask(2, aiArrowAttack);
 					task = Task.RANGED;
-				}
-				else {
+				} else {
 					if (task == Task.RANGED) {
 						tasks.removeTask(aiArrowAttack);
 					}
 					tasks.addTask(2, aiAttackOnCollide);
 					task = Task.MELEE;
 				}
-			}
-			else {
+			} else {
 				if (task == Task.RANGED) {
 					tasks.removeTask(aiArrowAttack);
 				}
 				tasks.addTask(2, aiAttackOnCollide);
 				task = Task.MELEE;
 			}
-			if (isEntityAlive() && getAttackTarget() != null && getNavigator().noPath() && getEntitySenses().canSee(getAttackTarget())) {
+			if (isEntityAlive() && getAttackTarget() != null && getNavigator().noPath()
+					&& getEntitySenses().canSee(getAttackTarget())) {
 				EntityLivingBase attackTarget = getAttackTarget();
 				float range = 1.0f;
 				castSpell(attackTarget, range, SymbolEffect.REGISTRY.getObject(Reference.location("Attraho")));
 			}
 		}
-		if (!worldObj.isRemote && worldObj.rand.nextDouble() < 0.05 && getAttackTarget() != null && getAttackTarget().isAirBorne
-				|| (getAttackTarget() instanceof EntityPlayer && ((EntityPlayer) getAttackTarget()).capabilities.isFlying) && !getAttackTarget().isPotionActive(MobEffects.SLOWNESS)) {
+		if (!worldObj.isRemote && worldObj.rand.nextDouble() < 0.05 && getAttackTarget() != null
+				&& getAttackTarget().isAirBorne
+				|| (getAttackTarget() instanceof EntityPlayer
+						&& ((EntityPlayer) getAttackTarget()).capabilities.isFlying)
+						&& !getAttackTarget().isPotionActive(MobEffects.SLOWNESS)) {
 			getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 5));
 		}
 	}
@@ -377,8 +386,8 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 		Object object = texturemanager.getTexture(location);
 		if (object == null) {
-			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(name)), RenderReflection.SKIN,
-					new ImageBufferDownload());
+			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png",
+					StringUtils.stripControlCodes(name)), RenderReflection.SKIN, new ImageBufferDownload());
 			texturemanager.loadTexture(location, (ITextureObject) object);
 		}
 		return (ThreadDownloadImageData) object;
@@ -396,43 +405,42 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 			if (worldObj.rand.nextBoolean()) {
 				castSpell(target, distanceFactor, EntityReflection.SPELLS.next());
 			}
-		}
-		else if (held.getItem() == ItemInit.crossbow_pistol) {
+		} else if (held.getItem() == ItemInit.crossbow_pistol) {
 			EntityBolt entityArrow = new EntityBolt(worldObj, this);
 			setHeading(entityArrow, this, target);
 			int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, held);
 			int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, held);
-			entityArrow.setDamage(distanceFactor * 2.0f + rand.nextGaussian() * 0.25 + worldObj.getDifficulty().getDifficultyId() * 0.11f);
+			entityArrow.setDamage(distanceFactor * 2.0f + rand.nextGaussian() * 0.25
+					+ worldObj.getDifficulty().getDifficultyId() * 0.11f);
 			if (i > 0) {
 				entityArrow.setDamage(entityArrow.getDamage() + i * 0.5 + 0.5);
 			}
 			if (j > 0) {
 				entityArrow.setKnockbackStrength(j);
 			}
-			if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, held) > 0 || (CreatureUtilities.isVampire(getAttackTarget())) && worldObj.rand.nextInt(3) == 0) {
+			if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, held) > 0
+					|| (CreatureUtilities.isVampire(getAttackTarget())) && worldObj.rand.nextInt(3) == 0) {
 				entityArrow.setFire(100);
 			}
 			if (getAttackTarget() != null) {
 				if (CreatureUtilities.isWerewolf(getAttackTarget())) {
 					entityArrow.setBoltType(4);
-				}
-				else if (CreatureUtilities.isUndead(getAttackTarget())) {
+				} else if (CreatureUtilities.isUndead(getAttackTarget())) {
 					entityArrow.setBoltType(3);
-				}
-				else if (worldObj.rand.nextInt(4) == 0) {
+				} else if (worldObj.rand.nextInt(4) == 0) {
 					entityArrow.setBoltType(2);
 				}
 				playSound(SoundEffect.RANDOM_BOW.event(), 1.0f, 1.0f / (getRNG().nextFloat() * 0.4f + 0.8f));
 				worldObj.spawnEntityInWorld(entityArrow);
 			}
 
-		}
-		else {
+		} else {
 			EntityArrow entityArrow = new EntityTippedArrow(worldObj, this);
 			setHeading(entityArrow, this, target);
 			int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, held);
 			int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, held);
-			entityArrow.setDamage(distanceFactor * 2.0f + rand.nextGaussian() * 0.25 + worldObj.getDifficulty().getDifficultyId() * 0.11f);
+			entityArrow.setDamage(distanceFactor * 2.0f + rand.nextGaussian() * 0.25
+					+ worldObj.getDifficulty().getDifficultyId() * 0.11f);
 			if (i > 0) {
 				entityArrow.setDamage(entityArrow.getDamage() + i * 0.5 + 0.5);
 			}
@@ -456,11 +464,12 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 
 		if (obj instanceof EntityArrow) {
 			EntityArrow arrow = (EntityArrow) obj;
-			arrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.worldObj.getDifficulty().getDifficultyId() * 3);
-		}
-		else if (obj instanceof EntityBolt) {
+			arrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,
+					14 - this.worldObj.getDifficulty().getDifficultyId() * 3);
+		} else if (obj instanceof EntityBolt) {
 			EntityBolt bolt = (EntityBolt) obj;
-			bolt.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+			bolt.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,
+					(float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
 		}
 	}
 
@@ -472,7 +481,8 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 		if (!worldObj.isRemote) {
 			worldObj.playEvent(null, 1009, new BlockPos(posX, posY, posZ), 0);
 			int count = rand.nextInt(10) == 0 ? 9 : 3;
-			EntitySpellEffect effect = new EntitySpellEffect(worldObj, this, d0 + rand.nextGaussian() * f1, d1, d3 + rand.nextGaussian() * f1);
+			EntitySpellEffect effect = new EntitySpellEffect(worldObj, this, d0 + rand.nextGaussian() * f1, d1,
+					d3 + rand.nextGaussian() * f1);
 			effect.posX = posX;
 			effect.posY = posY + height / 2.0f;
 			effect.posZ = posZ;
@@ -517,8 +527,7 @@ public class EntityReflection extends EntityMob implements IRangedAttackMob, IHa
 			locationSkin = AbstractClientPlayer.getLocationSkin(ownerName);
 			downloadImageSkin = getDownloadImageSkin(locationSkin, ownerName);
 			lastSkinOwner = getOwnerEntity().getUniqueID();
-		}
-		else {
+		} else {
 			locationSkin = null;
 			downloadImageSkin = null;
 			lastSkinOwner = Reference.BLANK_UUID;

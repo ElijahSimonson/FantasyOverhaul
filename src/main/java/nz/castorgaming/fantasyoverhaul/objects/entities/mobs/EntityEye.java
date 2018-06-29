@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityEye extends EntityLiving{
+public class EntityEye extends EntityLiving {
 
 	public EntityEye(World worldIn) {
 		super(worldIn);
@@ -17,20 +17,20 @@ public class EntityEye extends EntityLiving{
 		setInvisible(isImmuneToFire = true);
 		noClip = true;
 	}
-	
+
 	@Override
 	public void fall(float distance, float damageMultiplier) {
 	}
-	
+
 	@Override
 	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
 	}
-	
+
 	@Override
 	public boolean isOnLadder() {
 		return false;
 	}
-	
+
 	@Override
 	protected int decreaseAirSupply(int air) {
 		return air;
@@ -40,7 +40,7 @@ public class EntityEye extends EntityLiving{
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		return true;
 	}
-	
+
 	@Override
 	public void onLivingUpdate() {
 		motionY = 0.5;
@@ -49,7 +49,7 @@ public class EntityEye extends EntityLiving{
 			setDead();
 		}
 	}
-	
+
 	@Override
 	public void moveEntityWithHeading(float strafe, float forward) {
 		if (isInWater()) {
@@ -58,13 +58,13 @@ public class EntityEye extends EntityLiving{
 			motionX *= 0.8;
 			motionY *= 0.8;
 			motionZ *= 0.8;
-		}else if (isInLava()) {
+		} else if (isInLava()) {
 			moveRelative(strafe, forward, 0.02f);
 			moveEntity(motionX, motionY, motionZ);
 			motionX *= 0.5;
 			motionY *= 0.5;
 			motionZ *= 0.5;
-		}else {
+		} else {
 			float friction = 0.91f;
 			if (onGround) {
 				friction = 0.546f;
@@ -96,6 +96,4 @@ public class EntityEye extends EntityLiving{
 		limbSwing += limbSwingAmount;
 	}
 
-	
-	
 }

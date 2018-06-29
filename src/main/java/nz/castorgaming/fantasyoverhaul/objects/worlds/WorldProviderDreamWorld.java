@@ -185,13 +185,11 @@ public class WorldProviderDreamWorld extends WorldProvider {
 			var4 = 0.8f;
 			var5 = 0.2f;
 			var6 = 0.6f;
-		}
-		else if (this.nightmare == 1) {
+		} else if (this.nightmare == 1) {
 			var4 = 0.0f;
 			var5 = 1.0f;
 			var6 = 0.0f;
-		}
-		else {
+		} else {
 			var4 = 1.0f;
 			var5 = 0.0f;
 			var6 = 0.0f;
@@ -318,7 +316,8 @@ public class WorldProviderDreamWorld extends WorldProvider {
 	private static void addItemToInventory(EntityPlayer player, ArrayList<ItemStack> stacks) {
 		for (ItemStack stack : stacks) {
 			if (!player.inventory.addItemStackToInventory(stack)) {
-				player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, 0.5 + player.posY, player.posZ, stack));
+				player.worldObj.spawnEntityInWorld(
+						new EntityItem(player.worldObj, player.posX, 0.5 + player.posY, player.posZ, stack));
 			}
 		}
 	}
@@ -354,7 +353,8 @@ public class WorldProviderDreamWorld extends WorldProvider {
 									nightmareCatcherFound = true;
 								}
 							}
-							if (spiritPoolFound < 3 && block == FluidInit.FLOWING_SPIRIT.getBlock() && block.getMetaFromState(player.worldObj.getBlockState(new BlockPos(x, y, z)))) {
+							if (spiritPoolFound < 3 && block == FluidInit.FLOWING_SPIRIT.getBlock()
+									&& block.getMetaFromState(player.worldObj.getBlockState(new BlockPos(x, y, z)))) {
 								spiritPoolFound++;
 								modifiedNightmareChance -= 0.1;
 							}
@@ -373,17 +373,21 @@ public class WorldProviderDreamWorld extends WorldProvider {
 						}
 					}
 				}
-				modifiedNightmareChance = (nightmareCatcherFound ? Math.min(Math.max(modifiedNightmareChance, 0.0), 1.0) : nightmareChance);
+				modifiedNightmareChance = (nightmareCatcherFound ? Math.min(Math.max(modifiedNightmareChance, 0.0), 1.0)
+						: nightmareChance);
 			}
-			boolean nightmare = modifiedNightmareChance != 0.0 && (modifiedNightmareChance == 1.0 || player.worldObj.rand.nextDouble() < modifiedNightmareChance);
-			boolean demonic = nightmare && nightmareCatcherFound && spiritPoolFound > 0 && heartsFound > 0 && player.worldObj.rand.nextDouble() < heartsFound * 0.35 + fireFound * 0.1;
+			boolean nightmare = modifiedNightmareChance != 0.0
+					&& (modifiedNightmareChance == 1.0 || player.worldObj.rand.nextDouble() < modifiedNightmareChance);
+			boolean demonic = nightmare && nightmareCatcherFound && spiritPoolFound > 0 && heartsFound > 0
+					&& player.worldObj.rand.nextDouble() < heartsFound * 0.35 + fireFound * 0.1;
 			setPlayerHasNightmare(nbtPlayer, nightmare, demonic);
 			setSpiritWalking(nbtPlayer, true);
 			EntityCorpse corpse = new EntityCorpse(player.worldObj);
 			corpse.setHealth(player.getHealth());
 			corpse.setCustomNameTag(player.getCommandSenderEntity().getName());
 			corpse.setOwner(player.getCommandSenderEntity().getUniqueID());
-			corpse.setLocationAndAngles(0.5 + MathHelper.floor_double(player.posX), player.posY, 0.5 + MathHelper.floor_double(player.posZ), 0.0f, 0.0f);
+			corpse.setLocationAndAngles(0.5 + MathHelper.floor_double(player.posX), player.posY,
+					0.5 + MathHelper.floor_double(player.posZ), 0.0f, 0.0f);
 			player.worldObj.spawnEntityInWorld(corpse);
 			int boneNeedles = player.inventory.clearMatchingItems(ItemInit.NEEDLE_ICY, -1, 0, null);
 			int mutandis = player.inventory.clearMatchingItems(ItemInit.MUTANDIS, -1, 0, null);
@@ -395,8 +399,7 @@ public class WorldProviderDreamWorld extends WorldProvider {
 				NBTTagList nbtSpiritInventory = nbtSpirit.getTagList(SW_INVENTORY, 10);
 				player.inventory.readFromNBT(nbtSpiritInventory);
 				nbtSpirit.removeTag(SW_INVENTORY);
-			}
-			else {
+			} else {
 				player.inventory.clear();
 			}
 			addItemToInventory(player, ItemInit.NEEDLE_ICY.createStack(), boneNeedles);
@@ -434,72 +437,55 @@ public class WorldProviderDreamWorld extends WorldProvider {
 			boolean found = true;
 			if (isReplaceable(w, x + 1, y, z)) {
 				++x;
-			}
-			else if (isReplaceable(w, x - 1, y, z)) {
+			} else if (isReplaceable(w, x - 1, y, z)) {
 				--x;
-			}
-			else if (isReplaceable(w, x, y, z + 1)) {
+			} else if (isReplaceable(w, x, y, z + 1)) {
 				++z;
-			}
-			else if (isReplaceable(w, x - 1, y, z - 1)) {
+			} else if (isReplaceable(w, x - 1, y, z - 1)) {
 				--z;
-			}
-			else if (isReplaceable(w, x + 1, y, z + 1)) {
+			} else if (isReplaceable(w, x + 1, y, z + 1)) {
 				++x;
 				++z;
-			}
-			else if (isReplaceable(w, x - 1, y, z + 1)) {
+			} else if (isReplaceable(w, x - 1, y, z + 1)) {
 				--x;
 				++z;
-			}
-			else if (isReplaceable(w, x + 1, y, z - 1)) {
+			} else if (isReplaceable(w, x + 1, y, z - 1)) {
 				++x;
 				--z;
-			}
-			else if (isReplaceable(w, x - 1, y, z - 1)) {
+			} else if (isReplaceable(w, x - 1, y, z - 1)) {
 				--x;
 				--z;
-			}
-			else {
+			} else {
 				found = false;
 			}
 			if (found) {
 				if (!w.getBlockState(new BlockPos(x, y - 1, z)).isOpaqueCube()) {
 					w.setBlockState(new BlockPos(x, y - 1, z), Blocks.STONE.getDefaultState());
 				}
-			}
-			else {
+			} else {
 				found = true;
 				y++;
 				if (isReplaceable(w, x + 1, y, z)) {
 					++x;
-				}
-				else if (isReplaceable(w, x - 1, y, z)) {
+				} else if (isReplaceable(w, x - 1, y, z)) {
 					--x;
-				}
-				else if (isReplaceable(w, x, y, z + 1)) {
+				} else if (isReplaceable(w, x, y, z + 1)) {
 					++z;
-				}
-				else if (isReplaceable(w, x - 1, y, z - 1)) {
+				} else if (isReplaceable(w, x - 1, y, z - 1)) {
 					--z;
-				}
-				else if (isReplaceable(w, x + 1, y, z + 1)) {
+				} else if (isReplaceable(w, x + 1, y, z + 1)) {
 					++x;
 					++z;
-				}
-				else if (isReplaceable(w, x - 1, y, z + 1)) {
+				} else if (isReplaceable(w, x - 1, y, z + 1)) {
 					--x;
 					++z;
-				}
-				else if (isReplaceable(w, x + 1, y, z - 1)) {
+				} else if (isReplaceable(w, x + 1, y, z - 1)) {
 					++x;
 					--z;
-				}
-				else if (isReplaceable(w, x - 1, y, z - 1)) {
+				} else if (isReplaceable(w, x - 1, y, z - 1)) {
 					--x;
 					--z;
-				}
-				else {
+				} else {
 					found = false;
 				}
 				if (!found) {
@@ -514,8 +500,7 @@ public class WorldProviderDreamWorld extends WorldProvider {
 			Boolean result = BackpackHelper.placeBackpack(w, new BlockPos(x, y, z), stackBackpack, player, false);
 			if (!result) {
 				Log.instance().debug("Backpack could not be placed");
-			}
-			else {
+			} else {
 				BackpackHelper.setEquippedBackpack(player, stackBackpack, backpack.getData());
 			}
 		}
@@ -568,13 +553,17 @@ public class WorldProviderDreamWorld extends WorldProvider {
 
 	private static boolean isValidSpawnPoint(World world, int x, int y, int z) {
 		Material matBelow = world.getBlockState(new BlockPos(x, y - 1, z)).getMaterial();
-		return !world.isAirBlock(new BlockPos(x, y - 1, z)) && matBelow != Material.LAVA && world.isAirBlock(new BlockPos(x, y, z)) && world.isAirBlock(new BlockPos(x, y + 1, z));
+		return !world.isAirBlock(new BlockPos(x, y - 1, z)) && matBelow != Material.LAVA
+				&& world.isAirBlock(new BlockPos(x, y, z)) && world.isAirBlock(new BlockPos(x, y + 1, z));
 	}
 
 	public static void returnPlayerToOverworld(EntityPlayer player) {
 		if (player != null && !player.worldObj.isRemote) {
 			if (player.dimension != Config.instance().dimensionDreamID) {
-				Log.instance().warning("Player " + player.getDisplayNameString() + "is in incorrect dimension when returning from spirit world, dimension = " + player.dimension);
+				Log.instance()
+						.warning("Player " + player.getDisplayNameString()
+								+ "is in incorrect dimension when returning from spirit world, dimension = "
+								+ player.dimension);
 			}
 			NBTTagCompound nbtPlayer = Infusion.getNBT(player);
 			if (!nbtPlayer.hasKey(SPIRIT_DIM)) {
@@ -582,10 +571,15 @@ public class WorldProviderDreamWorld extends WorldProvider {
 			}
 			NBTTagCompound nbtSpirit = nbtPlayer.getCompoundTag(SPIRIT_DIM);
 			boolean isSpiritWorld = player.dimension == Config.instance().dimensionDreamID;
-			int cottonRemoved = isSpiritWorld ? player.inventory.clearMatchingItems(BlockInit.WISPY_COTTON, -1, 0, null) : 0;
-			int disturbedCottonRemoved = isSpiritWorld ? player.inventory.clearMatchingItems(ItemInit.DISTURBED_COTTON, -1, 0, null) : 0;
-			int hunger = isSpiritWorld ? player.inventory.clearMatchingItems(ItemInit.MELLIFLUOUS_HUNGER, -1, 0, null) : 0;
-			int spirit = isSpiritWorld ? player.inventory.clearMatchingItems(ItemInit.BREW_FLOWING_SPIRIT, -1, 0, null) : 0;
+			int cottonRemoved = isSpiritWorld ? player.inventory.clearMatchingItems(BlockInit.WISPY_COTTON, -1, 0, null)
+					: 0;
+			int disturbedCottonRemoved = isSpiritWorld
+					? player.inventory.clearMatchingItems(ItemInit.DISTURBED_COTTON, -1, 0, null)
+					: 0;
+			int hunger = isSpiritWorld ? player.inventory.clearMatchingItems(ItemInit.MELLIFLUOUS_HUNGER, -1, 0, null)
+					: 0;
+			int spirit = isSpiritWorld ? player.inventory.clearMatchingItems(ItemInit.BREW_FLOWING_SPIRIT, -1, 0, null)
+					: 0;
 			int subudedSpirits = player.inventory.clearMatchingItems(ItemInit.SUBDUED_SPIRIT, -1, 0, null);
 			int needles = player.inventory.clearMatchingItems(ItemInit.NEEDLE_ICY, -1, 0, null);
 			dropBetterBackpacks(player);
@@ -599,8 +593,7 @@ public class WorldProviderDreamWorld extends WorldProvider {
 				NBTTagList nbtOverworldInventory = nbtSpirit.getTagList(SW_OVERWORLD_INVENTORY, 10);
 				player.inventory.readFromNBT(nbtOverworldInventory);
 				nbtSpirit.removeTag(SW_OVERWORLD_INVENTORY);
-			}
-			else {
+			} else {
 				player.inventory.clear();
 			}
 			addItemToInventory(player, new ItemStack(BlockInit.WISPY_COTTON, 1, 0), cottonRemoved);
@@ -637,8 +630,7 @@ public class WorldProviderDreamWorld extends WorldProvider {
 			if (posBody != null) {
 				findTopAndSetPosition(player.worldObj, player, new BlockPos(posBody.x, posBody.y, posBody.z));
 				nbtSpirit.removeTag(SW_OVERWORLD_BODY);
-			}
-			else {
+			} else {
 				findTopAndSetPosition(player.worldObj, player);
 			}
 			for (Entity entity : player.worldObj.loadedEntityList) {
@@ -707,24 +699,26 @@ public class WorldProviderDreamWorld extends WorldProvider {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null && stack.getItem() instanceof BlockFetish.ClassItemBlock && InfusedSpiritEffect.getEffectID(stack) != null && !InfusedSpiritEffect.getEffectID().isEmpty()) {
+			if (stack != null && stack.getItem() instanceof BlockFetish.ClassItemBlock
+					&& InfusedSpiritEffect.getEffectID(stack) != null && !InfusedSpiritEffect.getEffectID().isEmpty()) {
 				stacks.add(stack);
 			}
 		}
 		return stacks;
 	}
 
-	public static void updatePlayerEffects(World world, EntityPlayer player, NBTTagCompound nbtPlayer, long time, long counter) {
+	public static void updatePlayerEffects(World world, EntityPlayer player, NBTTagCompound nbtPlayer, long time,
+			long counter) {
 		if (!world.isRemote) {
 			boolean done = false;
 			if (counter % 20L == 0L) {
 				boolean mustAwaken = getPlayerMustAwaken(Infusion.getNBT(player));
 				if (mustAwaken) {
 					setPlayerMustAwaken(nbtPlayer, false);
-					if (player.dimension != Config.instance().dimensionDreamID && isSpiritWalking(player) && !isPlayerGhost(player)) {
+					if (player.dimension != Config.instance().dimensionDreamID && isSpiritWalking(player)
+							&& !isPlayerGhost(player)) {
 						returnPlayerToOverworld(player);
-					}
-					else if (player.dimension == Config.instance().dimensionDreamID) {
+					} else if (player.dimension == Config.instance().dimensionDreamID) {
 						returnPlayerToOverworld(player);
 					}
 				}
@@ -734,15 +728,16 @@ public class WorldProviderDreamWorld extends WorldProvider {
 				if (player.dimension == Config.instance().dimensionDreamID && nightmareLevel > 0) {
 					double R = 18.0;
 					double H = 18.0;
-					AxisAlignedBB bounds = new AxisAlignedBB(player.posX - R, player.posY - R, player.posZ - R, player.posX + R, player.posY + R, player.posZ + R);
+					AxisAlignedBB bounds = new AxisAlignedBB(player.posX - R, player.posY - R, player.posZ - R,
+							player.posX + R, player.posY + R, player.posZ + R);
 					if (nightmareLevel > 1) {
 						double chance = world.rand.nextDouble();
 						if (chance < 0.5) {
-							EntitySmallFireball fireball = new EntitySmallFireball(world, player.posX - 2 + world.rand.nextInt(5), player.posY + 15.0, player.posZ - 2.0 + world.rand.nextInt(5), 0.0,
-									-0.2, 0.0);
+							EntitySmallFireball fireball = new EntitySmallFireball(world,
+									player.posX - 2 + world.rand.nextInt(5), player.posY + 15.0,
+									player.posZ - 2.0 + world.rand.nextInt(5), 0.0, -0.2, 0.0);
 							world.spawnEntityInWorld(fireball);
-						}
-						else if (chance < 0.65) {
+						} else if (chance < 0.65) {
 							EntityLargeFireball fireball = new EntityLargeFireball(world);
 							double x, y, z;
 							x = player.posX - 2.0 + world.rand.nextInt(5);
@@ -758,12 +753,12 @@ public class WorldProviderDreamWorld extends WorldProvider {
 							fireball.accelerationY = mod2 / accelDenom * 0.1;
 							fireball.accelerationZ = mod3 / accelDenom * 0.1;
 							world.spawnEntityInWorld(fireball);
-						}
-						else if (chance < 0.75) {
+						} else if (chance < 0.75) {
 							List<EntityMob> entities = world.getEntitiesWithinAABB(EntityMob.class, bounds);
 							if (entities.size() < 10 && !containsDemons(entities, 2)) {
 								EntityDemon blaze = new EntityDemon(world);
-								Infusion.spawnCreature(world, EntityDemon.class, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ),
+								Infusion.spawnCreature(world, EntityDemon.class, MathHelper.floor_double(player.posX),
+										MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ),
 										player, 4, 8, ParticleEffect.SMOKE, SoundEffect.MOB_WITHER_DEATH);
 							}
 						}
@@ -777,17 +772,20 @@ public class WorldProviderDreamWorld extends WorldProvider {
 					long currentTime = MinecraftServer.getCurrentTimeMillis();
 					long lastKillTime = getPlayerLastNightmareKill(nbtPlayer);
 					if (lastKillTime < currentTime - 30000L) {
-						Infusion.spawnCreature(world, EntityNightmare.class, (int) player.posX, (int) player.posY, (int) player.posZ, player, 2, 6);
+						Infusion.spawnCreature(world, EntityNightmare.class, (int) player.posX, (int) player.posY,
+								(int) player.posZ, player, 2, 6);
 					}
-				}
-				else if (player.dimension != Config.instance().dimensionDreamID && isPlayerGhost(nbtPlayer)) {
+				} else if (player.dimension != Config.instance().dimensionDreamID && isPlayerGhost(nbtPlayer)) {
 					int timeRemaining = 0;
 					boolean skipNext = getSkipNextManifestationReductions(nbtPlayer);
 					if (nbtPlayer.hasKey(SW_MANIFEST_TIME)) {
 						timeRemaining = nbtPlayer.getInteger(SW_MANIFEST_TIME);
 						timeRemaining = Math.max(0, timeRemaining - 5);
-						if (((timeRemaining >= 60 && timeRemaining <= 64) || (timeRemaining >= 30 && timeRemaining <= 34) || (timeRemaining >= 15 && timeRemaining <= 19)) && !skipNext) {
-							ChatUtilities.sendTranslated(TextFormatting.LIGHT_PURPLE, player, Reference.MANIFESTATION_COUNTDOWN, Integer.valueOf(timeRemaining).toString());
+						if (((timeRemaining >= 60 && timeRemaining <= 64)
+								|| (timeRemaining >= 30 && timeRemaining <= 34)
+								|| (timeRemaining >= 15 && timeRemaining <= 19)) && !skipNext) {
+							ChatUtilities.sendTranslated(TextFormatting.LIGHT_PURPLE, player,
+									Reference.MANIFESTATION_COUNTDOWN, Integer.valueOf(timeRemaining).toString());
 						}
 					}
 					if (timeRemaining == 0) {
@@ -795,11 +793,9 @@ public class WorldProviderDreamWorld extends WorldProvider {
 							nbtPlayer.removeTag(SW_MANIFEST_TIME);
 						}
 						returnGhostPlayerToSpiritWorld(player);
-					}
-					else if (!skipNext) {
+					} else if (!skipNext) {
 						nbtPlayer.setInteger(SW_MANIFEST_TIME, timeRemaining);
-					}
-					else {
+					} else {
 						skipNextManifestationReduction(nbtPlayer, false);
 					}
 				}

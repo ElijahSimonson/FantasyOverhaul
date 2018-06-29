@@ -12,7 +12,7 @@ public class ContractSmelting extends Contract {
 	public ContractSmelting(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public boolean activate(ItemStack stack, EntityLivingBase targetEntity) {
 		if (targetEntity instanceof EntityPlayer) {

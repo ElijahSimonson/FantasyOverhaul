@@ -35,7 +35,8 @@ public class EntityAIMoveTowardsVampire extends EntityAIBase {
 
 	private EntityLivingBase getDistanceSqToPartner() {
 		double r = maxTargetDistance;
-		AxisAlignedBB bb = new AxisAlignedBB(new BlockPos(theCreature.posX - r, theCreature.posY - r, theCreature.posZ - r));
+		AxisAlignedBB bb = new AxisAlignedBB(
+				new BlockPos(theCreature.posX - r, theCreature.posY - r, theCreature.posZ - r));
 		List<EntityPlayer> mogs = theCreature.worldObj.getEntitiesWithinAABB(EntityPlayer.class, bb);
 		double minDistance = Double.MAX_VALUE;
 		EntityLivingBase target = null;

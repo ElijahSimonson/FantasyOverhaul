@@ -20,7 +20,7 @@ public class Edible extends GeneralItem {
 	public Edible(String name, int heal, float sat, boolean wolfFav) {
 		this(name, heal, sat, wolfFav, false);
 	}
-	
+
 	public Edible(String name, int heal, float sat, boolean wolfFav, boolean eatAny) {
 		super(name);
 		healAmount = heal;
@@ -28,24 +28,24 @@ public class Edible extends GeneralItem {
 		wolfFavorite = wolfFav;
 		eatAnyTime = eatAny;
 	}
-	
+
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.EAT;
 	}
-	
+
 	public int getHealAmount() {
 		return healAmount;
 	}
-	
+
 	public float getSaturationModifier() {
 		return saturationModifier;
 	}
-	
+
 	public boolean isWolfsFavoriteMeat() {
 		return wolfFavorite;
 	}
-	
+
 	public ItemStack onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
 		if (!player.capabilities.isCreativeMode) {
 			--stack.stackSize;
@@ -54,14 +54,15 @@ public class Edible extends GeneralItem {
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 			}
 		}
-		
+
 		player.getFoodStats().addStats(healAmount, saturationModifier);
-		
-		world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5f, world.rand.nextFloat() * 0.1f + 0.9f);
-		
+
+		world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5f,
+				world.rand.nextFloat() * 0.1f + 0.9f);
+
 		return stack;
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {

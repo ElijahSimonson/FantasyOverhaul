@@ -12,12 +12,12 @@ import nz.castorgaming.fantasyoverhaul.util.classes.CreatureUtilities;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class ItemWolfsbane extends GeneralItem{
+public class ItemWolfsbane extends GeneralItem {
 
 	public ItemWolfsbane(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
@@ -26,8 +26,7 @@ public class ItemWolfsbane extends GeneralItem{
 			if (rtr != null && rtr.entityHit != null) {
 				if (CreatureUtilities.isWerewolf(rtr.entityHit, true)) {
 					ParticleEffect.FLAME.send(SoundEffect.MOB_WOLFMAN_HOWL, rtr.entityHit, 0.5, 1.5, 16);
-				}
-				else {
+				} else {
 					SoundEffect.NOTE_SNARE.playAtPlayer(worldIn, playerIn);
 				}
 				--itemStackIn.stackSize;

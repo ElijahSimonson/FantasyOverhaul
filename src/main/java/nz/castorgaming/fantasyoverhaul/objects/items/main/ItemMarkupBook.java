@@ -13,13 +13,13 @@ import net.minecraft.world.World;
 import nz.castorgaming.fantasyoverhaul.FantasyOverhaul;
 import nz.castorgaming.fantasyoverhaul.util.classes.GeneralUtil;
 
-public class ItemMarkupBook extends GeneralItem{
-	
+public class ItemMarkupBook extends GeneralItem {
+
 	private final int dialogID;
 	private final int[] creativeMetaValues;
 
 	public ItemMarkupBook(String name, int dialogID) {
-		this(name, dialogID, new int[] {0});		
+		this(name, dialogID, new int[] { 0 });
 	}
 
 	public ItemMarkupBook(String name, int dialogID2, int[] is) {
@@ -28,14 +28,15 @@ public class ItemMarkupBook extends GeneralItem{
 		hasSubtypes = true;
 		creativeMetaValues = is;
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
-		playerIn.openGui(FantasyOverhaul.instance, dialogID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+		playerIn.openGui(FantasyOverhaul.instance, dialogID, worldIn, (int) playerIn.posX, (int) playerIn.posY,
+				(int) playerIn.posZ);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		String itemName = getUnlocalizedName();
@@ -45,16 +46,15 @@ public class ItemMarkupBook extends GeneralItem{
 			}
 		}
 	}
-	
+
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		for (int meta : creativeMetaValues) {
 			subItems.add(new ItemStack(this, 1, meta));
 		}
 	}
-	
-	public void onBookRead(ItemStack stack, World world, EntityPlayer player) {};
-	
-	
+
+	public void onBookRead(ItemStack stack, World world, EntityPlayer player) {
+	};
 
 }

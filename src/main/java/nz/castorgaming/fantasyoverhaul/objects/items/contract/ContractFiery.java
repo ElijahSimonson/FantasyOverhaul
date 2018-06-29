@@ -7,12 +7,12 @@ import nz.castorgaming.fantasyoverhaul.init.PlayerEffectInit;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.Contract;
 import nz.castorgaming.fantasyoverhaul.util.classes.TimeUtilities;
 
-public class ContractFiery extends Contract{
+public class ContractFiery extends Contract {
 
 	public ContractFiery(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public boolean activate(ItemStack stack, EntityLivingBase targetEntity) {
 		if (targetEntity instanceof EntityPlayer) {

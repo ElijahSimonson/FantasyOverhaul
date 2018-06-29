@@ -15,21 +15,21 @@ import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
 public class BrewSolid extends Brew {
-	
+
 	protected Block replacementBlock;
 
 	public BrewSolid(String name, Block stone) {
 		super(name);
 		replacementBlock = stone;
 	}
-	
+
 	@Override
 	public BrewResult onImpact(World world, EntityLivingBase thrower, RayTraceResult rtr, boolean enhanced, double x,
 			double y, double z, AxisAlignedBB bounds) {
 		if (rtr.typeOfHit == RayTraceResult.Type.ENTITY) {
 			return BrewResult.DROP_ITEM;
 		}
-		
+
 		Block blockHit = BlockUtil.getBlock(world, rtr);
 		BlockPos pos = rtr.getBlockPos();
 		if (blockHit != BlockInit.HOLLOW_TEARS) {
@@ -58,7 +58,7 @@ public class BrewSolid extends Brew {
 				return BrewResult.DROP_ITEM;
 			}
 		}
-		SpreadEffect.spread(world, pos, 64, new SpreadEffect(new Block[] {BlockInit.HOLLOW_TEARS}) {
+		SpreadEffect.spread(world, pos, 64, new SpreadEffect(new Block[] { BlockInit.HOLLOW_TEARS }) {
 
 			@Override
 			public boolean doEffect(World world, BlockPos pos, Block block) {
@@ -69,7 +69,7 @@ public class BrewSolid extends Brew {
 					if (blockBelow != null && BlockProtect.canBreak(blockBelow, world)) {
 						world.setBlockToAir(pos.down());
 					}
-				}else {
+				} else {
 					BlockUtil.setBlock(world, pos, replacementBlock.getDefaultState());
 				}
 				return true;
@@ -78,21 +78,22 @@ public class BrewSolid extends Brew {
 		return BrewResult.SHOW_EFFECT;
 	}
 
-	public abstract static class SpreadEffect{
+	public abstract static class SpreadEffect {
 		protected Block[] blocks;
-		
+
 		public SpreadEffect(Block... blocksToSpread) {
 			blocks = blocksToSpread;
 		}
-		
+
 		public abstract boolean doEffect(World world, BlockPos pos, Block block);
-		
+
 		public static void spread(World world, BlockPos pos, int range, SpreadEffect effect) {
 			spread(world, pos, pos, range, effect);
 		}
 
 		private static void spread(World world, BlockPos pos, BlockPos pos2, int range, SpreadEffect effect) {
-			if (Math.abs(pos.getX() - pos2.getX()) >= range || Math.abs(pos.getY() - pos2.getY()) >= range || Math.abs(pos.getZ() - pos2.getZ()) >= range) {
+			if (Math.abs(pos.getX() - pos2.getX()) >= range || Math.abs(pos.getY() - pos2.getY()) >= range
+					|| Math.abs(pos.getZ() - pos2.getZ()) >= range) {
 				return;
 			}
 			for (EnumFacing facing : EnumFacing.VALUES) {
@@ -102,10 +103,10 @@ public class BrewSolid extends Brew {
 				}
 			}
 		}
-		
+
 		private static boolean checkEffect(World world, BlockPos pos, SpreadEffect effect) {
 			boolean continueCheck = false;
-			
+
 			Block foundBlock = BlockUtil.getBlock(world, pos);
 			if (foundBlock != null) {
 				for (Block block : effect.blocks) {
@@ -115,9 +116,9 @@ public class BrewSolid extends Brew {
 					}
 				}
 			}
-			
+
 			return continueCheck;
 		}
 	}
-	
+
 }

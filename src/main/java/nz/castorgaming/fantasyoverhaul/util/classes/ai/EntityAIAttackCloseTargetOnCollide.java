@@ -11,12 +11,14 @@ public class EntityAIAttackCloseTargetOnCollide extends EntityAIAttackMelee {
 	Class classTarget;
 	double maxDistance;
 
-	public EntityAIAttackCloseTargetOnCollide(EntityCreature living, Class cls, double par1, boolean par2, double maxDistance) {
+	public EntityAIAttackCloseTargetOnCollide(EntityCreature living, Class cls, double par1, boolean par2,
+			double maxDistance) {
 		this(living, par1, par2, maxDistance);
 		classTarget = cls;
 	}
 
-	public EntityAIAttackCloseTargetOnCollide(final EntityCreature par1EntityLiving, final double par2, final boolean par3, final double maxDistance) {
+	public EntityAIAttackCloseTargetOnCollide(final EntityCreature par1EntityLiving, final double par2,
+			final boolean par3, final double maxDistance) {
 		super(par1EntityLiving, par2, par3);
 		this.attacker = par1EntityLiving;
 		this.maxDistance = maxDistance;
@@ -33,9 +35,11 @@ public class EntityAIAttackCloseTargetOnCollide extends EntityAIAttackMelee {
 
 	protected boolean isTargetNearby() {
 		final EntityLivingBase entityTarget = (this.attacker != null) ? this.attacker.getAttackTarget() : null;
-		return entityTarget != null && this.attacker.getDistanceSqToEntity(entityTarget) <= this.maxDistance * this.maxDistance
+		return entityTarget != null
+				&& this.attacker.getDistanceSqToEntity(entityTarget) <= this.maxDistance * this.maxDistance
 				&& this.attacker.getNavigator().getPathToEntityLiving(entityTarget) != null
-				&& (entityTarget.getHeldItemMainhand() == null || entityTarget.getHeldItemMainhand().getItem() != ItemInit.DEVILS_TONGUE_CHARM);
+				&& (entityTarget.getHeldItemMainhand() == null
+						|| entityTarget.getHeldItemMainhand().getItem() != ItemInit.DEVILS_TONGUE_CHARM);
 	}
 
 	@Override

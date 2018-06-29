@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 public interface IArchitectExtended extends IArchitect {
 
 	/**
-	 * Returns the location that should be used as the starting point. 
+	 * Returns the location that should be used as the starting point.
 	 */
 	public RayTraceResult getArchitectMOP(ItemStack stack, World world, EntityLivingBase player);
 

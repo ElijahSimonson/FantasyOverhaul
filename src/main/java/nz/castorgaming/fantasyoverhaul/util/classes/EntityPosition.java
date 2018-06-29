@@ -34,13 +34,11 @@ public class EntityPosition {
 			this.x = mop.entityHit.posX;
 			this.y = mop.entityHit.posY;
 			this.z = mop.entityHit.posZ;
-		}
-		else if (mop.typeOfHit == RayTraceResult.Type.BLOCK) {
+		} else if (mop.typeOfHit == RayTraceResult.Type.BLOCK) {
 			this.x = mop.getBlockPos().getX() + 0.5;
 			this.y = mop.getBlockPos().getY() + 0.5;
 			this.z = mop.getBlockPos().getZ() + 0.5;
-		}
-		else {
+		} else {
 			this.x = 0.0;
 			this.y = 0.0;
 			this.z = 0.0;

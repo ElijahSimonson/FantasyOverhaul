@@ -18,19 +18,22 @@ import nz.castorgaming.fantasyoverhaul.util.Reference;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class EntitySummonedUndead extends EntityMob{
-	
+public class EntitySummonedUndead extends EntityMob {
+
 	private int timeToLive;
-	
-	private DataParameter<Boolean> OBSCURED = EntityDataManager.createKey(EntitySummonedUndead.class, DataSerializers.BOOLEAN);
-	private DataParameter<Optional<UUID>> SUMMONER = EntityDataManager.createKey(EntitySummonedUndead.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-	private DataParameter<Boolean> SCREAMING = EntityDataManager.createKey(EntitySummonedUndead.class, DataSerializers.BOOLEAN);
+
+	private DataParameter<Boolean> OBSCURED = EntityDataManager.createKey(EntitySummonedUndead.class,
+			DataSerializers.BOOLEAN);
+	private DataParameter<Optional<UUID>> SUMMONER = EntityDataManager.createKey(EntitySummonedUndead.class,
+			DataSerializers.OPTIONAL_UNIQUE_ID);
+	private DataParameter<Boolean> SCREAMING = EntityDataManager.createKey(EntitySummonedUndead.class,
+			DataSerializers.BOOLEAN);
 
 	public EntitySummonedUndead(World worldIn) {
 		super(worldIn);
 		setTimeToLive(-1);
 	}
-	
+
 	@Override
 	protected void entityInit() {
 		super.entityInit();
@@ -42,7 +45,7 @@ public class EntitySummonedUndead extends EntityMob{
 	public void setTimeToLive(int timeToLive) {
 		this.timeToLive = timeToLive;
 	}
-	
+
 	public boolean isTemp() {
 		return timeToLive != -1;
 	}
@@ -51,25 +54,25 @@ public class EntitySummonedUndead extends EntityMob{
 	protected int decreaseAirSupply(int air) {
 		return air;
 	}
-	
+
 	public UUID getSummonerUUID() {
 		return dataManager.get(SUMMONER).isPresent() ? dataManager.get(SUMMONER).get() : Reference.BLANK_UUID;
 	}
-	
+
 	public EntityPlayer getSummoner() {
 		return worldObj.getPlayerEntityByUUID(getSummonerUUID());
 	}
-	
+
 	public void setSummoner(UUID uuid) {
 		enablePersistence();
 		dataManager.set(SUMMONER, Optional.fromNullable(uuid));
 	}
-	
+
 	@Override
 	public EnumCreatureAttribute getCreatureAttribute() {
 		return EnumCreatureAttribute.UNDEAD;
 	}
-	
+
 	@Override
 	protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
 		if (!isTemp()) {
@@ -80,6 +83,7 @@ public class EntitySummonedUndead extends EntityMob{
 			}
 		}
 	}
+
 	@Override
 	protected void updateAITasks() {
 		super.updateAITasks();
@@ -91,33 +95,33 @@ public class EntitySummonedUndead extends EntityMob{
 			}
 		}
 	}
-	
+
 	@Override
 	public int getTalkInterval() {
 		return super.getTalkInterval() * 3;
 	}
-	
+
 	public boolean isScreaming() {
 		return dataManager.get(SCREAMING);
 	}
-	
+
 	public void setScreaming(boolean scream) {
 		dataManager.set(SCREAMING, scream);
 	}
-	
+
 	public boolean isObscured() {
 		return dataManager.get(OBSCURED);
 	}
-	
+
 	public void setObscured(boolean obscured) {
 		dataManager.set(OBSCURED, obscured);
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		return super.attackEntityFrom(source, Math.min(amount, 15.0f));
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
@@ -126,11 +130,11 @@ public class EntitySummonedUndead extends EntityMob{
 		}
 		compound.setBoolean("Obscured", isObscured());
 		if (timeToLive != -1) {
-			compound.setInteger("SuicideIn", timeToLive);	
+			compound.setInteger("SuicideIn", timeToLive);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
@@ -140,7 +144,7 @@ public class EntitySummonedUndead extends EntityMob{
 		setObscured(compound.getBoolean("Obscured"));
 		if (compound.hasKey("SuicideIn")) {
 			timeToLive = compound.getInteger("SuicideIn");
-		}else {
+		} else {
 			timeToLive = -1;
 		}
 	}

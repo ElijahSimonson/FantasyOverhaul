@@ -55,15 +55,15 @@ public class PotionClientHooks {
 	@SubscribeEvent
 	public void onDrawBlockHighlight(final DrawBlockHighlightEvent event) {
 		if (event != null && !event.isCanceled() && event.getPlayer() != null) {
-			if (event.getPlayer().isPotionActive(Potions.RESIZING) || !new EntitySizeInfo(event.getPlayer()).isDefault) {
+			if (event.getPlayer().isPotionActive(Potions.RESIZING)
+					|| !new EntitySizeInfo(event.getPlayer()).isDefault) {
 				final double reach = Minecraft.getMinecraft().playerController.getBlockReachDistance();
 				final RayTraceResult mop = event.getPlayer().rayTrace(reach, event.getPartialTicks());
 				if (mop != null && !BlockBearTrap.checkForHiddenTrap(event.getPlayer(), mop)) {
 					event.getContext().drawSelectionBox(event.getPlayer(), mop, 0, event.getPartialTicks());
 				}
 				event.setCanceled(true);
-			}
-			else if (BlockBearTrap.checkForHiddenTrap(event.getPlayer(), event.getTarget())) {
+			} else if (BlockBearTrap.checkForHiddenTrap(event.getPlayer(), event.getTarget())) {
 				event.setCanceled(true);
 			}
 		}

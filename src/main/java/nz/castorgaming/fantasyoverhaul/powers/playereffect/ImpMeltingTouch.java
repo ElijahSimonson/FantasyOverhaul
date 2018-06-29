@@ -31,8 +31,7 @@ public class ImpMeltingTouch extends PlayerEffect {
 					++itemStack.stackSize;
 				}
 				newDrops.add(smelted);
-			}
-			else {
+			} else {
 				Log.instance().debug("Smelting Touch: " + drop.toString() + " -> none");
 				newDrops.add(drop);
 			}

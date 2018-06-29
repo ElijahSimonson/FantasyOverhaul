@@ -42,7 +42,7 @@ public class PlayerCapabilityMaster {
 
 	public enum QuestState {
 		NOT_STARTED, STARTED, COMPLETE;
-		
+
 		public int toInt() {
 			return toInt(this);
 		}

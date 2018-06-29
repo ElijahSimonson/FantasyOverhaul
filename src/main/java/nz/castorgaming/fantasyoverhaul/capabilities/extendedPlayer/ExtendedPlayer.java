@@ -39,7 +39,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 
 	private static final int MAX_SKILL_LEVEL_POTION_BOTTLING = 100;
 	private static final int MAX_SKILL_LEVEL_POTION_THROWING = 100;
-	
+
 	public PlayerVampire vampire;
 	public PlayerWerewolf werewolf;
 
@@ -183,8 +183,8 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 		Object object = textureManager.getTexture(location);
 		if (object == null) {
-			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(name)), RenderReflection.SKIN,
-					new ImageBufferDownload());
+			object = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png",
+					StringUtils.stripControlCodes(name)), RenderReflection.SKIN, new ImageBufferDownload());
 			textureManager.loadTexture(location, (ITextureObject) object);
 		}
 		return (ThreadDownloadImageData) object;
@@ -327,8 +327,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 			String name = Minecraft.getMinecraft().theWorld.getPlayerEntityByUUID(ownerUUID).getName();
 			locationSkin = AbstractClientPlayer.getLocationSkin(name);
 			downloadImageSkin = getDownloadImageSkin(locationSkin, name);
-		}
-		else {
+		} else {
 			locationSkin = null;
 			downloadImageSkin = null;
 		}
@@ -337,7 +336,8 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 	@Override
 	public void updateWorship() {
 		if (cachedWorship >= 0) {
-			player.addPotionEffect(new PotionEffect(Potions.WORSHIP, TimeUtilities.secsToTicks(60), cachedWorship, true, false));
+			player.addPotionEffect(
+					new PotionEffect(Potions.WORSHIP, TimeUtilities.secsToTicks(60), cachedWorship, true, false));
 			cachedWorship = -1;
 		}
 		processSync();
@@ -351,7 +351,7 @@ public class ExtendedPlayer extends PlayerCapabilityMaster implements IExtendPla
 		levels.put(PlayerType.VAMPIRE, werewolf.getWerewolfLevel());
 		return levels;
 	}
-	
+
 	public static ExtendedPlayer get(EntityPlayer player) {
 		return (ExtendedPlayer) player.getCapability(CapabilityInit.EXTENDED_PLAYER, null);
 	}

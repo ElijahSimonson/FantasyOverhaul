@@ -27,12 +27,12 @@ import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 import nz.castorgaming.fantasyoverhaul.util.packets.PacketParticles;
 
-public class ItemNecroStone extends GeneralItem{
+public class ItemNecroStone extends GeneralItem {
 
 	public ItemNecroStone(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
@@ -43,37 +43,40 @@ public class ItemNecroStone extends GeneralItem{
 		RayTraceResult rtr = InfusionOtherwhere.doCustomRayTrace(worldIn, playerIn, true, MAX_TARGET_RANGE);
 		if (rtr != null) {
 			switch (rtr.typeOfHit) {
-			case BLOCK:
-				{
-					if (worldIn.getBlockState(rtr.getBlockPos()).getBlock() == BlockInit.ALLURING_SKULL) {
-						return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-					}
-					if (rtr.sideHit != EnumFacing.UP) {
-						break;
-					}
-					int minionCount = 0;
-					int r = 50;
-					AxisAlignedBB bounds = new AxisAlignedBB(playerIn.posX - r, playerIn.posY - 15.0, playerIn.posZ - r, playerIn.posX + r, playerIn.posY + 15.0, playerIn.posZ + r);
-					for (EntityLiving living : worldIn.getEntitiesWithinAABB(EntityLiving.class, bounds)) {
-						EntityCreature creature = (creature instanceof EntityCreature) ? creature : null;
-						if (living.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD && Enslaved.isMobEnslavedBy(living, playerIn)) {
-							++minionCount;
-							living.setAttackTarget(null);
-							living.setRevengeTarget(null);
-							if ((!(creature instanceof EntitySpider) && creature.getNavigator().tryMoveToXYZ(rtr.getBlockPos().getX(), rtr.getBlockPos().getY(), rtr.getBlockPos().getZ(), 1.0) || creature == null)) {
-								continue;
-							}
-							creature.getNavigator().setPath(creature.getNavigator().getPathToPos(new BlockPos(rtr.getBlockPos()).up()), 1.0);
-						}
-					}
-					if (minonCount > 0) {
-						ParticleEffect.INSTANT_SPELL.send(SoundEffect.RANDOM_POP, worldIn, rtr.getBlockPos(), 1.0, 1.0, 16);
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-					}
+			case BLOCK: {
+				if (worldIn.getBlockState(rtr.getBlockPos()).getBlock() == BlockInit.ALLURING_SKULL) {
+					return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+				}
+				if (rtr.sideHit != EnumFacing.UP) {
 					break;
 				}
-			case ENTITY:
-			{
+				int minionCount = 0;
+				int r = 50;
+				AxisAlignedBB bounds = new AxisAlignedBB(playerIn.posX - r, playerIn.posY - 15.0, playerIn.posZ - r,
+						playerIn.posX + r, playerIn.posY + 15.0, playerIn.posZ + r);
+				for (EntityLiving living : worldIn.getEntitiesWithinAABB(EntityLiving.class, bounds)) {
+					EntityCreature creature = (creature instanceof EntityCreature) ? creature : null;
+					if (living.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD
+							&& Enslaved.isMobEnslavedBy(living, playerIn)) {
+						++minionCount;
+						living.setAttackTarget(null);
+						living.setRevengeTarget(null);
+						if ((!(creature instanceof EntitySpider) && creature.getNavigator().tryMoveToXYZ(
+								rtr.getBlockPos().getX(), rtr.getBlockPos().getY(), rtr.getBlockPos().getZ(), 1.0)
+								|| creature == null)) {
+							continue;
+						}
+						creature.getNavigator().setPath(
+								creature.getNavigator().getPathToPos(new BlockPos(rtr.getBlockPos()).up()), 1.0);
+					}
+				}
+				if (minonCount > 0) {
+					ParticleEffect.INSTANT_SPELL.send(SoundEffect.RANDOM_POP, worldIn, rtr.getBlockPos(), 1.0, 1.0, 16);
+					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+				}
+				break;
+			}
+			case ENTITY: {
 				if (!(rtr.entityHit instanceof EntityLivingBase)) {
 					break;
 				}
@@ -81,27 +84,36 @@ public class ItemNecroStone extends GeneralItem{
 					EntityLivingBase targetEntity = (EntityLivingBase) rtr.entityHit;
 					int r = 50;
 					int minionCount = 0;
-					AxisAlignedBB bounds = new AxisAlignedBB(playerIn.posX - r, playerIn.posY - r, playerIn.posZ - r, playerIn.posX + r, playerIn.posY + r, playerIn.posZ + r);
+					AxisAlignedBB bounds = new AxisAlignedBB(playerIn.posX - r, playerIn.posY - r, playerIn.posZ - r,
+							playerIn.posX + r, playerIn.posY + r, playerIn.posZ + r);
 					for (EntityLiving entity : worldIn.getEntitiesWithinAABB(EntityLiving.class, bounds)) {
-						if (entity.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD && Enslaved.isMobEnslavedBy(entity, playerIn)) {
-							minionCount ++;
+						if (entity.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD
+								&& Enslaved.isMobEnslavedBy(entity, playerIn)) {
+							minionCount++;
 							EntityUtil.setTarget(entity, targetEntity);
 						}
 					}
 					if (minionCount > 0) {
-						Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.CRIT, SoundEffect.MOB_ZOMBIE_DEATH, rtr.entityHit, 0.5, 2.0), TargetPointUtil.from(targetEntity, 16.0));
+						Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.CRIT,
+								SoundEffect.MOB_ZOMBIE_DEATH, rtr.entityHit, 0.5, 2.0),
+								TargetPointUtil.from(targetEntity, 16.0));
 						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 					}
 					break;
-				}else {
-					if (InfusionBrewEffect.GRAVE.isActive(playerIn) && InfusionBrewEffect.Grave.tryUseEffect(playerIn, rtr)) {
-						 Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.MOB_SPELL, SoundEffect.MOB_ZOMBIE_INFECT, rtr.entityHit, 1.0, 1.0), TargetPointUtil.from(rtr.entityHit, 16.0));
-						 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+				} else {
+					if (InfusionBrewEffect.GRAVE.isActive(playerIn)
+							&& InfusionBrewEffect.Grave.tryUseEffect(playerIn, rtr)) {
+						Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.MOB_SPELL,
+								SoundEffect.MOB_ZOMBIE_INFECT, rtr.entityHit, 1.0, 1.0),
+								TargetPointUtil.from(rtr.entityHit, 16.0));
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 					}
-					Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.NOTE_SNARE, rtr.entityHit, 1.0, 1.0), TargetPointUtil.from(rtr.entityHit, 16.0));
+					Reference.PACKET_HANDLER.sendToAllAround(
+							new PacketParticles(ParticleEffect.SMOKE, SoundEffect.NOTE_SNARE, rtr.entityHit, 1.0, 1.0),
+							TargetPointUtil.from(rtr.entityHit, 16.0));
 					break;
 				}
-				
+
 			}
 			default:
 				break;

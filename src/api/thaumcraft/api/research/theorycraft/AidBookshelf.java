@@ -8,12 +8,10 @@ public class AidBookshelf implements ITheorycraftAid {
 	public Object getAidObject() {
 		return Blocks.BOOKSHELF;
 	}
-	
+
 	@Override
 	public Class<TheorycraftCard>[] getCards() {
-		return new Class[] {CardBalance.class, CardNotation.class, CardNotation.class}; 
+		return new Class[] { CardBalance.class, CardNotation.class, CardNotation.class };
 	}
-
-	
 
 }

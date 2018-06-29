@@ -21,12 +21,12 @@ import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 import nz.castorgaming.fantasyoverhaul.util.interfaces.ISpiralBlockAction;
 
-public class BrewSubstitution extends Brew{
+public class BrewSubstitution extends Brew {
 
 	public BrewSubstitution(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public BrewResult onImpact(World world, EntityLivingBase thrower, RayTraceResult rtr, boolean enhanced, double x,
 			double y, double z, AxisAlignedBB bounds) {
@@ -39,7 +39,7 @@ public class BrewSubstitution extends Brew{
 		List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, aoe);
 		if (entities != null && !entities.isEmpty()) {
 			ArrayList<EntityItem> items = new ArrayList<EntityItem>();
-			for (EntityItem item : entities){
+			for (EntityItem item : entities) {
 				double distSq = item.getDistance(x, y, z);
 				if (distSq <= RSQ) {
 					ItemStack stack = item.getEntityItem();
@@ -63,29 +63,35 @@ public class BrewSubstitution extends Brew{
 					@Override
 					public boolean onSpiralBlockAction(World world, int x, int y, int z) {
 						BlockPos pos = rtr.getBlockPos();
-						if (Coord.distanceSq(pos.getX(), pos.getY(), pos.getZ(), x,y,z) < R) {
+						if (Coord.distanceSq(pos.getX(), pos.getY(), pos.getZ(), x, y, z) < R) {
 							boolean found = false;
-							if (BlockUtil.getBlock(world, x,y,z) == refBlock && BlockUtil.isReplaceableBlock(world, x, y + 1, z)) {
+							if (BlockUtil.getBlock(world, x, y, z) == refBlock
+									&& BlockUtil.isReplaceableBlock(world, x, y + 1, z)) {
 								found = true;
-							}else if (BlockUtil.getBlock(world, x, y + 1, z) == refBlock && BlockUtil.isReplaceableBlock(world, x, y + 2, z)) {
+							} else if (BlockUtil.getBlock(world, x, y + 1, z) == refBlock
+									&& BlockUtil.isReplaceableBlock(world, x, y + 2, z)) {
 								y++;
 								found = true;
-							}else if (BlockUtil.getBlock(world, x, y - 1 , z) == refBlock && BlockUtil.isReplaceableBlock(world, x, y, z)) {
+							} else if (BlockUtil.getBlock(world, x, y - 1, z) == refBlock
+									&& BlockUtil.isReplaceableBlock(world, x, y, z)) {
 								y--;
 								found = true;
-							}else if (BlockUtil.getBlock(world, x, y + 2 , z) == refBlock && BlockUtil.isReplaceableBlock(world, x, y + 3, z)) {
+							} else if (BlockUtil.getBlock(world, x, y + 2, z) == refBlock
+									&& BlockUtil.isReplaceableBlock(world, x, y + 3, z)) {
 								y += 2;
 								found = true;
-							}else if (BlockUtil.getBlock(world, x, y - 2 , z) == refBlock && BlockUtil.isReplaceableBlock(world, x, y - 1, z)) {
+							} else if (BlockUtil.getBlock(world, x, y - 2, z) == refBlock
+									&& BlockUtil.isReplaceableBlock(world, x, y - 1, z)) {
 								y -= 2;
 								found = true;
 							}
 							if (found) {
-								subCount ++;
+								subCount++;
 								ItemStack stack = items.get(stackIndex).getEntityItem();
 								ItemBlock blockItem = (ItemBlock) stack.getItem();
 								Block block = blockItem.block;
-								BlockUtil.setBlock(world, new BlockPos(x, y, z), block.getStateFromMeta(stack.getItemDamage()), 3);
+								BlockUtil.setBlock(world, new BlockPos(x, y, z),
+										block.getStateFromMeta(stack.getItemDamage()), 3);
 								ParticleEffect.INSTANT_SPELL.send(SoundEffect.NONE, world, x, y, z, 1.0, 1.0, 16);
 								ItemStack itemstack = stack;
 								if (--itemstack.stackSize == 0) {
@@ -102,14 +108,14 @@ public class BrewSubstitution extends Brew{
 						while (subCount > 0) {
 							int quantity = (subCount > 64) ? 64 : subCount;
 							subCount -= quantity;
-							world.spawnEntityInWorld(new EntityItem(world, x,y,z, new ItemStack(refBlock, quantity)));
+							world.spawnEntityInWorld(new EntityItem(world, x, y, z, new ItemStack(refBlock, quantity)));
 						}
 					}
-				}).apply(world, rtr.getBlockPos(), (int) RSQ, (int)RSQ);
+				}).apply(world, rtr.getBlockPos(), (int) RSQ, (int) RSQ);
 				return BrewResult.SHOW_EFFECT;
 			}
 		}
 		return BrewResult.DROP_ITEM;
 	}
-	
+
 }

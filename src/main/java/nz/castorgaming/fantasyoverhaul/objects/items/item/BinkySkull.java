@@ -16,7 +16,7 @@ import nz.castorgaming.fantasyoverhaul.util.classes.GeneralUtil;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class BinkySkull extends GeneralItem{
+public class BinkySkull extends GeneralItem {
 
 	public BinkySkull(String name) {
 		super(name);

@@ -118,7 +118,8 @@ public class SoundEffect {
 
 	public void playAtPlayer(World world, EntityPlayer player, float volume) {
 		if (!world.isRemote) {
-			world.playSound(null, player.getPosition(), this.getSound(), this.category, volume, 0.4f / ((float) world.rand.nextDouble() * 0.4f + 0.8f));
+			world.playSound(null, player.getPosition(), this.getSound(), this.category, volume,
+					0.4f / ((float) world.rand.nextDouble() * 0.4f + 0.8f));
 		}
 	}
 

@@ -8,15 +8,15 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityPlacedItem extends TileEntity{
+public class TileEntityPlacedItem extends TileEntity {
 
 	private static final String ITEM_KEY = "FOPlacedItem";
 	private ItemStack stack;
-	
+
 	public boolean canUpdate() {
 		return false;
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
@@ -27,7 +27,7 @@ public class TileEntityPlacedItem extends TileEntity{
 		}
 		return compound;
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -37,28 +37,28 @@ public class TileEntityPlacedItem extends TileEntity{
 			stack = stackNBT;
 		}
 	}
-	
+
 	public void setStack(ItemStack stackIn) {
 		stack = stackIn;
 		if (!worldObj.isRemote) {
 			worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
 		}
 	}
-	
+
 	public ItemStack getStack() {
 		return stack;
 	}
-	
+
 	public Packet<INetHandlerPlayClient> getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
 		return new SPacketUpdateTileEntity(pos, 1, nbt);
 	}
-	
+
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
 		readFromNBT(packet.getNbtCompound());
 		worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
 	}
-	
+
 }

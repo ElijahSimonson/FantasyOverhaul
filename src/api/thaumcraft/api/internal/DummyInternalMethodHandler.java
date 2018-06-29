@@ -14,7 +14,7 @@ import thaumcraft.api.golems.tasks.Task;
 import thaumcraft.api.research.ResearchCategory;
 
 public class DummyInternalMethodHandler implements IInternalMethodHandler {
-	
+
 	@Override
 	public boolean completeResearch(EntityPlayer player, String researchkey) {
 		// TODO Auto-generated method stub
@@ -24,7 +24,7 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public void addWarpToPlayer(EntityPlayer player, int amount, EnumWarpType type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -54,13 +54,13 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public void addVis(World world, BlockPos pos, float amount) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void addFlux(World world, BlockPos pos, float amount, boolean showEffect) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public void registerSeal(ISeal seal) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -108,12 +108,11 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public void addGolemTask(int dim, Task task) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public boolean shouldPreserveAura(World world, EntityPlayer player,
-			BlockPos pos) {
+	public boolean shouldPreserveAura(World world, EntityPlayer player, BlockPos pos) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -142,7 +141,4 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 		return false;
 	}
 
-	
-
-	
 }

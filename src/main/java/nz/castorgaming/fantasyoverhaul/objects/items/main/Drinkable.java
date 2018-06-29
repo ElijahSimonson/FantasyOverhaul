@@ -13,17 +13,17 @@ public class Drinkable extends GeneralItem {
 
 	protected PotionEffect[] effects;
 	protected EnumAction userAction;
-	
+
 	public Drinkable(String name, PotionEffect... effectsIn) {
 		this(name, EnumAction.DRINK, effectsIn);
 	}
-	
+
 	public Drinkable(String name, EnumAction useAction, PotionEffect... effectsIn) {
 		super(name);
 		effects = effectsIn;
 		userAction = useAction;
 	}
-	
+
 	public ItemStack onDrunk(ItemStack stack, World world, EntityPlayer player) {
 		if (!player.capabilities.isCreativeMode) {
 			--stack.stackSize;

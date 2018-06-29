@@ -83,7 +83,8 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
+			EnumFacing side) {
 		return false;
 	}
 
@@ -95,7 +96,8 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 				TileEntityDreamCatcher tileDreamCatcher = (TileEntityDreamCatcher) tileEntity;
 				DreamWeave weave = tileDreamCatcher.getWeave();
 				if (weave != null) {
-					worldIn.spawnEntityInWorld(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), weave.createStack()));
+					worldIn.spawnEntityInWorld(
+							new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), weave.createStack()));
 				}
 			}
 		}
@@ -127,7 +129,8 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 
 	private boolean comparePos(BlockPos origin, BlockPos neighbor, EnumFacing direction) {
 		origin.offset(direction);
-		return ((origin.getX() == neighbor.getX()) && (origin.getY() == neighbor.getY()) && (origin.getZ() == neighbor.getZ()));
+		return ((origin.getX() == neighbor.getX()) && (origin.getY() == neighbor.getY())
+				&& (origin.getZ() == neighbor.getZ()));
 	}
 
 	public static boolean causesNightmares(World world, BlockPos pos) {
@@ -149,7 +152,8 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
+			EntityPlayer player) {
 		return BlockInit.DREAM_CATCHER.createStackedBlock(getDefaultState());
 	}
 
@@ -162,16 +166,16 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 	public IBlockState getStateFromMeta(int meta) {
 		IBlockState state = getDefaultState();
 		switch (meta) {
-			case 0:
-				return state.withProperty(FACING, EnumFacing.NORTH);
-			case 1:
-				return state.withProperty(FACING, EnumFacing.SOUTH);
-			case 2:
-				return state.withProperty(FACING, EnumFacing.WEST);
-			case 3:
-				return state.withProperty(FACING, EnumFacing.EAST);
-			default:
-				return state.withProperty(FACING, EnumFacing.NORTH);
+		case 0:
+			return state.withProperty(FACING, EnumFacing.NORTH);
+		case 1:
+			return state.withProperty(FACING, EnumFacing.SOUTH);
+		case 2:
+			return state.withProperty(FACING, EnumFacing.WEST);
+		case 3:
+			return state.withProperty(FACING, EnumFacing.EAST);
+		default:
+			return state.withProperty(FACING, EnumFacing.NORTH);
 		}
 	}
 
@@ -179,16 +183,16 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 	public int getMetaFromState(IBlockState state) {
 		EnumFacing facing = (EnumFacing) state.getProperties().get(FACING);
 		switch (facing) {
-			case EAST:
-				return 3;
-			case NORTH:
-				return 0;
-			case SOUTH:
-				return 1;
-			case WEST:
-				return 2;
-			default:
-				return 0;
+		case EAST:
+			return 3;
+		case NORTH:
+			return 0;
+		case SOUTH:
+			return 1;
+		case WEST:
+			return 2;
+		default:
+			return 0;
 		}
 	}
 
@@ -216,7 +220,8 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 
 		private boolean areAllPlayersAsleep(World world) {
 			Iterator<EntityPlayer> itr = world.playerEntities.iterator();
-			int sleepThreshold = MathHelper.floor_float(0.01f * Config.instance().percentageOfPlayersSleepingForBuff * world.playerEntities.size());
+			int sleepThreshold = MathHelper.floor_float(
+					0.01f * Config.instance().percentageOfPlayersSleepingForBuff * world.playerEntities.size());
 			while (itr.hasNext()) {
 				EntityPlayer player = itr.next();
 				if (player.isPlayerSleeping() && --sleepThreshold <= 0) {
@@ -270,18 +275,20 @@ public class BlockDreamCatcher extends BlockBaseContainer {
 						for (int y = pos.getY() - r; y <= pos.getY() + r && !done; ++y) {
 							for (int x = pos.getX() - r; x <= pos.getX() + r && !done; ++x) {
 								for (int z = pos.getZ() - r; z <= pos.getZ() + r && !done; ++z) {
-									if ((y != pos.getY() || x != pos.getX() || z != pos.getZ()) && worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() == BlockInit.DREAM_CATCHER) {
+									if ((y != pos.getY() || x != pos.getX() || z != pos.getZ())
+											&& worldObj.getBlockState(new BlockPos(x, y, z))
+													.getBlock() == BlockInit.DREAM_CATCHER) {
 										isDream = false;
 										done = isEnhanced;
-									}
-									else if (BlockDreamCatcher.enchancesDreams(worldObj, new BlockPos(x, y, z))) {
+									} else if (BlockDreamCatcher.enchancesDreams(worldObj, new BlockPos(x, y, z))) {
 										isEnhanced = true;
 										done = !isDream;
 									}
 								}
 							}
 						}
-						AxisAlignedBB bound = new AxisAlignedBB(pos.getX() - r, pos.getY() - r, pos.getZ() - r, pos.getX() + r, pos.getY() + r, pos.getZ() + r);
+						AxisAlignedBB bound = new AxisAlignedBB(pos.getX() - r, pos.getY() - r, pos.getZ() - r,
+								pos.getX() + r, pos.getY() + r, pos.getZ() + r);
 						List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, bound);
 						for (EntityPlayer player : list) {
 							PlayerVampire playerVamp = IPlayerVampire.get(player);

@@ -14,12 +14,12 @@ import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItem;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class AnnointingPaste extends GeneralItem{
+public class AnnointingPaste extends GeneralItem {
 
 	public AnnointingPaste(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -30,7 +30,7 @@ public class AnnointingPaste extends GeneralItem{
 				--stack.stackSize;
 				ParticleEffect.INSTANT_SPELL.send(SoundEffect.RANDOM_FIZZ, worldIn, pos, 1.0, 1.0, 16);
 				ParticleEffect.LARGE_EXPLODE.send(SoundEffect.RANDOM_LEVELUP, worldIn, pos, 1.0, 1.0, 16);
-			return EnumActionResult.SUCCESS;
+				return EnumActionResult.SUCCESS;
 			}
 		}
 		return EnumActionResult.FAIL;

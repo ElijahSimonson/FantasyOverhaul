@@ -162,27 +162,28 @@ public class EntityAIFlyerFlyToWaypoint extends EntityAIBase {
 			flyer4.renderYawOffset = n;
 		}
 	}
-	
 
 	private boolean isCourseTraversable(double x, double y, double z, double trajectory) {
 		final double dx = (x - this.flyer.posX) / trajectory;
-        final double dy = (y - this.flyer.posY) / trajectory;
-        final double dz = (z - this.flyer.posZ) / trajectory;
-        AxisAlignedBB bbFlyer = flyer.getEntityBoundingBox();
-        final AxisAlignedBB axisalignedbb = new AxisAlignedBB(bbFlyer.minX, bbFlyer.minY, bbFlyer.minZ, bbFlyer.maxX, bbFlyer.maxY, bbFlyer.maxZ);
-        for (int i = 1; i < trajectory; ++i) {
-            axisalignedbb.offset(dx, dy, dz);
-            if (!this.flyer.worldObj.getCollisionBoxes((Entity)this.flyer, axisalignedbb).isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+		final double dy = (y - this.flyer.posY) / trajectory;
+		final double dz = (z - this.flyer.posZ) / trajectory;
+		AxisAlignedBB bbFlyer = flyer.getEntityBoundingBox();
+		final AxisAlignedBB axisalignedbb = new AxisAlignedBB(bbFlyer.minX, bbFlyer.minY, bbFlyer.minZ, bbFlyer.maxX,
+				bbFlyer.maxY, bbFlyer.maxZ);
+		for (int i = 1; i < trajectory; ++i) {
+			axisalignedbb.offset(dx, dy, dz);
+			if (!this.flyer.worldObj.getCollisionBoxes((Entity) this.flyer, axisalignedbb).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean continueExecuting() {
 		boolean itemHeld = flyer.getHeldItemMainhand() != null;
-		boolean awayFromHome = flyer.getDistance(flyer.homeX, flyer.posY, flyer.homeZ) > 1.0 || Math.abs(flyer.posY - flyer.homeY) > 1.0;
+		boolean awayFromHome = flyer.getDistance(flyer.homeX, flyer.posY, flyer.homeZ) > 1.0
+				|| Math.abs(flyer.posY - flyer.homeY) > 1.0;
 		return (itemHeld && carryRequirement == CarryRequirement.HELD_ITEM) || flyer.waypoint != null || awayFromHome;
 	}
 

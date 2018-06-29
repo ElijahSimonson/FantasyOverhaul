@@ -37,14 +37,15 @@ import thaumcraft.api.research.ResearchCategory;
  * @see IInternalMethodHandler#registerSeal
  * @see IInternalMethodHandler#getSeal
  * @see IInternalMethodHandler#getSealEntity
- * @see IInternalMethodHandler#addGolemTask 
+ * @see IInternalMethodHandler#addGolemTask
  * @see IInternalMethodHandler#getSealStack
  */
 public interface IInternalMethodHandler {
-	
+
 	/**
-	 * Add raw knowledge points (not whole knowledges) to the given player.
-	 * This method will trigger appropriate gui notifications, etc.
+	 * Add raw knowledge points (not whole knowledges) to the given player. This
+	 * method will trigger appropriate gui notifications, etc.
+	 * 
 	 * @param player
 	 * @param type
 	 * @param category
@@ -52,36 +53,42 @@ public interface IInternalMethodHandler {
 	 * @return if the knowledge was added
 	 */
 	public boolean addKnowledge(EntityPlayer player, EnumKnowledgeType type, ResearchCategory category, int amount);
-	
+
 	/**
-	 * Progresses research with all the proper bells and whistles (popups, sounds, warp, etc)
-	 * If the research is linked to a research entry with stages the player's current stage will be increased 
-	 * by 1, or set to 1 if the research was not known before.
+	 * Progresses research with all the proper bells and whistles (popups, sounds,
+	 * warp, etc) If the research is linked to a research entry with stages the
+	 * player's current stage will be increased by 1, or set to 1 if the research
+	 * was not known before.
+	 * 
 	 * @param player
 	 * @param researchkey
 	 * @return if operation succeeded
 	 */
 	boolean progressResearch(EntityPlayer player, String researchkey);
-	
+
 	/**
-	 * Completes research with all the proper bells and whistles (popups, sounds, warp, etc)
-	 * This automatically sets all its stages as complete. 
-	 * Most of the time you should probably use progressResearch instead.
+	 * Completes research with all the proper bells and whistles (popups, sounds,
+	 * warp, etc) This automatically sets all its stages as complete. Most of the
+	 * time you should probably use progressResearch instead.
+	 * 
 	 * @param player
 	 * @param researchkey
 	 * @return if operation succeeded
 	 */
 	public boolean completeResearch(EntityPlayer player, String researchkey);
-	
+
 	/**
-	 * @param player 
-	 * @param researchkey the key of the research you want to check
-	 * @return does the player have all the required knowledge to complete the passed researchkey
+	 * @param player
+	 * @param researchkey
+	 *            the key of the research you want to check
+	 * @return does the player have all the required knowledge to complete the
+	 *         passed researchkey
 	 */
 	boolean doesPlayerHaveRequisites(EntityPlayer player, String researchkey);
-	
+
 	/**
 	 * Adds warp with all the proper bells and whistles (text, sounds, etc)
+	 * 
 	 * @param player
 	 * @param researchkey
 	 * @return
@@ -89,36 +96,42 @@ public interface IInternalMethodHandler {
 	public void addWarpToPlayer(EntityPlayer player, int amount, EnumWarpType type);
 
 	public AspectList getObjectAspects(ItemStack is);
+
 	public AspectList generateTags(ItemStack is);
-	
+
 	public float drainVis(World world, BlockPos pos, float amount, boolean simulate);
-	public float drainFlux(World world, BlockPos pos, float amount, boolean simulate);	
+
+	public float drainFlux(World world, BlockPos pos, float amount, boolean simulate);
+
 	public void addVis(World world, BlockPos pos, float amount);
-	public void addFlux(World world, BlockPos pos, float amount, boolean showEffect);			
-	
+
+	public void addFlux(World world, BlockPos pos, float amount, boolean showEffect);
+
 	/**
 	 * returns the aura and flux in a chunk added together
+	 * 
 	 * @param world
 	 * @param pos
 	 * @return
 	 */
 	public float getTotalAura(World world, BlockPos pos);
+
 	public float getVis(World world, BlockPos pos);
+
 	public float getFlux(World world, BlockPos pos);
-	public int getAuraBase(World world, BlockPos pos);	
-	
+
+	public int getAuraBase(World world, BlockPos pos);
+
 	public void registerSeal(ISeal seal);
+
 	public ISeal getSeal(String key);
+
 	public ISealEntity getSealEntity(int dim, SealPos pos);
+
 	public void addGolemTask(int dim, Task task);
+
 	public boolean shouldPreserveAura(World world, EntityPlayer player, BlockPos pos);
+
 	public ItemStack getSealStack(String key);
 
-	
-
-	
-
-	
-	
-	
 }

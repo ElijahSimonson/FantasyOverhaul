@@ -6,15 +6,15 @@ import net.minecraft.world.World;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.Brew;
 import nz.castorgaming.fantasyoverhaul.powers.symbols.SymbolEffect;
 
-public class BrewSoul extends Brew{
-	
+public class BrewSoul extends Brew {
+
 	private final SymbolEffect effect;
 
 	public BrewSoul(String name, SymbolEffect effectIn) {
 		super(name);
 		effect = effectIn;
 	}
-	
+
 	@Override
 	public ItemStack onDrunk(ItemStack stack, World world, EntityPlayer player) {
 		effect.acquireKnowledge(player);

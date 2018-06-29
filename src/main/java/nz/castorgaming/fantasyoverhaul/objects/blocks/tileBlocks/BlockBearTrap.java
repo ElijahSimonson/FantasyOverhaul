@@ -81,7 +81,8 @@ public class BlockBearTrap extends TileBlockBase {
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
+			EnumFacing side) {
 		return false;
 	}
 
@@ -91,26 +92,27 @@ public class BlockBearTrap extends TileBlockBase {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
 		switch (placer.getHorizontalFacing()) {
-			case NORTH: {
-				worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, false), 2);
-				break;
-			}
-			case SOUTH: {
-				worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, false), 2);
-				break;
-			}
-			case EAST: {
-				worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, false), 2);
-				break;
-			}
-			case WEST: {
-				worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, false), 2);
-				break;
-			}
-			default:
-				break;
+		case NORTH: {
+			worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, false), 2);
+			break;
+		}
+		case SOUTH: {
+			worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, false), 2);
+			break;
+		}
+		case EAST: {
+			worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, false), 2);
+			break;
+		}
+		case WEST: {
+			worldIn.setBlockState(pos, state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, false), 2);
+			break;
+		}
+		default:
+			break;
 		}
 		if (worldIn.isRemote && placer instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) placer;
@@ -136,12 +138,16 @@ public class BlockBearTrap extends TileBlockBase {
 		if (!worldIn.isRemote && entityIn instanceof EntityLivingBase) {
 			EntityLivingBase living = (EntityLivingBase) entityIn;
 			TileEntityBearTrap tile = BlockUtil.getTileEntity(worldIn, pos, TileEntityBearTrap.class);
-			if (tile != null && !tile.isSprung() && worldIn.getTotalWorldTime() > tile.getSetTime() + 20L && (!silvered || CreatureUtilities.isWerewolf(living, false))) {
+			if (tile != null && !tile.isSprung() && worldIn.getTotalWorldTime() > tile.getSetTime() + 20L
+					&& (!silvered || CreatureUtilities.isWerewolf(living, false))) {
 				AxisAlignedBB trapBounds = FULL_BLOCK_AABB;
-				if (trapBounds.intersectsWith(living.getCollisionBoundingBox()) && (silvered || tile.tryTrapWolf(living))) {
-					boolean isCreative = entityIn instanceof EntityPlayer && ((EntityPlayer) living).capabilities.isCreativeMode;
+				if (trapBounds.intersectsWith(living.getCollisionBoundingBox())
+						&& (silvered || tile.tryTrapWolf(living))) {
+					boolean isCreative = entityIn instanceof EntityPlayer
+							&& ((EntityPlayer) living).capabilities.isCreativeMode;
 					if (!isCreative) {
-						living.addPotionEffect(new PotionEffect(Potions.PARALYSED, TimeUtilities.secsToTicks(30), 2, true, false));
+						living.addPotionEffect(
+								new PotionEffect(Potions.PARALYSED, TimeUtilities.secsToTicks(30), 2, true, false));
 					}
 					living.attackEntityFrom(DamageSource.anvil, 4.0f);
 					ParticleEffect.REDDUST.send(SoundEffect.RANDOM_MANTRAP, worldIn, pos, 0.25, 0.5, 16);
@@ -154,7 +160,8 @@ public class BlockBearTrap extends TileBlockBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
 			TileEntityBearTrap tile = BlockUtil.getTileEntity(worldIn, pos, TileEntityBearTrap.class);
 			if (tile != null) {
@@ -171,8 +178,10 @@ public class BlockBearTrap extends TileBlockBase {
 
 	@SideOnly(Side.CLIENT)
 	public static boolean checkForHiddenTrap(EntityPlayer player, RayTraceResult ray) {
-		if (ray != null && ray.typeOfHit == RayTraceResult.Type.BLOCK && player.worldObj.getBlockState(ray.getBlockPos()).getBlock() == BlockInit.bear_trap) {
-			TileEntityBearTrap tile = BlockUtil.getTileEntity(player.worldObj, ray.getBlockPos(), TileEntityBearTrap.class);
+		if (ray != null && ray.typeOfHit == RayTraceResult.Type.BLOCK
+				&& player.worldObj.getBlockState(ray.getBlockPos()).getBlock() == BlockInit.bear_trap) {
+			TileEntityBearTrap tile = BlockUtil.getTileEntity(player.worldObj, ray.getBlockPos(),
+					TileEntityBearTrap.class);
 			if (tile != null) {
 				return !tile.isVisibleTo(player);
 			}
@@ -185,32 +194,32 @@ public class BlockBearTrap extends TileBlockBase {
 		IBlockState state = getDefaultState();
 
 		switch (meta) {
-			case 0: {
-				return state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, false);
-			}
-			case 1: {
-				return state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, false);
-			}
-			case 2: {
-				return state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, false);
-			}
-			case 3: {
-				return state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, false);
-			}
-			case 4: {
-				return state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, true);
-			}
-			case 5: {
-				return state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, true);
-			}
-			case 6: {
-				return state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, true);
-			}
-			case 7: {
-				return state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, true);
-			}
-			default:
-				break;
+		case 0: {
+			return state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, false);
+		}
+		case 1: {
+			return state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, false);
+		}
+		case 2: {
+			return state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, false);
+		}
+		case 3: {
+			return state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, false);
+		}
+		case 4: {
+			return state.withProperty(facing, EnumFacing.NORTH).withProperty(sprung, true);
+		}
+		case 5: {
+			return state.withProperty(facing, EnumFacing.SOUTH).withProperty(sprung, true);
+		}
+		case 6: {
+			return state.withProperty(facing, EnumFacing.EAST).withProperty(sprung, true);
+		}
+		case 7: {
+			return state.withProperty(facing, EnumFacing.WEST).withProperty(sprung, true);
+		}
+		default:
+			break;
 		}
 
 		return state;
@@ -223,21 +232,21 @@ public class BlockBearTrap extends TileBlockBase {
 
 		int meta;
 		switch (isFacing) {
-			case NORTH:
-				meta = 0;
-				break;
-			case SOUTH:
-				meta = 1;
-				break;
-			case EAST:
-				meta = 2;
-				break;
-			case WEST:
-				meta = 3;
-				break;
-			default:
-				meta = 0;
-				break;
+		case NORTH:
+			meta = 0;
+			break;
+		case SOUTH:
+			meta = 1;
+			break;
+		case EAST:
+			meta = 2;
+			break;
+		case WEST:
+			meta = 3;
+			break;
+		default:
+			meta = 0;
+			break;
 		}
 		if (isSprung) {
 			meta += 4;

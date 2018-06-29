@@ -82,11 +82,11 @@ public class PacketPlayerStyle implements IMessage {
 				final NBTTagCompound nbtOtherPlayer = Infusion.getNBT(otherPlayer);
 				if (message.grotesqueTicks > 0) {
 					nbtOtherPlayer.setInteger(Reference.INFUSION_GROTESQUE, message.grotesqueTicks);
-				}
-				else if (nbtOtherPlayer.hasKey(Reference.INFUSION_GROTESQUE)) {
+				} else if (nbtOtherPlayer.hasKey(Reference.INFUSION_GROTESQUE)) {
 					nbtOtherPlayer.removeTag(Reference.INFUSION_GROTESQUE);
 				}
-				WorldProviderDreamWorld.setPlayerHasNightmare(otherPlayer, message.nightmare > 0, message.nightmare > 1);
+				WorldProviderDreamWorld.setPlayerHasNightmare(otherPlayer, message.nightmare > 0,
+						message.nightmare > 1);
 				WorldProviderDreamWorld.playerIsGhost(nbtOtherPlayer, message.ghost);
 				final ExtendedPlayer playerEx = IExtendPlayer.get(otherPlayer);
 				playerEx.setCreatureTypeOrdinal(message.creatureType);

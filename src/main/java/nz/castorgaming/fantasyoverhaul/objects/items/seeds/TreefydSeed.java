@@ -13,12 +13,12 @@ import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItem;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class TreefydSeed extends GeneralItem{
+public class TreefydSeed extends GeneralItem {
 
 	public TreefydSeed(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -27,7 +27,8 @@ public class TreefydSeed extends GeneralItem{
 		}
 		BlockPos workPos = pos.up();
 		Material mat = worldIn.getBlockState(workPos).getMaterial();
-		if (Blocks.TALLGRASS.canBlockStay(worldIn, workPos, worldIn.getBlockState(workPos)) && (mat == null || !mat.isSolid())) {
+		if (Blocks.TALLGRASS.canBlockStay(worldIn, workPos, worldIn.getBlockState(workPos))
+				&& (mat == null || !mat.isSolid())) {
 			if (!worldIn.isRemote) {
 				worldIn.setBlockState(workPos, Blocks.TALLGRASS);
 				EntityTreefyd treefyd = new EntityTreefyd(worldIn);

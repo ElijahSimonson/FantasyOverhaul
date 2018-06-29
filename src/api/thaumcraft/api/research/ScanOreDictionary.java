@@ -8,40 +8,41 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ScanOreDictionary implements IScanThing {
-	
-	String research;	
-	String[] entries;	
 
-	public ScanOreDictionary(String research, String ... entries) {
+	String research;
+	String[] entries;
+
+	public ScanOreDictionary(String research, String... entries) {
 		this.research = research;
 		this.entries = entries;
 	}
-	
+
 	@Override
-	public boolean checkThing(EntityPlayer player, Object obj) {	
+	public boolean checkThing(EntityPlayer player, Object obj) {
 		ItemStack stack = null;
-		if (obj!=null && obj instanceof BlockPos) {
+		if (obj != null && obj instanceof BlockPos) {
 			IBlockState state = player.world.getBlockState((BlockPos) obj);
-			stack = state.getBlock().getItem(player.world, (BlockPos) obj, state);			
+			stack = state.getBlock().getItem(player.world, (BlockPos) obj, state);
 		}
-		if (obj!=null && obj instanceof ItemStack) 
+		if (obj != null && obj instanceof ItemStack)
 			stack = (ItemStack) obj;
-		if (obj!=null && obj instanceof EntityItem && ((EntityItem)obj).getEntityItem()!=null) 
-			stack = ((EntityItem)obj).getEntityItem();
-		
-		if (stack!=null) {
+		if (obj != null && obj instanceof EntityItem && ((EntityItem) obj).getEntityItem() != null)
+			stack = ((EntityItem) obj).getEntityItem();
+
+		if (stack != null) {
 			int[] ids = OreDictionary.getOreIDs(stack);
-			for (String entry:entries) {
-				for (int id:ids) {
-					if (OreDictionary.getOreName(id).equals(entry)) return true;
+			for (String entry : entries) {
+				for (int id : ids) {
+					if (OreDictionary.getOreName(id).equals(entry))
+						return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
-	public String getResearchKey(EntityPlayer player, Object object) {		
+	public String getResearchKey(EntityPlayer player, Object object) {
 		return research;
 	}
 }

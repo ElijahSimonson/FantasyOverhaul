@@ -13,15 +13,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import nz.castorgaming.fantasyoverhaul.FantasyOverhaul;
 
-public class PacketCamPos implements IMessage{
-	
+public class PacketCamPos implements IMessage {
+
 	private boolean active;
 	private boolean updatePosition;
 	private UUID entityID;
-	
+
 	public PacketCamPos() {
 	}
-	
+
 	public PacketCamPos(boolean isActive, boolean shouldUpdate, Entity entity) {
 		active = isActive;
 		updatePosition = shouldUpdate;
@@ -43,12 +43,12 @@ public class PacketCamPos implements IMessage{
 		entityID = UUID.fromString(id);
 	}
 
-	public static class Handler implements IMessageHandler<PacketCamPos, IMessage>{
+	public static class Handler implements IMessageHandler<PacketCamPos, IMessage> {
 		public IMessage onMessage(PacketCamPos message, MessageContext ctx) {
 			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
 			return null;
 		}
-		
+
 		private void handle(PacketCamPos message, MessageContext ctx) {
 			EntityPlayer player = FantasyOverhaul.proxy.getPlayer(ctx);
 			if (message.active) {

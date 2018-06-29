@@ -15,7 +15,8 @@ import nz.castorgaming.fantasyoverhaul.capabilities.playerWerewolf.PlayerWerewol
 
 public class PacketExtendedPlayerSync implements IMessage {
 
-	private int werewolfLevel, vampireLevel, bloodLevel, ultimate, creatureOrdinal, selected, ultimateCharges, reserveBlood;
+	private int werewolfLevel, vampireLevel, bloodLevel, ultimate, creatureOrdinal, selected, ultimateCharges,
+			reserveBlood;
 
 	public PacketExtendedPlayerSync() {
 	}

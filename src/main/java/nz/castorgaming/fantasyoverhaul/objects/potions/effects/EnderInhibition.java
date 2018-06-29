@@ -17,7 +17,8 @@ public class EnderInhibition extends PotionBase implements IHandleEnderTeleport 
 	public static boolean isActive(Entity entity, int amplifier) {
 		if (entity != null && entity instanceof EntityLivingBase) {
 			EntityLivingBase living = (EntityLivingBase) entity;
-			return living.isPotionActive(Potions.ENDER_INHIBITION) && living.getActivePotionEffect(Potions.ENDER_INHIBITION).getAmplifier() >= amplifier;
+			return living.isPotionActive(Potions.ENDER_INHIBITION)
+					&& living.getActivePotionEffect(Potions.ENDER_INHIBITION).getAmplifier() >= amplifier;
 		}
 		return false;
 	}

@@ -18,12 +18,12 @@ import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItem;
 import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 
-public class BoneNeedle extends GeneralItem{
+public class BoneNeedle extends GeneralItem {
 
 	public BoneNeedle(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

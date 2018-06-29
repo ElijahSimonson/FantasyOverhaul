@@ -29,7 +29,7 @@ public interface ISealEntity {
 	boolean isLocked();
 
 	void setLocked(boolean locked);
-	
+
 	public boolean isRedstoneSensitive();
 
 	public void setRedstoneSensitive(boolean redstone);
@@ -37,7 +37,7 @@ public interface ISealEntity {
 	String getOwner();
 
 	void setOwner(String owner);
-	
+
 	public byte getColor();
 
 	public void setColor(byte color);

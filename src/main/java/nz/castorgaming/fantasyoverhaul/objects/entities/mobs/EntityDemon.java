@@ -82,7 +82,8 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 		this.tasks.addTask(10, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
+		this.targetTasks.addTask(3,
+				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
 		this.experienceValue = 10;
 	}
 
@@ -120,13 +121,17 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 		if (buyingList == null) {
 			addDefaultEquipmentAndRecipies(rand.nextInt(4) + 6);
 		}
-		if (getCustomer() != null && getCustomer().getHeldItemMainhand() != null && getCustomer().getHeldItemMainhand().getItem() == ItemInit.DEVIL_TONGUE_CHARM) {
+		if (getCustomer() != null && getCustomer().getHeldItemMainhand() != null
+				&& getCustomer().getHeldItemMainhand().getItem() == ItemInit.DEVIL_TONGUE_CHARM) {
 			MerchantRecipeList list = new MerchantRecipeList();
 			for (MerchantRecipe recipe : buyingList) {
 				NBTTagCompound nbtTag = recipe.writeToTags();
 				MerchantRecipe newRec = new MerchantRecipe(nbtTag);
 				ItemStack cost = newRec.getItemToBuy();
-				cost.stackSize = Math.max(cost.stackSize - ((cost.getItem() == Items.GOLD_INGOT) ? 5 : ((cost.getItem() == Items.EMERALD) ? 2 : (cost.getItem() == Items.DIAMOND) ? 0 : 1)), 1);
+				cost.stackSize = Math.max(
+						cost.stackSize - ((cost.getItem() == Items.GOLD_INGOT) ? 5
+								: ((cost.getItem() == Items.EMERALD) ? 2 : (cost.getItem() == Items.DIAMOND) ? 0 : 1)),
+						1);
 				list.add(newRec);
 			}
 			return list;
@@ -146,11 +151,11 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 		if (!worldObj.isRemote && (itemToBuy == Items.MAGMA_CREAM || itemToBuy == Items.BLAZE_ROD)) {
 			playSound(SoundEvents.ENTITY_WITHER_SHOOT, getSoundVolume(), getSoundPitch());
 			tryEscape = 50;
-		}
-		else {
+		} else {
 			playSound(SoundEffect.RANDOM_BREATH.event(), getSoundVolume(), getSoundPitch());
 		}
-		if (getCustomer() != null && getCustomer().getHeldItemMainhand() != null && getCustomer().getHeldItemMainhand().getItem() == ItemInit.DEVILS_TONGUE_CHARM) {
+		if (getCustomer() != null && getCustomer().getHeldItemMainhand() != null
+				&& getCustomer().getHeldItemMainhand().getItem() == ItemInit.DEVILS_TONGUE_CHARM) {
 			getCustomer().getHeldItemMainhand().damageItem(5, getCustomer());
 			if (getCustomer().getHeldItemMainhand().stackSize <= 0) {
 				getCustomer().setHeldItem(EnumHand.MAIN_HAND, null);
@@ -164,8 +169,7 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 			livingSoundTime = -getTalkInterval();
 			if (stack != null) {
 				playSound(SoundEffect.RANDOM_BREATH.event(), getSoundVolume(), getSoundPitch());
-			}
-			else {
+			} else {
 				playSound(SoundEvents.ENTITY_WITHER_AMBIENT, getSoundVolume(), getSoundPitch());
 			}
 		}
@@ -173,12 +177,14 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-		if (target.getHeldItemMainhand() == null || target.getHeldItemMainhand() != ItemInit.DEVILS_TONGUE_CHARM || worldObj.rand.nextDouble() < 0.05) {
+		if (target.getHeldItemMainhand() == null || target.getHeldItemMainhand() != ItemInit.DEVILS_TONGUE_CHARM
+				|| worldObj.rand.nextDouble() < 0.05) {
 			double dx = target.posX - posX;
 			double dy = target.getEntityBoundingBox().minY + target.height / 2.0f - (posY + height / 2.0f);
 			double dz = target.posZ - posZ;
 			float f1 = MathHelper.sqrt_float(distanceFactor) * 0.5f;
-			EntityLargeFireball fireball = new EntityLargeFireball(worldObj, this, dx + rand.nextGaussian() * f1, dy, dz + rand.nextGaussian() * f1);
+			EntityLargeFireball fireball = new EntityLargeFireball(worldObj, this, dx + rand.nextGaussian() * f1, dy,
+					dz + rand.nextGaussian() * f1);
 			Vec3d vec = getLook(1.0f);
 			fireball.posX = posX + vec.xCoord * 1.0;
 			fireball.posY = posY + height / 2.0f + 0.5;
@@ -289,14 +295,14 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 		if (attackTimer > 0) {
 			--attackTimer;
 		}
-		if (dimension == Config.instance().dimensionDreamID && worldObj.provider instanceof WorldProviderDreamWorld && !((WorldProviderDreamWorld) worldObj.provider).isDemonicNightmare()) {
+		if (dimension == Config.instance().dimensionDreamID && worldObj.provider instanceof WorldProviderDreamWorld
+				&& !((WorldProviderDreamWorld) worldObj.provider).isDemonicNightmare()) {
 			setDead();
 		}
 		if (tryEscape == 0) {
 			tryEscape = -1;
 			worldObj.createExplosion(this, posX, posY, posZ, 3.0f, true);
-		}
-		else if (tryEscape > 0) {
+		} else if (tryEscape > 0) {
 			--tryEscape;
 		}
 		if (motionX * motionX + motionZ * motionZ > 2.5E-7 && rand.nextInt(5) == 0) {
@@ -305,8 +311,10 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 			int k = MathHelper.floor_double(posZ);
 			Block l = worldObj.getBlockState(new BlockPos(i, j, k)).getBlock();
 			if (l != Blocks.AIR) {
-				worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (this.rand.nextFloat() - 0.5) * this.width, getEntityBoundingBox().minY + 0.1,
-						this.posZ + (this.rand.nextFloat() - 0.5) * this.width, 4.0 * (this.rand.nextFloat() - 0.5), 0.5, (this.rand.nextFloat() - 0.5) * 4.0);
+				worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+						this.posX + (this.rand.nextFloat() - 0.5) * this.width, getEntityBoundingBox().minY + 0.1,
+						this.posZ + (this.rand.nextFloat() - 0.5) * this.width, 4.0 * (this.rand.nextFloat() - 0.5),
+						0.5, (this.rand.nextFloat() - 0.5) * 4.0);
 			}
 		}
 	}
@@ -349,7 +357,8 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 
 	private ItemStack getPrice(int basePriceInEmeralds) {
 		Item currency = getCurrency();
-		int multi = (currency == Items.GOLD_INGOT) ? 1 : ((currency == Items.EMERALD) ? 3 : ((currency == Items.DIAMOND) ? 5 : 4));
+		int multi = (currency == Items.GOLD_INGOT) ? 1
+				: ((currency == Items.EMERALD) ? 3 : ((currency == Items.DIAMOND) ? 5 : 4));
 		int quantity = Math.max(1, basePriceInEmeralds / multi);
 		return new ItemStack(currency, quantity);
 	}
@@ -358,7 +367,8 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 		MerchantRecipeList merchantList = new MerchantRecipeList();
 		int STOCK_REDUCTION = -5;
 		for (int i = 0; i < par1; i++) {
-			Enchantment enchant = Enchantment.REGISTRY.getObjectById(rand.nextInt(Enchantment.REGISTRY.getKeys().size()));
+			Enchantment enchant = Enchantment.REGISTRY
+					.getObjectById(rand.nextInt(Enchantment.REGISTRY.getKeys().size()));
 			int k = MathHelper.getRandomIntegerInRange(rand, enchant.getMinLevel(), enchant.getMaxLevel());
 			ItemStack itemstack = Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(enchant, k));
 			int j = 2 + rand.nextInt(5 + k * 10) + 3 * k;
@@ -367,33 +377,40 @@ public class EntityDemon extends EntityGolem implements IRangedAttackMob, IMerch
 			merchantList.add(recipe);
 		}
 		if (rand.nextDouble() < 0.25) {
-			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8), ItemInit.SPECTRAL_DUST.createStack(rand.nextInt(4) + 3));
+			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8),
+					ItemInit.SPECTRAL_DUST.createStack(rand.nextInt(4) + 3));
 			recipe1.increaseMaxTradeUses(STOCK_REDUCTION);
 			merchantList.add(recipe1);
 		}
 		if (rand.nextDouble() < 0.25) {
-			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8), ItemInit.DOG_TONGUE.createStack(rand.nextInt(4) + 4));
+			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8),
+					ItemInit.DOG_TONGUE.createStack(rand.nextInt(4) + 4));
 			recipe1.increaseMaxTradeUses(STOCK_REDUCTION);
 			merchantList.add(recipe1);
 		}
 		if (rand.nextDouble() < 0.15) {
-			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8), ItemInit.REDSTONE_SOUP.createStack(1));
+			MerchantRecipe recipe1 = new MerchantRecipe(getPrice(rand.nextInt(3) + 8),
+					ItemInit.REDSTONE_SOUP.createStack(1));
 			recipe1.increaseMaxTradeUses(STOCK_REDUCTION);
 			merchantList.add(recipe1);
 		}
 		if (rand.nextDouble() < 0.15) {
-			MerchantRecipe recipe1 = new MerchantRecipe(new ItemStack(Items.DIAMOND), new ItemStack(Items.GHAST_TEAR, 2));
+			MerchantRecipe recipe1 = new MerchantRecipe(new ItemStack(Items.DIAMOND),
+					new ItemStack(Items.GHAST_TEAR, 2));
 			recipe1.increaseMaxTradeUses(STOCK_REDUCTION);
 			merchantList.add(recipe1);
 		}
 		if (rand.nextDouble() < 0.15) {
-			MerchantRecipe recipe1 = new MerchantRecipe(new ItemStack(Items.DIAMOND), new ItemStack(Items.ENDER_PEARL, 2));
+			MerchantRecipe recipe1 = new MerchantRecipe(new ItemStack(Items.DIAMOND),
+					new ItemStack(Items.ENDER_PEARL, 2));
 			recipe1.increaseMaxTradeUses(STOCK_REDUCTION);
 			merchantList.add(recipe1);
 		}
 		Collections.shuffle(merchantList);
 		Item currencyForHeart = getCurrency();
-		MerchantRecipe heart = new MerchantRecipe(new ItemStack(currencyForHeart, (currencyForHeart == Items.GOLD_INGOT) ? 30 : 3), ItemInit.DEMON_HEART.createStack(1));
+		MerchantRecipe heart = new MerchantRecipe(
+				new ItemStack(currencyForHeart, (currencyForHeart == Items.GOLD_INGOT) ? 30 : 3),
+				ItemInit.DEMON_HEART.createStack(1));
 		heart.increaseMaxTradeUses(STOCK_REDUCTION);
 		merchantList.add(rand.nextInt(3), heart);
 		if (buyingList == null) {

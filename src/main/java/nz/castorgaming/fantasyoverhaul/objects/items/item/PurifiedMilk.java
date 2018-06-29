@@ -8,12 +8,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.Drinkable;
 
-public class PurifiedMilk extends Drinkable{
+public class PurifiedMilk extends Drinkable {
 
 	public PurifiedMilk(String name, PotionEffect... effectsIn) {
 		super(name, effectsIn);
 	}
-	
+
 	@Override
 	public ItemStack onDrunk(ItemStack stack, World world, EntityPlayer player) {
 		super.onDrunk(stack, world, player);

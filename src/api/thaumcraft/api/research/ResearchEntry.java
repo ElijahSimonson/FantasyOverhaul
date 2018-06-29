@@ -6,87 +6,82 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.research.ResearchStage.Knowledge;
 
-public class ResearchEntry 
-{
-	
+public class ResearchEntry {
 
 	/**
 	 * A short string used as a key for this research. Must be unique
 	 */
 	String key;
-	
+
 	/**
-	 * A short string used as a reference to the research category to which this must be added.
+	 * A short string used as a reference to the research category to which this
+	 * must be added.
 	 */
 	String category;
-	
+
 	/**
 	 * A text name of the research entry. Can be a localizable string.
 	 */
 	String name;
-	
+
 	/**
-     * This links to any research that needs to be completed before this research can be discovered or learnt.
-     */
-    String[] parents;
-        
-    /**
-     * any research linked to this that will be unlocked automatically when this research is complete
-     */
-    String[] siblings;
-    
-	
-    /**
-     * the horizontal position of the research icon
-     */
-    int displayColumn;
+	 * This links to any research that needs to be completed before this research
+	 * can be discovered or learnt.
+	 */
+	String[] parents;
 
-    /**
-     * the vertical position of the research icon
-     */
-    int displayRow;
-    
-    /**
-     * the icon to be used for this research 
-     */
-    Object[] icons;    
+	/**
+	 * any research linked to this that will be unlocked automatically when this
+	 * research is complete
+	 */
+	String[] siblings;
 
-    /**
-     * special meta-data tags that indicate how this research must be handled
-     */
-    EnumResearchMeta[] meta;
-    
-    /**
-     * items the player will receive on completion of this research
-     */
-    ItemStack[] rewardItem;
-    
-    /**
-     * knowledge the player will receive on completion of this research
-     */
-    Knowledge[] rewardKnow;
-    
-    
-    
-    public enum EnumResearchMeta {
-    	ROUND,
-    	SPIKY,//these also grant .5 bonus inspiration for theorycrafting
-    	REVERSE,
-    	HIDDEN,//these also grant .1 bonus inspiration for theorycrafting
-    	AUTOUNLOCK,
-    	HEX;
+	/**
+	 * the horizontal position of the research icon
+	 */
+	int displayColumn;
+
+	/**
+	 * the vertical position of the research icon
+	 */
+	int displayRow;
+
+	/**
+	 * the icon to be used for this research
+	 */
+	Object[] icons;
+
+	/**
+	 * special meta-data tags that indicate how this research must be handled
+	 */
+	EnumResearchMeta[] meta;
+
+	/**
+	 * items the player will receive on completion of this research
+	 */
+	ItemStack[] rewardItem;
+
+	/**
+	 * knowledge the player will receive on completion of this research
+	 */
+	Knowledge[] rewardKnow;
+
+	public enum EnumResearchMeta {
+		ROUND, SPIKY, // these also grant .5 bonus inspiration for theorycrafting
+		REVERSE, HIDDEN, // these also grant .1 bonus inspiration for theorycrafting
+		AUTOUNLOCK, HEX;
 	}
-    
-    /**
-     * The various stages present in this research entry
-     */
-    ResearchStage[] stages;
-    
-    /**
-     * The various addena present in this research entry
-     */
-    ResearchAddendum[] addenda;
-    
+
+	/**
+	 * The various stages present in this research entry
+	 */
+	ResearchStage[] stages;
+
+	/**
+	 * The various addena present in this research entry
+	 */
+	ResearchAddendum[] addenda;
+
 	/**
 	 * @return the key
 	 */
@@ -95,7 +90,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param key the key to set
+	 * @param key
+	 *            the key to set
 	 */
 	public void setKey(String key) {
 		this.key = key;
@@ -109,7 +105,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param category the category to set
+	 * @param category
+	 *            the category to set
 	 */
 	public void setCategory(String category) {
 		this.category = category;
@@ -121,7 +118,7 @@ public class ResearchEntry
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * @return the name
 	 */
@@ -130,7 +127,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -142,34 +140,33 @@ public class ResearchEntry
 	public String[] getParents() {
 		return parents;
 	}
-	
+
 	/**
 	 * @return return parents with ALL prefixes and postfixes stripped away
 	 */
 	public String[] getParentsClean() {
 		String[] out = null;
-		if (parents!=null) { 
+		if (parents != null) {
 			out = getParentsStripped();
-			for (int q=0;q<out.length;q++) {
-				out[q] = ""+parents[q];
-				if (out[q].contains("@")) 
-					out[q] = out[q].substring(0,out[q].indexOf("@"));
+			for (int q = 0; q < out.length; q++) {
+				out[q] = "" + parents[q];
+				if (out[q].contains("@"))
+					out[q] = out[q].substring(0, out[q].indexOf("@"));
 			}
 		}
 		return out;
 	}
-	
-	
+
 	/**
 	 * @return return parents with prefixes stripped away
 	 */
 	public String[] getParentsStripped() {
 		String[] out = null;
-		if (parents!=null) { 
+		if (parents != null) {
 			out = new String[parents.length];
-			for (int q=0;q<out.length;q++) {
-				out[q] = ""+parents[q];
-				if (out[q].startsWith("~")) 
+			for (int q = 0; q < out.length; q++) {
+				out[q] = "" + parents[q];
+				if (out[q].startsWith("~"))
 					out[q] = out[q].substring(1);
 			}
 		}
@@ -177,7 +174,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param parents the parents to set
+	 * @param parents
+	 *            the parents to set
 	 */
 	public void setParents(String[] parents) {
 		this.parents = parents;
@@ -191,7 +189,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param siblings the siblings to set
+	 * @param siblings
+	 *            the siblings to set
 	 */
 	public void setSiblings(String[] siblings) {
 		this.siblings = siblings;
@@ -205,7 +204,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param displayColumn the displayColumn to set
+	 * @param displayColumn
+	 *            the displayColumn to set
 	 */
 	public void setDisplayColumn(int displayColumn) {
 		this.displayColumn = displayColumn;
@@ -219,7 +219,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param displayRow the displayRow to set
+	 * @param displayRow
+	 *            the displayRow to set
 	 */
 	public void setDisplayRow(int displayRow) {
 		this.displayRow = displayRow;
@@ -233,7 +234,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param icons the icons to set
+	 * @param icons
+	 *            the icons to set
 	 */
 	public void setIcons(Object[] icons) {
 		this.icons = icons;
@@ -245,13 +247,14 @@ public class ResearchEntry
 	public EnumResearchMeta[] getMeta() {
 		return meta;
 	}
-	
+
 	public boolean hasMeta(EnumResearchMeta me) {
-		return meta==null ? false : Arrays.asList(meta).contains(me);
+		return meta == null ? false : Arrays.asList(meta).contains(me);
 	}
 
 	/**
-	 * @param meta the meta to set
+	 * @param meta
+	 *            the meta to set
 	 */
 	public void setMeta(EnumResearchMeta[] meta) {
 		this.meta = meta;
@@ -265,7 +268,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param stages the stages to set
+	 * @param stages
+	 *            the stages to set
 	 */
 	public void setStages(ResearchStage[] stages) {
 		this.stages = stages;
@@ -279,7 +283,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param rewardItem the rewardItem to set
+	 * @param rewardItem
+	 *            the rewardItem to set
 	 */
 	public void setRewardItem(ItemStack[] rewardItem) {
 		this.rewardItem = rewardItem;
@@ -293,7 +298,8 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param rewardKnow the rewardKnow to set
+	 * @param rewardKnow
+	 *            the rewardKnow to set
 	 */
 	public void setRewardKnow(Knowledge[] rewardKnow) {
 		this.rewardKnow = rewardKnow;
@@ -307,12 +313,11 @@ public class ResearchEntry
 	}
 
 	/**
-	 * @param addenda the addenda to set
+	 * @param addenda
+	 *            the addenda to set
 	 */
 	public void setAddenda(ResearchAddendum[] addenda) {
 		this.addenda = addenda;
 	}
-    
-    
-	
+
 }

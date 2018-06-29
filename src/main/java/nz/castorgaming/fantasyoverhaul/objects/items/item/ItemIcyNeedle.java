@@ -11,19 +11,20 @@ import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItem;
 import nz.castorgaming.fantasyoverhaul.objects.worlds.WorldProviderDreamWorld;
 import nz.castorgaming.fantasyoverhaul.util.classes.Config;
 
-public class ItemIcyNeedle extends GeneralItem{
+public class ItemIcyNeedle extends GeneralItem {
 
 	public ItemIcyNeedle(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
 		useIcyNeedle(worldIn, playerIn, itemStackIn);
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.inventory.getCurrentItem() != null ? playerIn.inventory.getCurrentItem() : itemStackIn);
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS,
+				playerIn.inventory.getCurrentItem() != null ? playerIn.inventory.getCurrentItem() : itemStackIn);
 	}
-	
+
 	private void useIcyNeedle(World world, EntityPlayer player, ItemStack stack) {
 		if (!player.capabilities.isCreativeMode) {
 			--stack.stackSize;
@@ -35,12 +36,12 @@ public class ItemIcyNeedle extends GeneralItem{
 		if (world.provider.getDimension() == Config.instance().dimensionDreamID) {
 			WorldProviderDreamWorld.returnPlayerToOverworld(player);
 			stack.stackSize = 0;
-		}else if (WorldProviderDreamWorld.isPlayerGhost(player)) {
+		} else if (WorldProviderDreamWorld.isPlayerGhost(player)) {
 			WorldProviderDreamWorld.returnGhostPlayerToSpiritWorld(player);
 			stack.stackSize = 0;
-		}else {
+		} else {
 			player.attackEntityFrom(DamageSource.causePlayerDamage(player), 1.0f);
 		}
 	}
-	
+
 }

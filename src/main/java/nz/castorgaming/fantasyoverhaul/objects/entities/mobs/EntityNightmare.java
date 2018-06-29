@@ -46,8 +46,10 @@ public class EntityNightmare extends EntityMob {
 
 	private int attackTimer;
 	private int defenseTimer;
-	private DataParameter<Boolean> SCREAMING = EntityDataManager.createKey(EntityNightmare.class, DataSerializers.BOOLEAN);
-	private DataParameter<Boolean> DEFENDED = EntityDataManager.createKey(EntityNightmare.class, DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> SCREAMING = EntityDataManager.createKey(EntityNightmare.class,
+			DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> DEFENDED = EntityDataManager.createKey(EntityNightmare.class,
+			DataSerializers.BOOLEAN);
 	private DataParameter<String> VICTIM = EntityDataManager.createKey(EntityNightmare.class, DataSerializers.STRING);
 
 	public EntityNightmare(World world) {
@@ -64,7 +66,8 @@ public class EntityNightmare extends EntityMob {
 		tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0f));
 		tasks.addTask(8, new EntityAILookIdle(this));
 		targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, false, true));
+		targetTasks.addTask(2,
+				new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, false, true));
 		experienceValue = 25;
 	}
 
@@ -107,8 +110,7 @@ public class EntityNightmare extends EntityMob {
 		super.updateAITasks();
 		if (!worldObj.isRemote && isEntityAlive()) {
 			setScreaming(true);
-		}
-		else {
+		} else {
 			setScreaming(false);
 		}
 	}
@@ -127,8 +129,7 @@ public class EntityNightmare extends EntityMob {
 		super.writeEntityToNBT(compound);
 		if (getVictimUUID() == Reference.BLANK_UUID) {
 			compound.setString("Victim", Reference.BLANK_UUID.toString());
-		}
-		else {
+		} else {
 			compound.setString("Victim", getVictimUUID().toString());
 		}
 	}
@@ -144,7 +145,8 @@ public class EntityNightmare extends EntityMob {
 
 	public UUID getVictimUUID() {
 		String uuString = dataManager.get(VICTIM);
-		return (uuString == null) ? Reference.BLANK_UUID : (uuString.isEmpty() ? Reference.BLANK_UUID : UUID.fromString(uuString));
+		return (uuString == null) ? Reference.BLANK_UUID
+				: (uuString.isEmpty() ? Reference.BLANK_UUID : UUID.fromString(uuString));
 	}
 
 	public void setVictim(UUID victim) {
@@ -162,8 +164,11 @@ public class EntityNightmare extends EntityMob {
 			if (defenseTimer > 0 && --defenseTimer == 0) {
 				setDefended(false);
 			}
-			if (!isDead && getVictimUUID() != Reference.BLANK_UUID && (getAttackTarget() == null || getAttackTarget().isDead || getDistanceSqToEntity(getAttackTarget()) > 265.0)
-					|| (worldObj.rand.nextInt(5) == 0 && getAttackTarget() instanceof EntityPlayer && WorldProviderDreamWorld.getPlayerHasNightmare((EntityPlayer) getAttackTarget()) == 0
+			if (!isDead && getVictimUUID() != Reference.BLANK_UUID
+					&& (getAttackTarget() == null || getAttackTarget().isDead
+							|| getDistanceSqToEntity(getAttackTarget()) > 265.0)
+					|| (worldObj.rand.nextInt(5) == 0 && getAttackTarget() instanceof EntityPlayer
+							&& WorldProviderDreamWorld.getPlayerHasNightmare((EntityPlayer) getAttackTarget()) == 0
 							&& !isWakingNightmare((EntityPlayer) getAttackTarget()))) {
 				ParticleEffect.EXPLODE.send(SoundEffect.NONE, this, 1.0, 2.0, 16);
 				setDead();
@@ -208,7 +213,8 @@ public class EntityNightmare extends EntityMob {
 		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
 		if (flag) {
 			if (i > 0) {
-				entityIn.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927f / 180.0f) * i * 0.5f, 0.1, MathHelper.cos(this.rotationYaw * 3.1415927f / 180.0f) * i * 0.5f);
+				entityIn.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927f / 180.0f) * i * 0.5f, 0.1,
+						MathHelper.cos(this.rotationYaw * 3.1415927f / 180.0f) * i * 0.5f);
 				this.motionX *= 0.6;
 				this.motionY *= 0.6;
 			}
@@ -227,13 +233,17 @@ public class EntityNightmare extends EntityMob {
 		}
 
 		boolean weakeningWeapon = false;
-		if (source instanceof EntityDamageSource && ((EntityDamageSource) source).getEntity() != null && ((EntityDamageSource) source).getEntity() instanceof EntityLivingBase) {
+		if (source instanceof EntityDamageSource && ((EntityDamageSource) source).getEntity() != null
+				&& ((EntityDamageSource) source).getEntity() instanceof EntityLivingBase) {
 			EntityLivingBase living = (EntityLivingBase) ((EntityDamageSource) source).getEntity();
-			if (living.getHeldItemMainhand() != null && living.getHeldItemMainhand().getItem() == ItemInit.HUNTSMAN_SPEAR) {
+			if (living.getHeldItemMainhand() != null
+					&& living.getHeldItemMainhand().getItem() == ItemInit.HUNTSMAN_SPEAR) {
 				weakeningWeapon = true;
 			}
-			if (!worldObj.isRemote && worldObj.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() != BlockInit.FLOWING_SPIRIT) {
-				defenseTimer = ((dimension == Config.instance().dimensionDreamID) ? (weakeningWeapon ? 40 : 80) : (weakeningWeapon ? 30 : 40));
+			if (!worldObj.isRemote
+					&& worldObj.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() != BlockInit.FLOWING_SPIRIT) {
+				defenseTimer = ((dimension == Config.instance().dimensionDreamID) ? (weakeningWeapon ? 40 : 80)
+						: (weakeningWeapon ? 30 : 40));
 				setDefended(true);
 			}
 			return super.attackEntityFrom(source, Math.min(amount, 15.0f));
@@ -276,10 +286,12 @@ public class EntityNightmare extends EntityMob {
 
 	@Override
 	public void onDeath(DamageSource cause) {
-		if (!worldObj.isRemote && cause != null && cause.getEntity() != null && cause.getEntity() instanceof EntityPlayer) {
+		if (!worldObj.isRemote && cause != null && cause.getEntity() != null
+				&& cause.getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) cause.getEntity();
 			UUID victim = getVictimUUID();
-			if (victim != null && victim != Reference.BLANK_UUID && player.getUniqueID() == victim && dimension == Config.instance().dimensionDreamID) {
+			if (victim != null && victim != Reference.BLANK_UUID && player.getUniqueID() == victim
+					&& dimension == Config.instance().dimensionDreamID) {
 				WorldProviderDreamWorld.setPlayerLastNightmareKillNow(player);
 			}
 		}

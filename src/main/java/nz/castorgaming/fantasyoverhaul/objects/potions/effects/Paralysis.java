@@ -36,8 +36,7 @@ public class Paralysis extends PotionBase implements IHandleLivingUpdate, IHandl
 			int amplifier) {
 		if (canApplyToEntity(entity, amplifier)) {
 			super.applyAttributeModifiersToEntity(entity, attributes, amplifier);
-		}
-		else if (isVillager(entity)) {
+		} else if (isVillager(entity)) {
 			EntityCreature creature = (EntityCreature) entity;
 			creature.setAttackTarget(null);
 			creature.setRevengeTarget(null);
@@ -97,8 +96,7 @@ public class Paralysis extends PotionBase implements IHandleLivingUpdate, IHandl
 			int amplifier) {
 		if (canApplyToEntity(entity, amplifier)) {
 			super.removeAttributeModifiersFromEntity(entity, attributes, amplifier);
-		}
-		else if (isVillager(entity)) {
+		} else if (isVillager(entity)) {
 			EntityCreature creature = (EntityCreature) entity;
 			Iterator<EntityAITaskEntry> itr = creature.tasks.taskEntries.iterator();
 			EntityAIBase task = null;

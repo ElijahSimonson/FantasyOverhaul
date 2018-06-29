@@ -44,8 +44,10 @@ public class CreatureUtilities {
 
 	public static boolean isDemonic(Entity entity) {
 		if (entity != null) {
-			if (entity instanceof EntityDemon || entity instanceof EntityGhast || entity instanceof EntityBlaze || entity instanceof EntityMagmaCube || entity instanceof EntityLeonard
-					|| entity instanceof EntityLordOfTorment || entity instanceof EntityImp || entity instanceof EntityLilith || entity instanceof EntityWither || isModDemon(entity)) {
+			if (entity instanceof EntityDemon || entity instanceof EntityGhast || entity instanceof EntityBlaze
+					|| entity instanceof EntityMagmaCube || entity instanceof EntityLeonard
+					|| entity instanceof EntityLordOfTorment || entity instanceof EntityImp
+					|| entity instanceof EntityLilith || entity instanceof EntityWither || isModDemon(entity)) {
 				return true;
 			}
 		}
@@ -69,7 +71,8 @@ public class CreatureUtilities {
 			}
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = ((EntityPlayer) entity);
-				return IPlayerVampire.get(player).isVampire() || InfusionBrewEffect.getActiveBrew(player) == InfusedBrew.Grave;
+				return IPlayerVampire.get(player).isVampire()
+						|| InfusionBrewEffect.getActiveBrew(player) == InfusedBrew.Grave;
 			}
 		}
 		return false;
@@ -80,7 +83,8 @@ public class CreatureUtilities {
 	}
 
 	public static boolean isSpirit(EntityLivingBase entity) {
-		return entity != null && (entity instanceof EntityMandrake || entity instanceof EntityHornedHuntsman || entity instanceof EntityTreefyd || entity instanceof EntityNightmare
+		return entity != null && (entity instanceof EntityMandrake || entity instanceof EntityHornedHuntsman
+				|| entity instanceof EntityTreefyd || entity instanceof EntityNightmare
 				|| entity instanceof EntitySpirit);
 	}
 
@@ -101,7 +105,8 @@ public class CreatureUtilities {
 			}
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
-				if (InvUtil.hasItem(player.inventory, ItemInit.POPPET_VOODOO) || InvUtil.hasItem(player.inventory, ItemInit.POPPET_VAMPURIC)
+				if (InvUtil.hasItem(player.inventory, ItemInit.POPPET_VOODOO)
+						|| InvUtil.hasItem(player.inventory, ItemInit.POPPET_VAMPURIC)
 						|| Infusion.getInfusionID(player).equals(InfusionInit.INFERNAL.getInfusionName())) {
 					return true;
 				}
@@ -177,7 +182,9 @@ public class CreatureUtilities {
 		if (entity instanceof EntityPlayer) {
 			ExtendedPlayer playerEx = IExtendPlayer.get((EntityPlayer) entity);
 			PlayerWerewolf playerWere = IPlayerWerewolf.get((EntityPlayer) entity);
-			return (includeUnshifted && playerWere.getWerewolfLevel() > 0) || playerEx.getCreatureType() == TransformCreatures.WOLF || playerEx.getCreatureType() == TransformCreatures.WOLFMAN;
+			return (includeUnshifted && playerWere.getWerewolfLevel() > 0)
+					|| playerEx.getCreatureType() == TransformCreatures.WOLF
+					|| playerEx.getCreatureType() == TransformCreatures.WOLFMAN;
 		}
 		if (entity instanceof EntityLiving) {
 			String name = entity.getClass().getSimpleName();
@@ -212,7 +219,8 @@ public class CreatureUtilities {
 	}
 
 	public static boolean isImmuneToDisease(final EntityLivingBase livingEntity) {
-		return isUndead(livingEntity) || isDemonic(livingEntity) || isWerewolf(livingEntity, true) || !livingEntity.isNonBoss() || livingEntity instanceof EntityGolem;
+		return isUndead(livingEntity) || isDemonic(livingEntity) || isWerewolf(livingEntity, true)
+				|| !livingEntity.isNonBoss() || livingEntity instanceof EntityGolem;
 	}
 
 	public static boolean isImmuneToPoison(final EntityLivingBase livingEntity) {
@@ -221,7 +229,8 @@ public class CreatureUtilities {
 
 	public static boolean isInSunlight(final EntityLivingBase entity) {
 		final World world = entity.worldObj;
-		if (world.provider.getDimension() == Config.instance().dimensionDreamID || world.provider.getDimension() == Config.instance().dimensionTormentID || world.provider.getHasNoSky()
+		if (world.provider.getDimension() == Config.instance().dimensionDreamID
+				|| world.provider.getDimension() == Config.instance().dimensionTormentID || world.provider.getHasNoSky()
 				|| !world.provider.isSurfaceWorld() || !world.isDaytime()) {
 			return false;
 		}
@@ -229,7 +238,8 @@ public class CreatureUtilities {
 		final int y = MathHelper.floor_double(entity.posY);
 		final int z = MathHelper.floor_double(entity.posZ);
 		Biome biome = world.getBiome(new BlockPos(x, y, z));
-		return !biome.getBiomeName().equals("Ominous Woods") && (!world.isRaining() || !biome.canRain()) && world.canBlockSeeSky(new BlockPos(z, y + MathHelper.ceiling_double_int(entity.height), z));
+		return !biome.getBiomeName().equals("Ominous Woods") && (!world.isRaining() || !biome.canRain())
+				&& world.canBlockSeeSky(new BlockPos(z, y + MathHelper.ceiling_double_int(entity.height), z));
 	}
 
 	public static boolean checkForVampireDeath(EntityLivingBase creature, DamageSource source) {
@@ -237,24 +247,19 @@ public class CreatureUtilities {
 		if (source.isFireDamage() || source instanceof EntityUtil.DamageSourceVampireFire) {
 			if (VampireClothes.isExtendedFlameProtectionActive(creature)) {
 				dead = (creature.worldObj.rand.nextInt(4) == 0);
-			}
-			else {
+			} else {
 				dead = (!VampireClothes.isFlameProtectionActive(creature) || creature.worldObj.rand.nextInt(4) != 0);
 			}
-		}
-		else if (source instanceof EntityUtil.DamageSourceSunlight) {
+		} else if (source instanceof EntityUtil.DamageSourceSunlight) {
 			dead = true;
-		}
-		else if (creature instanceof EntityPlayer && Reference.modHooks.canVampireBeKilled((EntityPlayer) creature)) {
+		} else if (creature instanceof EntityPlayer && Reference.modHooks.canVampireBeKilled((EntityPlayer) creature)) {
 			dead = true;
-		}
-		else if (source == DamageSource.inWall || source == DamageSource.outOfWorld) {
+		} else if (source == DamageSource.inWall || source == DamageSource.outOfWorld) {
 			dead = true;
-		}
-		else if (source.getEntity() != null && (isWerewolf(source.getEntity()) || isVampire(source.getEntity()) || !source.getEntity().isNonBoss())) {
+		} else if (source.getEntity() != null && (isWerewolf(source.getEntity()) || isVampire(source.getEntity())
+				|| !source.getEntity().isNonBoss())) {
 			dead = true;
-		}
-		else if (isWerewolf(creature, true) && isSilverDamage(source)) {
+		} else if (isWerewolf(creature, true) && isSilverDamage(source)) {
 			dead = true;
 		}
 		if (!dead) {

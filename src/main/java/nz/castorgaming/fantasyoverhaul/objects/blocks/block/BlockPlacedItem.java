@@ -23,14 +23,14 @@ import nz.castorgaming.fantasyoverhaul.init.ItemInit;
 import nz.castorgaming.fantasyoverhaul.objects.blocks.BlockBaseContainer;
 import nz.castorgaming.fantasyoverhaul.objects.tileEntity.TileEntityPlacedItem;
 
-public class BlockPlacedItem extends BlockBaseContainer{
-	
+public class BlockPlacedItem extends BlockBaseContainer {
+
 	AxisAlignedBB BOUNDS = new AxisAlignedBB(0.2f, 0.2f, 0.2f, 0.8f, 0.05f, 0.8f);
 
 	public BlockPlacedItem(String name, Material material) {
 		super(name, material);
 	}
-	
+
 	public static void placeItemInWorld(ItemStack stack, EntityPlayer player, World world, BlockPos pos) {
 		int meta = 0;
 		if (player != null) {
@@ -53,31 +53,32 @@ public class BlockPlacedItem extends BlockBaseContainer{
 		world.setBlockState(pos, BlockInit.PLACED_ITEMSTACK.getStateFromMeta(meta));
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityPlacedItem) {
-			((TileEntityPlacedItem)tile).setStack(stack);
+			((TileEntityPlacedItem) tile).setStack(stack);
 		}
 	}
-	
+
 	public BlockPlacedItem(String name) {
 		super(name, Material.GROUND);
 		super.setCreativeTab(null);
 		setHardness(0.0f);
 		setSoundType(SoundType.METAL);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return BOUNDS;
 	}
+
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return BOUNDS;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (player.capabilities.isCreativeMode) {
 			worldIn.setBlockState(pos, state, 4);
@@ -85,13 +86,13 @@ public class BlockPlacedItem extends BlockBaseContainer{
 		dropBlockAsItem(worldIn, pos, state, 0);
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}
-	
+
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile != null && tile instanceof TileEntityPlacedItem && ((TileEntityPlacedItem)tile).getStack() != null) {
-			drops.add(((TileEntityPlacedItem)tile).getStack());
+		if (tile != null && tile instanceof TileEntityPlacedItem && ((TileEntityPlacedItem) tile).getStack() != null) {
+			drops.add(((TileEntityPlacedItem) tile).getStack());
 		}
 		return drops;
 	}
@@ -100,12 +101,12 @@ public class BlockPlacedItem extends BlockBaseContainer{
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
 			EntityPlayer player) {
 		TileEntity tile = world.getTileEntity(pos);
-		if (tile != null && tile instanceof TileEntityPlacedItem && ((TileEntityPlacedItem)tile).getStack() != null) {
-			return ((TileEntityPlacedItem)tile).getStack().copy();
+		if (tile != null && tile instanceof TileEntityPlacedItem && ((TileEntityPlacedItem) tile).getStack() != null) {
+			return ((TileEntityPlacedItem) tile).getStack().copy();
 		}
 		return new ItemStack(ItemInit.ARTHANA);
 	}
-	
+
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
 		if (world instanceof World) {
@@ -117,14 +118,14 @@ public class BlockPlacedItem extends BlockBaseContainer{
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public boolean canBlockStay(World world, BlockPos pos) {
 		Material mat = world.getBlockState(pos.down()).getMaterial();
 		return !world.isAirBlock(pos.down()) && mat != null && mat.isOpaque() && mat.isSolid();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,

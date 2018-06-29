@@ -21,18 +21,20 @@ public class TeleportUtil {
 	public static void teleportToLocation(World world, int x, int y, int z, int dim, Entity entity, boolean preset) {
 		teleportToLocation(world, x, y, z, dim, entity, preset, ParticleEffect.PORTAL, SoundEffect.MOB_ENDERMEN_PORTAL);
 	}
-	
-	
+
 	public static void teleportToLocation(World world, int x, int y, int z, int dim, Entity entity, boolean preset,
 			ParticleEffect particle, SoundEffect sound) {
 		boolean isVampire = CreatureUtilities.isVampire(entity);
 		if (isVampire) {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
-		}else {
-			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
+			Reference.PACKET_HANDLER.sendToAllAround(
+					new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
+		} else {
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
 		}
 		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)entity;
+			EntityPlayer player = (EntityPlayer) entity;
 			if (entity.dimension != dim) {
 				if (preset) {
 					player.setPosition(x, y, z);
@@ -40,45 +42,49 @@ public class TeleportUtil {
 				travelToDimension(player, dim);
 			}
 			player.setPositionAndUpdate(x, y, z);
-		}
-		else if (entity instanceof EntityLiving) {
+		} else if (entity instanceof EntityLiving) {
 			if (entity.dimension != dim) {
-				travelToDimension(entity, dim, x,y,z);
-			}else {
+				travelToDimension(entity, dim, x, y, z);
+			} else {
 				entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
 			}
-		}
-		else if (entity.dimension != dim) {
+		} else if (entity.dimension != dim) {
 			travelToDimension(entity, dim, x, y, z);
-		}
-		else {
+		} else {
 			entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
 		}
-		 if (isVampire) {
-	            Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
-	        }
-	        else {
-	            Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0), TargetPointUtil.from(entity, 16.0));
-	        }
+		if (isVampire) {
+			Reference.PACKET_HANDLER.sendToAllAround(
+					new PacketParticles(ParticleEffect.SMOKE, SoundEffect.RANDOM_POOF, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
+		} else {
+			Reference.PACKET_HANDLER.sendToAllAround(new PacketParticles(particle, sound, entity, 0.5, 2.0),
+					TargetPointUtil.from(entity, 16.0));
+		}
 	}
 
-	public static boolean teleportToLocationSafely(World world, int x, int y, int z, int dim, Entity entity, boolean preset) {
+	public static boolean teleportToLocationSafely(World world, int x, int y, int z, int dim, Entity entity,
+			boolean preset) {
 		World targetWorld = world.getMinecraftServer().worldServerForDimension(dim);
 		for (int i = 0; i < 16; i++) {
 			int dy = y + i;
-			if (dy < 250 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
+			if (dy < 250 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
 				teleportToLocation(world, x, dy + 1, z, dim, entity, preset);
 				return true;
 			}
 			dy = y - i;
-			if (i > 0 && dy > 1 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z) && BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
+			if (i > 0 && dy > 1 && !BlockUtil.isReplaceableBlock(targetWorld, x, dy, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 1, z)
+					&& BlockUtil.isReplaceableBlock(targetWorld, x, dy + 2, z)) {
 				teleportToLocation(world, x, dy + 1, z, dim, entity, preset);
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public static void travelToDimension(EntityPlayer player, int dim) {
 		if (!player.worldObj.isRemote && player instanceof EntityPlayerMP) {
 			MinecraftServer mcServer = player.getServer();
@@ -104,6 +110,7 @@ public class TeleportUtil {
 			player.isDead = true;
 		}
 	}
+
 	@Nullable
 	private static Entity travelToDimension(Entity entity, int dim, int x, int y, int z) {
 		if (!entity.worldObj.isRemote && !entity.isDead) {

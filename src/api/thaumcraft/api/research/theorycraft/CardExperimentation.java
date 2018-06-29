@@ -11,29 +11,28 @@ public class CardExperimentation extends TheorycraftCard {
 	public int getInspirationCost() {
 		return 1;
 	}
-	
+
 	@Override
 	public String getLocalizedName() {
 		return new TextComponentTranslation("card.experimentation.name").getUnformattedText();
 	}
-	
+
 	@Override
 	public String getLocalizedText() {
 		return new TextComponentTranslation("card.experimentation.text").getUnformattedText();
 	}
-	
+
 	@Override
-	public boolean activate(EntityPlayer player, ResearchTableData data) {		
+	public boolean activate(EntityPlayer player, ResearchTableData data) {
 		try {
 			String[] s = ResearchCategories.researchCategories.keySet().toArray(new String[] {});
-			String cat = s[ player.getRNG().nextInt(s.length) ];
+			String cat = s[player.getRNG().nextInt(s.length)];
 			data.addTotal(cat, MathHelper.getInt(player.getRNG(), 10, 25));
 			data.addTotal("BASICS", 5);
 		} catch (Exception e) {
 			return false;
-		}		
+		}
 		return true;
 	}
-	
-	
+
 }

@@ -29,9 +29,11 @@ public class ImpEvaporation extends PlayerEffect {
 					for (int y = midY + 2; y >= midY - 1; --y) {
 						if (player.getDistanceSq(x, y, z) <= 9.0) {
 							final Block block = BlockUtil.getBlock(player.worldObj, x, y, z);
-							if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && player.worldObj.isAirBlock(new BlockPos(x, y + 1, z))) {
+							if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER)
+									&& player.worldObj.isAirBlock(new BlockPos(x, y + 1, z))) {
 								player.worldObj.setBlockToAir(new BlockPos(x, y, z));
-								ParticleEffect.EXPLODE.send(SoundEffect.NONE, player.worldObj, x, y + 1, z, 1.0, 1.0, 16);
+								ParticleEffect.EXPLODE.send(SoundEffect.NONE, player.worldObj, x, y + 1, z, 1.0, 1.0,
+										16);
 								found = true;
 							}
 						}
@@ -39,7 +41,8 @@ public class ImpEvaporation extends PlayerEffect {
 				}
 			}
 			if (found) {
-				SoundEffect.RANDOM_FIZZ.playAt(player.worldObj, player.posX, player.posY, player.posZ, 1.0f, 2.6f + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.8f);
+				SoundEffect.RANDOM_FIZZ.playAt(player.worldObj, player.posX, player.posY, player.posZ, 1.0f,
+						2.6f + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.8f);
 			}
 		}
 	}
@@ -55,6 +58,6 @@ public class ImpEvaporation extends PlayerEffect {
 	@Override
 	protected void onDeath(EntityPlayer player) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

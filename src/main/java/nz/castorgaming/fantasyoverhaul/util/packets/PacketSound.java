@@ -69,7 +69,8 @@ public class PacketSound implements IMessage {
 			if (message.pitch == -1.0f) {
 				message.pitch = 0.4f / ((float) player.worldObj.rand.nextDouble() * 0.4f + 0.8f);
 			}
-			player.worldObj.playSound(null, new BlockPos(message.x, message.y, message.z), message.effect.event(), message.effect.category(), message.volume, message.pitch);
+			player.worldObj.playSound(null, new BlockPos(message.x, message.y, message.z), message.effect.event(),
+					message.effect.category(), message.volume, message.pitch);
 		}
 	}
 

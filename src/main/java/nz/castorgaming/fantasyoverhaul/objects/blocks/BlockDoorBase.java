@@ -10,7 +10,7 @@ import nz.castorgaming.fantasyoverhaul.FantasyOverhaul;
 import nz.castorgaming.fantasyoverhaul.init.InitArrays;
 import nz.castorgaming.fantasyoverhaul.util.interfaces.IHasModel;
 
-public class BlockDoorBase extends BlockDoor implements IHasModel{
+public class BlockDoorBase extends BlockDoor implements IHasModel {
 
 	public BlockDoorBase(String name, Material material) {
 		super(material);
@@ -21,7 +21,7 @@ public class BlockDoorBase extends BlockDoor implements IHasModel{
 		InitArrays.BLOCKS.add(this);
 		InitArrays.ITEMS.add(new ItemBlock(this).setRegistryName(getRegistryName()));
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		FantasyOverhaul.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");

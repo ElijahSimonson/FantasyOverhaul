@@ -82,47 +82,45 @@ public class Coord {
 	public Coord(RayTraceResult mop, EntityPosition altPos, boolean before) {
 		if (mop != null) {
 			switch (mop.typeOfHit) {
-				case BLOCK: {
-					if (before) {
-						x = mop.getBlockPos().getX()
-								+ (mop.sideHit == EnumFacing.NORTH ? -1 : mop.sideHit == EnumFacing.SOUTH ? 1 : 0);
-						y = mop.getBlockPos().getY()
-								+ (mop.sideHit == EnumFacing.DOWN ? -1 : mop.sideHit == EnumFacing.UP ? 1 : 0);
-						z = mop.getBlockPos().getZ()
-								+ (mop.sideHit == EnumFacing.EAST ? -1 : mop.sideHit == EnumFacing.WEST ? 1 : 0);
-						break;
-					}
-					x = mop.getBlockPos().getX();
-					y = mop.getBlockPos().getY();
-					z = mop.getBlockPos().getZ();
+			case BLOCK: {
+				if (before) {
+					x = mop.getBlockPos().getX()
+							+ (mop.sideHit == EnumFacing.NORTH ? -1 : mop.sideHit == EnumFacing.SOUTH ? 1 : 0);
+					y = mop.getBlockPos().getY()
+							+ (mop.sideHit == EnumFacing.DOWN ? -1 : mop.sideHit == EnumFacing.UP ? 1 : 0);
+					z = mop.getBlockPos().getZ()
+							+ (mop.sideHit == EnumFacing.EAST ? -1 : mop.sideHit == EnumFacing.WEST ? 1 : 0);
 					break;
 				}
-				case ENTITY: {
+				x = mop.getBlockPos().getX();
+				y = mop.getBlockPos().getY();
+				z = mop.getBlockPos().getZ();
+				break;
+			}
+			case ENTITY: {
+				x = MathHelper.floor_double(altPos.x);
+				y = MathHelper.floor_double(altPos.y);
+				z = MathHelper.floor_double(altPos.z);
+				break;
+			}
+			default: {
+				if (altPos != null) {
 					x = MathHelper.floor_double(altPos.x);
 					y = MathHelper.floor_double(altPos.y);
 					z = MathHelper.floor_double(altPos.z);
 					break;
 				}
-				default: {
-					if (altPos != null) {
-						x = MathHelper.floor_double(altPos.x);
-						y = MathHelper.floor_double(altPos.y);
-						z = MathHelper.floor_double(altPos.z);
-						break;
-					}
-					x = 0;
-					y = 0;
-					z = 0;
-					break;
-				}
+				x = 0;
+				y = 0;
+				z = 0;
+				break;
 			}
-		}
-		else if (altPos != null) {
+			}
+		} else if (altPos != null) {
 			x = MathHelper.floor_double(altPos.x);
 			y = MathHelper.floor_double(altPos.y);
 			z = MathHelper.floor_double(altPos.z);
-		}
-		else {
+		} else {
 			x = 0;
 			y = 0;
 			z = 0;

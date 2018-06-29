@@ -54,11 +54,13 @@ public class VampireClothes extends ArmorBase implements ISpecialArmor {
 	@SideOnly(Side.CLIENT)
 	private ModelVampireArmor modelClothesLegs;
 
-	public VampireClothes(String name, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, boolean metal, boolean female) {
+	public VampireClothes(String name, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, boolean metal,
+			boolean female) {
 		super(name, metal ? ArmorMaterial.IRON : ArmorMaterial.LEATHER, renderIndexIn, equipmentSlotIn);
 		this.female = female;
 		this.metal = metal;
-		realDamageReduction = metal ? ArmorMaterial.IRON.getDamageReductionAmount(equipmentSlotIn) : ArmorMaterial.LEATHER.getDamageReductionAmount(equipmentSlotIn);
+		realDamageReduction = metal ? ArmorMaterial.IRON.getDamageReductionAmount(equipmentSlotIn)
+				: ArmorMaterial.LEATHER.getDamageReductionAmount(equipmentSlotIn);
 		setArmorSlot(equipmentSlotIn);
 	}
 
@@ -87,8 +89,7 @@ public class VampireClothes extends ArmorBase implements ISpecialArmor {
 			EntityEquipmentSlot type = armorSlot;
 			if (type == EntityEquipmentSlot.LEGS) {
 				armorModel = modelClothesLegs;
-			}
-			else {
+			} else {
 				armorModel = modelClothesChest;
 			}
 		}
@@ -97,16 +98,20 @@ public class VampireClothes extends ArmorBase implements ISpecialArmor {
 			boolean isVisible = true;
 			if (entityLiving != null && entityLiving.isInvisible()) {
 				String entityTypeName = entityLiving.getClass().getSimpleName();
-				isVisible = entityTypeName == null || entityTypeName.isEmpty() || entityTypeName.equals("Abstract Steve");
+				isVisible = entityTypeName == null || entityTypeName.isEmpty()
+						|| entityTypeName.equals("Abstract Steve");
 			}
 
 			armorModel.bipedHead.showModel = isVisible && armorSlot == EntityEquipmentSlot.HEAD;
 			armorModel.bipedHeadwear.showModel = isVisible && armorSlot == EntityEquipmentSlot.HEAD;
-			armorModel.bipedBody.showModel = isVisible && armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
+			armorModel.bipedBody.showModel = isVisible && armorSlot == EntityEquipmentSlot.CHEST
+					|| armorSlot == EntityEquipmentSlot.LEGS;
 			armorModel.bipedRightArm.showModel = isVisible && armorSlot == EntityEquipmentSlot.CHEST;
 			armorModel.bipedLeftArm.showModel = isVisible && armorSlot == EntityEquipmentSlot.CHEST;
-			armorModel.bipedRightLeg.showModel = isVisible && armorSlot == EntityEquipmentSlot.FEET || armorSlot == EntityEquipmentSlot.LEGS;
-			armorModel.bipedLeftLeg.showModel = isVisible && armorSlot == EntityEquipmentSlot.FEET || armorSlot == EntityEquipmentSlot.LEGS;
+			armorModel.bipedRightLeg.showModel = isVisible && armorSlot == EntityEquipmentSlot.FEET
+					|| armorSlot == EntityEquipmentSlot.LEGS;
+			armorModel.bipedLeftLeg.showModel = isVisible && armorSlot == EntityEquipmentSlot.FEET
+					|| armorSlot == EntityEquipmentSlot.LEGS;
 
 			armorModel.isSneak = entityLiving.isSneaking();
 			armorModel.isRiding = entityLiving.isRiding();
@@ -115,7 +120,8 @@ public class VampireClothes extends ArmorBase implements ISpecialArmor {
 			ItemStack heldStack = entityLiving.getHeldItemMainhand();
 			armorModel.rightArmPose = heldStack != null ? ArmPose.ITEM : ArmPose.EMPTY;
 
-			if (entityLiving instanceof EntityPlayer && heldStack != null && ((EntityPlayer) entityLiving).getActiveItemStack().getMaxItemUseDuration() > 0) {
+			if (entityLiving instanceof EntityPlayer && heldStack != null
+					&& ((EntityPlayer) entityLiving).getActiveItemStack().getMaxItemUseDuration() > 0) {
 
 				EnumAction enumaction = heldStack.getItemUseAction();
 
@@ -156,7 +162,8 @@ public class VampireClothes extends ArmorBase implements ISpecialArmor {
 	}
 
 	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+			int slot) {
 		return new ArmorProperties(0, realDamageReduction / 25.00, armor.getMaxDamage() + 1 - armor.getMetadata());
 	}
 

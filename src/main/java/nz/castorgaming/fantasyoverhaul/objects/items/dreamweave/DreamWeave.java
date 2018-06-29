@@ -16,8 +16,8 @@ import nz.castorgaming.fantasyoverhaul.objects.blocks.BlockDreamCatcher;
 import nz.castorgaming.fantasyoverhaul.objects.blocks.BlockDreamCatcher.TileEntityDreamCatcher;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItem;
 
-public class DreamWeave extends GeneralItem	{
-	
+public class DreamWeave extends GeneralItem {
+
 	private final Potion potionDream;
 	private final Potion potionNightmare;
 	private final int duration;
@@ -31,19 +31,22 @@ public class DreamWeave extends GeneralItem	{
 		this.amp = amplifier;
 		this.duration = duration;
 	}
-	
+
 	public void setEffect(BlockDreamCatcher.TileEntityDreamCatcher dreamCatcherEntity) {
 		dreamCatcherEntity.setEffect(this);
 	}
-	
+
 	public void applyEffect(EntityPlayer player, boolean isDream, boolean isEnhanced) {
 		if (isDream) {
-			player.addPotionEffect(new PotionEffect(potionDream, (isEnhanced && potionDream == MobEffects.SATURATION) ? (duration + 2400) : (isEnhanced ? (duration - 2400) : duration), (isEnhanced && potionDream != MobEffects.SATURATION) ? (amp + 1) : amp));
-		}else {
+			player.addPotionEffect(new PotionEffect(potionDream,
+					(isEnhanced && potionDream == MobEffects.SATURATION) ? (duration + 2400)
+							: (isEnhanced ? (duration - 2400) : duration),
+					(isEnhanced && potionDream != MobEffects.SATURATION) ? (amp + 1) : amp));
+		} else {
 			player.addPotionEffect(new PotionEffect(potionNightmare, duration, isEnhanced ? amp + 1 : amp));
 		}
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -67,14 +70,15 @@ public class DreamWeave extends GeneralItem	{
 		case UP:
 			return EnumActionResult.FAIL;
 		}
-		
+
 		if (!playerIn.canPlayerEdit(pos, facing, stack)) {
 			return EnumActionResult.FAIL;
 		}
 		if (worldIn.isRemote) {
 			return EnumActionResult.SUCCESS;
 		}
-		worldIn.setBlockState(pos, BlockInit.DREAM_CATCHER.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, stack.getMetadata(), playerIn, stack));
+		worldIn.setBlockState(pos, BlockInit.DREAM_CATCHER.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ,
+				stack.getMetadata(), playerIn, stack));
 		--stack.stackSize;
 		BlockDreamCatcher.TileEntityDreamCatcher tileEnt = (TileEntityDreamCatcher) worldIn.getTileEntity(pos);
 		if (tileEnt != null) {
@@ -83,6 +87,5 @@ public class DreamWeave extends GeneralItem	{
 		}
 		return EnumActionResult.SUCCESS;
 	}
-	
-	
+
 }

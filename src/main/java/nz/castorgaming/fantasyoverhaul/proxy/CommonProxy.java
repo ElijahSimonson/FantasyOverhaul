@@ -48,10 +48,12 @@ public class CommonProxy {
 	public void registerItemRenderer(Item item, int i, String string) {
 	}
 
-	public void generateParticle(final World worldObj, final double posX, final double posY, final double posZ, final float f, final float g, final float h, final int i, final float j) {
+	public void generateParticle(final World worldObj, final double posX, final double posY, final double posZ,
+			final float f, final float g, final float h, final int i, final float j) {
 	}
 
-	public void showParticleEffect(World world, double x, double y, double z, double width, double height, SoundEffect sound, int color, ParticleEffect particle) {
+	public void showParticleEffect(World world, double x, double y, double z, double width, double height,
+			SoundEffect sound, int color, ParticleEffect particle) {
 	}
 
 	public EntityPlayer getPlayer(MessageContext ctx) {
@@ -66,8 +68,7 @@ public class CommonProxy {
 			if (Loader.isModLoaded(mod.id)) {
 				mod.setLoaded();
 				Log.instance().debug(mod.id + " is detected as LOADED");
-			}
-			else {
+			} else {
 				Log.instance().debug(mod.id + " is detected as UNLOADED");
 			}
 		}

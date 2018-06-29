@@ -7,7 +7,7 @@ public class GeneralItemEnchanted extends GeneralItem {
 	public GeneralItemEnchanted(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		return true;

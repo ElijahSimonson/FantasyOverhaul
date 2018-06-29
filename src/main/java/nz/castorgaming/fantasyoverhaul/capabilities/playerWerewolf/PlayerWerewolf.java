@@ -61,9 +61,9 @@ public class PlayerWerewolf extends PlayerCapabilityMaster implements IPlayerWer
 	public void increaseWolfmanQuestCounter() {
 		++wolfmanQuestCounter;
 		if (wolfmanQuestCounter > 100) {
-			wolfmanQuestCounter = 100 ;
+			wolfmanQuestCounter = 100;
 		}
-		
+
 	}
 
 	@Override
@@ -84,7 +84,8 @@ public class PlayerWerewolf extends PlayerCapabilityMaster implements IPlayerWer
 			wolfmanQuestCounter = 0;
 			visitedWerewolfChunks.clear();
 			TransformCreatures creatureType = ExtendedPlayer.get(player).getCreatureType();
-			if (werewolfLevel == 0 && !player.worldObj.isRemote && (creatureType == TransformCreatures.WOLF || creatureType == TransformCreatures.WOLFMAN)) {
+			if (werewolfLevel == 0 && !player.worldObj.isRemote
+					&& (creatureType == TransformCreatures.WOLF || creatureType == TransformCreatures.WOLFMAN)) {
 				ShapeShift.INSTANCE.shiftTo(player, TransformCreatures.NONE);
 			}
 			sync();
@@ -109,11 +110,11 @@ public class PlayerWerewolf extends PlayerCapabilityMaster implements IPlayerWer
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		
+
 		nbt.setInteger("WolfLevel", werewolfLevel);
 		nbt.setInteger("WolfQuest", wolfmanQuestState.toInt());
 		nbt.setInteger("WolfQuestCount", wolfmanQuestCounter);
-		
+
 		if (visitedWerewolfChunks != null && !visitedWerewolfChunks.isEmpty()) {
 			NBTTagList visitedChunks = new NBTTagList();
 			for (long chunk : visitedWerewolfChunks) {
@@ -134,7 +135,7 @@ public class PlayerWerewolf extends PlayerCapabilityMaster implements IPlayerWer
 		wolfmanQuestState = QuestState.fromInt(nbt.getInteger("WolfQuestStae"));
 		lastHowl = nbt.getLong("WolfLastHowl");
 		lastBoneFind = nbt.getLong("WolfLastBone");
-		
+
 		if (nbt.hasKey("WolfVisited")) {
 			if (visitedWerewolfChunks == null) {
 				visitedWerewolfChunks = new ArrayList<Long>();

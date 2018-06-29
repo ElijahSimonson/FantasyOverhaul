@@ -14,44 +14,39 @@ public interface IGolemProperties {
 	public abstract Set<EnumGolemTrait> getTraits();
 
 	public abstract boolean hasTrait(EnumGolemTrait tag);
-	
+
 	public abstract long toLong();
 
 	public abstract ItemStack[] generateComponents();
-	
-	
-	//material
+
+	// material
 	public abstract void setMaterial(GolemMaterial mat);
 
 	public abstract GolemMaterial getMaterial();
 
-	//head
+	// head
 	public abstract void setHead(GolemHead mat);
 
 	public abstract GolemHead getHead();
 
-	//arms
+	// arms
 	public abstract void setArms(GolemArm mat);
 
 	public abstract GolemArm getArms();
 
-	//legs
+	// legs
 	public abstract void setLegs(GolemLeg mat);
 
 	public abstract GolemLeg getLegs();
 
-	//addon
+	// addon
 	public abstract void setAddon(GolemAddon mat);
 
 	public abstract GolemAddon getAddon();
 
-	//rank
+	// rank
 	public abstract void setRank(int r);
 
 	public abstract int getRank();
-
-	
-	
-	
 
 }

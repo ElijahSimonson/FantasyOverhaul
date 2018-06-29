@@ -28,7 +28,8 @@ public class EntityAIDemonicBarginPlayer extends EntityAIBase {
 			return false;
 		}
 		EntityPlayer player = trader.getCustomer();
-		return player != null && trader.getDistanceSqToEntity(player) <= 16.0 && player.openContainer instanceof Container;
+		return player != null && trader.getDistanceSqToEntity(player) <= 16.0
+				&& player.openContainer instanceof Container;
 	}
 
 	public void startExecuting() {

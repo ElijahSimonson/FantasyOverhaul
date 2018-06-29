@@ -17,12 +17,12 @@ import nz.castorgaming.fantasyoverhaul.util.enums.ParticleEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.SoundEffect;
 import nz.castorgaming.fantasyoverhaul.util.enums.TransformCreatures;
 
-public class BrewRevealing extends Brew{
+public class BrewRevealing extends Brew {
 
 	public BrewRevealing(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public BrewResult onImpact(World world, EntityLivingBase thrower, RayTraceResult rtr, boolean enhanced, double x,
 			double y, double z, AxisAlignedBB bounds) {
@@ -40,7 +40,7 @@ public class BrewRevealing extends Brew{
 					}
 					if (entity.isPotionActive(MobEffects.INVISIBILITY)) {
 						entity.removeActivePotionEffect(MobEffects.INVISIBILITY);
-					}	
+					}
 					if (entity instanceof EntityPlayerMP && entity.isInvisible()) {
 						entity.setInvisible(false);
 					}

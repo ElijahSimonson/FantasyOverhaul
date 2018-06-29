@@ -30,7 +30,8 @@ public class EntityCorpse extends EntityLiving {
 
 	private ThreadDownloadImageData downloadImageSkin;
 	private ResourceLocation locationSkin;
-	private DataParameter<Optional<UUID>> OWNER = EntityDataManager.createKey(EntityCorpse.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	private DataParameter<Optional<UUID>> OWNER = EntityDataManager.createKey(EntityCorpse.class,
+			DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public EntityCorpse(World world) {
 		super(world);
@@ -69,7 +70,8 @@ public class EntityCorpse extends EntityLiving {
 		if (worldObj.isRemote) {
 			return super.attackEntityFrom(source, amount);
 		}
-		if (source.getSourceOfDamage() != null && source.getSourceOfDamage() instanceof EntityPlayer && ((EntityPlayer) source.getSourceOfDamage()).capabilities.isCreativeMode) {
+		if (source.getSourceOfDamage() != null && source.getSourceOfDamage() instanceof EntityPlayer
+				&& ((EntityPlayer) source.getSourceOfDamage()).capabilities.isCreativeMode) {
 			return super.attackEntityFrom(source, amount);
 		}
 		UUID user = getOwner();
@@ -99,8 +101,7 @@ public class EntityCorpse extends EntityLiving {
 		MinecraftServer server;
 		if (!worldObj.isRemote) {
 			server = worldObj.getMinecraftServer();
-		}
-		else {
+		} else {
 			server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		}
 		return server.getPlayerList().getPlayerByUUID(getOwner()).getName();
@@ -134,8 +135,7 @@ public class EntityCorpse extends EntityLiving {
 						break;
 					}
 					break;
-				}
-				else {
+				} else {
 					i++;
 				}
 			}
