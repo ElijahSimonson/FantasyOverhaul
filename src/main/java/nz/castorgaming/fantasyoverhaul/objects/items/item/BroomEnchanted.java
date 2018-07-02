@@ -18,6 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import nz.castorgaming.fantasyoverhaul.objects.entities.mobs.EntityBroom;
 import nz.castorgaming.fantasyoverhaul.objects.items.main.GeneralItemEnchanted;
 import nz.castorgaming.fantasyoverhaul.util.Reference;
@@ -96,7 +97,7 @@ public class BroomEnchanted extends GeneralItemEnchanted {
 			broom.rotationYaw = ((MathHelper.floor_double(playerIn.rotationYaw * 4.0f / 360.0f + 0.5) & 0x3) - 1) * 90;
 			if (!worldIn.isRemote) {
 				worldIn.spawnEntityInWorld(broom);
-				Reference.PACKET_HANDLER.sendToAllAround(new SPacketEntity.S17PacketEntityLookMove(broom),
+				Reference.PACKET_HANDLER.sendToAllAround((IMessage) new SPacketEntity.S17PacketEntityLookMove(),
 						TargetPointUtil.from(broom, 128.0));
 			}
 			if (!playerIn.capabilities.isCreativeMode) {
